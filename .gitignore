@@ -1,0 +1,9 @@
+# Datos crudos con información de clientes o exportes internos: nunca al repo
+datos/
+*.xlsx
+*.csv
+*.docx
+*.ogg
+*.json.bak
+node_modules/
+.DS_Store
