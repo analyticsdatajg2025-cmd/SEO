@@ -27,18 +27,23 @@ Etiquetas: `CONFIRMADO` (dato de fichas, GA4 o HTML), `HIPÓTESIS` (inferencia a
 
 ## 1b. Plata neta por negocio, con los márgenes dados (ESTIMACIÓN con supuestos escritos)
 
-| Negocio | Base anual | Margen usado | **Neto base/año** | Qué mueve S/ 1 M más de venta (o crédito) | Palanca SEO con más neto |
-|---|---|---|---|---|---|
-| La Curacao | venta web total S/ 60 M → neta ~S/ 30 M | 10% | **~S/ 3.0 M** (web) | +S/ 1 M web ≈ +S/ 50 K | Pauta de marca (S/ 1 ahorrado = S/ 1 neto) y crédito en la ficha |
-| Tiendas EFE | venta web S/ 39 M → neta ~S/ 21 M | 10% | **~S/ 2.1 M** (web) | +S/ 1 M web ≈ +S/ 55 K | Ídem; proteger el +26% orgánico |
-| Juntoz (web pura) | venta neta ~S/ 17 M/año (web 2026 anualizado) | comisión 7.1% | **~S/ 1.2 M** de comisión bruta; neto negativo tras pauta, cupones y fijos (A2) | +S/ 1 M venta ≈ +S/ 71 K comisión; si viene con cupón y pauta, puede ser < 0 | Tráfico orgánico sin cupón; nada que cueste pauta |
-| Diners + BanBif | ~S/ 11 M neta | 8.6% | **~S/ 0.9 M** comisión | +S/ 1 M ≈ +S/ 86 K | Proteger al socio; no competir con Juntoz |
-| Motocorp | S/ 130 M (2022, público) | 8% | **~S/ 10 M** (toda la empresa) | +1 moto financiada ≈ S/ 80 (retail) + S/ 50-110 (crédito) por S/ 1,000 | Local (tiendas/talleres) + crédito en la ficha |
-| Skullcandy | S/ 0.3 M/año | 42% | ~S/ 0.1 M | +S/ 1 M ≈ +S/ 420 K (pero no hay volumen) | Higiene |
-| **Efectibank** | cartera S/ 1,423 M; utilidad neta S/ 95.6 M (2025) | mercado 3-4% de cartera/año (real 7%) | **S/ 95.6 M real** | +S/ 1 M de crédito ≈ **+S/ 25-35 K** (mercado) / S/ 45-55 K (real) | Puente desde fichas, páginas de préstamo, oficinas, ahorro digital |
-| Crédito originado en el retail del grupo | 30-40% de la venta de Conecta (~S/ 300-350 M) y Motocorp (S/ 130 M) | mercado | **S/ 5-8.5 M/año** (`ESTIMACIÓN` gruesa) | +5 pp de participación financiada en Conecta ≈ +S/ 0.4-0.6 M/año | **La palanca 360**: vender con crédito vale 25-55% más que vender sin crédito |
+Dos bases, para no mezclar: **solo web** (lo que tenemos medido en las fichas) y **empresa completa** (piso + web), que para LC y EFE **no tenemos**: solo sabemos por prensa y por Elias que lo digital es ~25-32% de la venta de Conecta. Motocorp es al revés: tenemos la venta total pública (2022) y la web es solo leads.
 
-Lectura 360: **un sol de venta financiada vale S/ 0.125-0.155 netos para el grupo (retail 10% + banco 2.5-5.5%) frente a S/ 0.10 sin crédito; una moto financiada, hasta el doble.** El SEO del grupo debe optimizar para la venta financiada y para la solicitud de crédito, no solo para la venta web.
+| Negocio | Base **solo web** (fichas) | Margen | **Neto web/año** | Base **empresa completa** | **Neto total/año** | Evidencia |
+|---|---|---|---|---|---|---|
+| La Curacao | web total S/ 60 M → neta ~S/ 30 M | 10% | **~S/ 3.0 M** | `SIN DATO` de piso. Si la web es ~30% del total: ~S/ 100 M neta | ~S/ 10 M (`ESTIMACIÓN` gruesa) | Web `CONFIRMADO`; total `SIN DATO` |
+| Tiendas EFE | web S/ 39 M → neta ~S/ 21 M | 10% | **~S/ 2.1 M** | `SIN DATO`. Si ~30%: ~S/ 70 M neta | ~S/ 7 M (`ESTIMACIÓN` gruesa) | Ídem |
+| Conecta (LC + EFE) | ~S/ 51 M neta web | 10% | ~S/ 5.1 M | Prensa + Elias: digital 25-32% → ~S/ 160-200 M neta total | **~S/ 16-20 M** | `ESTIMACIÓN`; pedir venta de piso (B13) |
+| Juntoz (web pura) | ~S/ 17 M neta | comisión 7.1% | ~S/ 1.2 M bruto; neto negativo tras pauta, cupones y fijos | es solo web (+ Kiosko S/ 10 M) | — | `CONFIRMADO` + audio |
+| Diners + BanBif | ~S/ 11 M neta | 8.6% | ~S/ 0.9 M | solo web | — | `CONFIRMADO` |
+| Motocorp | web S/ 0.26 M (leads) | 8% | ~S/ 0.02 M | S/ 130 M (2022, público; puede estar desactualizado) | **~S/ 10 M** (si el margen 8% y la cifra 2022 siguen vigentes) | `HIPÓTESIS`: con Conecta en ~S/ 16-20 M, Motocorp queda **por debajo de LC y EFE**, como debe ser |
+| Skullcandy | S/ 0.3 M | 42% | ~S/ 0.1 M | solo web | — | `CONFIRMADO` |
+| **Efectibank** | **sí vende en digital**: apertura de cuentas y solicitudes de crédito, buena parte de su pauta va ahí; `SIN DATO` de cuánto es orgánico | mercado 3-4% de cartera/año (real 7%) | `SIN DATO` por canal | cartera S/ 1,423 M; utilidad neta **S/ 95.6 M** (2025) | **S/ 95.6 M real** | `CONFIRMADO` (Memoria 2025) |
+| Crédito originado en el retail del grupo | — | mercado | — | 30-40% de la venta total de Conecta (~S/ 160-200 M neta + IGV) y Motocorp (S/ 130 M) | **S/ 3-6 M/año** (`ESTIMACIÓN` gruesa; ver `docs/08 §2`) | Depende de B13 y EF4 |
+
+Qué mueve S/ 1 M más: LC/EFE +S/ 50-55 K (web o piso, mismo margen); Juntoz +S/ 71 K de comisión solo si no cuesta pauta ni cupón; Motocorp una moto financiada deja S/ 80 (retail) + S/ 50-110 (crédito) por S/ 1,000; Efectibank +S/ 1 M de crédito ≈ +S/ 25-35 K (mercado) / S/ 45-55 K (real).
+
+Lectura 360: **un sol de venta financiada vale S/ 0.125-0.155 netos para el grupo (retail 10% + banco 2.5-5.5%) frente a S/ 0.10 sin crédito; una moto financiada, hasta el doble.** El SEO del grupo debe optimizar para la venta financiada, la solicitud de crédito y la apertura de cuentas, no solo para la venta web. **Para cerrar esta tabla hace falta la venta de piso por marca (B13).**
 
 ## 2. Orden de prioridad provisional (sin porcentajes)
 

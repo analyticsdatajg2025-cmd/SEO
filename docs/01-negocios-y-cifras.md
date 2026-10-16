@@ -122,6 +122,8 @@ Claves (F2, A2): Juntoz fue una startup comprada con pérdida (feb-2022) y **no 
 | Digital | 90 K usuarios de app; S/ 481 M en depósitos digitales (+41%) | Memoria 2025 |
 | Zonas | Lima 41%, Piura 7%, La Libertad 6%, San Martín 6%, Lambayeque 5%, Loreto 4% (alta exposición a El Niño, señalada por PCR) | PCR |
 | Crédito en el retail del grupo | 30-40% de los productos de Conecta y Motocorp se venden con Efectibank (Elias) | Elias |
+| Venta digital propia | Sí: apertura de cuentas y solicitudes de crédito; buena parte de su pauta va a esos dos objetivos (Elias). Orgánico: `SIN DATO` | Elias |
+| Alcance de la data de Conecta | **Solo web** (GA4 + tracker). La venta de piso de LC y EFE no está en las fichas; prensa y Elias: digital ≈ 25-32% del total | F1, A1 |
 | Margen de mercado usado en el modelo | S/ 25-35 netos por S/ 1,000 prestados (motos S/ 50-70); real Efectibank S/ 45-55 | `docs/08 §2` (`ESTIMACIÓN`) |
 
 ## 7. Calendario comercial relevante

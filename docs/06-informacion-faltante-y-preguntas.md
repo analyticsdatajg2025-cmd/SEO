@@ -29,6 +29,8 @@
 | B10 | Qué es "Mafrem Mall" / mMall y su dominio | Inventario |
 | B11 | **Resultados de agosto 2026 vs agosto 2025 (PY)** por marca y canal, con las optimizaciones SEO implementadas y sus fechas (registro de cambios del área) | Referencia histórica de la contribución del SEO: separar crecimiento comercial de lo atribuible; **solo cifras verificadas** |
 | B12 | Volumen real de solicitudes de Marketing al SEO Senior (landings, sorteos, cupones, referidos) por mes | Dimensionar la reserva de horas de `docs/09` |
+| B13 | **Venta de piso por marca** (LC, EFE, Motocorp) 2025-2026, % financiada con Efectibank, ticket de piso, y venta de Motocorp actual (la pública es de 2022) | Hoy solo hay data web: la tabla de plata neta por empresa completa es estimación |
+| B14 | **Efectibank digital**: inversión en pauta por objetivo (apertura de cuentas, crédito), costo por cuenta y por crédito aprobado, y cuántas aperturas/solicitudes llegan por orgánico | El SEO compite con esa pauta: el ahorro por reemplazar pauta de marca y de producto es neto al 100% |
 
 ## C. Preguntas para Elias (responder en una línea cada una)
 1. ¿El objetivo de 3 meses se mide en **ganancia neta** del grupo o en venta web orgánica? Si es neto, ¿aceptamos que la palanca principal sea **dejar de pagar pauta de marca** (eso toca el presupuesto de Paid)?

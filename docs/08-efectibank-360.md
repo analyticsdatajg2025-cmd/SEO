@@ -26,7 +26,7 @@
 | Originación | Históricamente vía EFE, La Curacao y Motocorp; desde 2015 diversifica (libre disponibilidad, convenios, dealers externos, MiVivienda, Efectinegocios). 60% del volumen colocado 2025 = líneas tradicionales; 40% del crecimiento = alianzas fuera del grupo | M25, PCR |
 | Geografía | Lima 40.7%, **Piura 7.3%, La Libertad 6.0%, San Martín 5.6%, Lambayeque 5.4%, Loreto 4.3%** | PCR |
 | Riesgo señalado por PCR | **El Niño** puede elevar incumplimientos y refinanciaciones en sus zonas | PCR |
-| Lo que dijo Elias | 30-40% de los productos de Conecta y Motocorp se venden al crédito con Efectibank; el margen alto del grupo está aquí; quiere ser 100% digital | A1, Elias |
+| Lo que dijo Elias | 30-40% de los productos de Conecta y Motocorp se venden al crédito con Efectibank; el margen alto del grupo está aquí; quiere ser 100% digital. **Efectibank sí vende en digital: buena parte de su pauta lleva a apertura de cuentas y a solicitudes de crédito** (por eso el SEO compite directamente con esa pauta y la puede abaratar) | A1, Elias |
 
 ## 2. Margen de mercado para el modelo (qué vale un sol prestado)
 
@@ -45,7 +45,7 @@ Con los ratios públicos, por cada **S/ 1,000 desembolsados** en consumo (12-24 
 ### Lo que esto cambia en el 360
 Una venta de S/ 1,000 en La Curacao o EFE deja **S/ 100 netos** (margen 10%). Si se financia con Efectibank, deja además **S/ 25-55**: **+25% a +55% de ganancia neta sobre la misma venta**. En Motocorp (margen ~8%, S/ 80 netos por S/ 1,000) el crédito a 36 meses agrega S/ 50-110: **el financiamiento puede duplicar el neto de una moto**. Por eso, para los accionistas, **cada punto de participación de crédito en la venta vale más que varios puntos de venta adicional sin crédito**, y el SEO del grupo debe medirse también en créditos originados, no solo en ventas web.
 
-Orden de magnitud del crédito que hoy pasa por el retail del grupo (`ESTIMACIÓN` gruesa, para dimensionar): si la venta de Conecta ronda S/ 300-350 M/año (web GA4 S/ 100 M ≈ 30% digital, A1) y 30-40% se financia → **S/ 90-140 M/año de crédito originado en Conecta**; Motocorp S/ 130 M (2022) × 30-40% → **S/ 40-50 M**. Al margen de mercado: **S/ 3-5 M netos/año desde Conecta y S/ 2-3.5 M desde Motocorp**. Mover la participación financiada **+5 puntos** en la venta web de Conecta (S/ 50 M neta) = +S/ 2.5 M de crédito ≈ **+S/ 60-90 K netos/año**; en toda la venta de Conecta, +5 puntos ≈ **+S/ 0.4-0.6 M netos/año**. Son escenarios, no promesas: faltan los datos reales de B2 en `docs/06`.
+Orden de magnitud del crédito que hoy pasa por el retail del grupo (`ESTIMACIÓN` gruesa, para dimensionar; **solo tenemos la venta web de LC y EFE, no la de piso**): si la venta neta total de Conecta ronda S/ 160-200 M/año (web neta S/ 51 M ≈ 25-32% digital según prensa y Elias) y 30-40% se financia → **S/ 50-80 M/año de crédito originado en Conecta**; Motocorp S/ 130 M (2022, público, puede estar desactualizado) × 30-40% → **S/ 40-50 M**. Al margen de mercado: **S/ 1.5-3 M netos/año desde Conecta y S/ 2-3.5 M desde Motocorp** (motos con más plazo). Hasta tener la venta de piso (B13) y los desembolsos por canal (EF4), son órdenes de magnitud. Mover la participación financiada **+5 puntos** en la venta web de Conecta (S/ 50 M neta) = +S/ 2.5 M de crédito ≈ **+S/ 60-90 K netos/año**; en toda la venta de Conecta, +5 puntos ≈ **+S/ 0.4-0.6 M netos/año**. Son escenarios, no promesas: faltan los datos reales de B2 en `docs/06`.
 
 ## 3. Qué ofrece la web y cómo está (revisión del 16-oct)
 
