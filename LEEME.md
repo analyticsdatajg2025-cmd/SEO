@@ -5,12 +5,14 @@
 **Por dónde empezar.**
 1. `ESTADO.md`: en qué vamos y qué sigue.
 2. `grafo/ecosistema-seo.html`: ábrelo en el navegador; es el mapa de negocios, activos, datos, sistemas y acciones. Pasa el mouse por cada nodo.
-3. `docs/04-plan-acciones-90-dias.md`: las acciones con responsable, esfuerzo y dinero estimado.
+3. `docs/04-plan-acciones-90-dias.md`: el roadmap por mes con horas, dependencias, bloqueos y lo que se podrá decir al cierre de cada mes. `docs/08-efectibank-360.md`: por qué el banco es la prioridad y cuánto vale un sol prestado.
 4. `docs/06-informacion-faltante-y-preguntas.md`: lo que necesitamos de Elias y de otras áreas.
 
 **Quién hace qué.**
-- Kevin: lo técnico (canonical, sitemaps, datos estructurados, Search Console, cruces de datos, coordinación con TI).
-- Carolina: lo operativo (metadatos en el CMS, fichas de Google Business Profile, reseñas de apps, inventarios, registro de cambios).
+- Josh Kevin (SEO Senior): estrategia, auditoría técnica, keywords y competencia, Search Console, cruces de datos, especificaciones y validación con TI.
+- Carol (asistente SEO): Google Business Profile y sedes, y con supervisión: metadatos en CMS, inventarios, ASO, QA y registro de cambios.
+- Rolando y Ronald (Contenidos): categorías, fichas, landings y blog según disponibilidad.
+- Claude Pro: cruces de datos, borradores, especificaciones y scripts de chequeo; no reemplaza las herramientas de rastreo ni la validación humana.
 - Elias: accesos, decisiones y presentación a gerencia.
 
 **Reglas de oro.**

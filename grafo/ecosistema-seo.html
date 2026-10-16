@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex">
-<title>Ecosistema SEO EFE</title>
-<meta name="description" content="Grafo del ecosistema SEO del Grupo EFE: negocios, activos digitales, fuentes de datos, sistemas, acciones de 90 días y eventos. Cifras al 16 oct 2026.">
+<title>Dashboard SEO 360 EFE</title>
+<meta name="description" content="Dashboard SEO 360 del Grupo EFE: grafo del ecosistema, plata neta por negocio, roadmap de 90 días por mes, capacidad del equipo, herramientas, bloqueos, Efectibank, plazos, riesgos e indicadores. 16 oct 2026.">
 <style>
 :root{
   color-scheme:light;
@@ -77,17 +77,65 @@ td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 details summary{cursor:pointer;color:var(--accent)}
 .foot{color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:14px}
 a{color:var(--accent)}
+
+.tag.ok{background:#e2f3ea;color:#1f7a4d}.tag.hyp{background:#fbefd9;color:#9a5b00}.tag.est{background:#e3eff7;color:#0b5c8a}.tag.none{background:var(--line-soft);color:var(--muted)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .tag.ok{background:#173326;color:#6fd19c}:root:not([data-theme="light"]) .tag.hyp{background:#3a2c12;color:#f0b65a}:root:not([data-theme="light"]) .tag.est{background:#16303f;color:#6cb6e6}}
+:root[data-theme="dark"] .tag.ok{background:#173326;color:#6fd19c}:root[data-theme="dark"] .tag.hyp{background:#3a2c12;color:#f0b65a}:root[data-theme="dark"] .tag.est{background:#16303f;color:#6cb6e6}
+.months{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:14px}
+.months article{border-top:3px solid var(--c-acc);background:var(--surface);border:1px solid var(--line);border-top-width:3px;border-radius:8px;padding:12px 14px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.months .when{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.months h3{margin:0;font-size:16px}
+.months ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px;font-size:14px}
+.months .say{border-top:1px dashed var(--line);padding-top:8px;font-size:13px;color:var(--muted)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:12px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 14px;display:flex;flex-direction:column;gap:4px}
+.kpi .v{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums}
+.kpi .l{font-size:13px;color:var(--muted)}
+.nav{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:14px}
+.nav a{text-decoration:none}
+h2 .n{font-family:var(--f-mono);font-size:13px;color:var(--accent);font-weight:600;margin-right:8px}
+.note{border-left:3px solid var(--accent);padding:8px 12px;background:var(--line-soft);border-radius:0 8px 8px 0;font-size:14px}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header style="display:flex;flex-direction:column;gap:8px">
-    <span class="eyebrow">Grupo EFE · Área SEO · Mapa de trabajo</span>
-    <h1>Ecosistema SEO: negocios, activos, datos, acciones y eventos</h1>
-    <p class="meta"><span>Cifras al 16 oct 2026 (fichas de negocio + GA4 + revisión pública)</span><span>Cifras redondeadas; lo que no se sabe dice SIN DATO</span><span>Fuente de cada número: <code>docs/01-negocios-y-cifras.md</code></span></p>
+    <span class="eyebrow">Grupo EFE · Área SEO · Dashboard 360 · 16 oct 2026</span>
+    <h1>SEO 360: dónde está la plata neta, qué se hace en 90 días y con qué</h1>
+    <p class="meta"><span>Cifras de fichas de negocio, GA4, Memoria 2025 y PCR jun-26 de Efectibank, revisión pública de 9 sitios</span><span>Redondeadas; lo que no se sabe dice SIN DATO</span><span>Fuentes: <code>docs/01</code>, <code>docs/08</code></span></p>
+    <div class="legend" aria-label="Etiquetas de evidencia"><span>Evidencia:</span><span class="tag ok">CONFIRMADO</span> dato de ficha, GA4, estados públicos o HTML servido <span class="tag hyp">HIPÓTESIS</span> inferencia a validar <span class="tag est">ESTIMACIÓN</span> cálculo con supuesto escrito, no compromiso <span class="tag none">SIN DATO</span> requiere acceso o dato que no hay</div>
+    <nav class="nav" aria-label="Secciones"><a href="#s1">1 Plata neta 360</a><a href="#s2">2 Grafo</a><a href="#s3">3 Roadmap por mes</a><a href="#s4">4 Capacidad y horas</a><a href="#s5">5 Herramientas</a><a href="#s6">6 Bloqueos</a><a href="#s7">7 Efectibank pendiente</a><a href="#s8">8 Plazos</a><a href="#s9">9 Riesgos</a><a href="#s10">10 Indicadores</a></nav>
   </header>
 
-  <section class="card" style="display:flex;flex-direction:column;gap:10px">
+
+  <section id="s1" class="card" style="display:flex;flex-direction:column;gap:12px">
+    <h2><span class="n">1</span>Plata neta 360: qué vale cada negocio con los márgenes dados</h2>
+    <div class="kpis">
+      <div class="kpi"><span class="v">S/ 95.6 M</span><span class="l">Utilidad neta Efectibank 2025 <span class="tag ok">CONFIRMADO</span> (Memoria 2025). ROA 5.2%, la más rentable del sistema.</span></div>
+      <div class="kpi"><span class="v">S/ 25-35</span><span class="l">Neto por S/ 1,000 prestados, margen de mercado <span class="tag est">ESTIMACIÓN</span>. Real Efectibank S/ 45-55; motos S/ 50-110.</span></div>
+      <div class="kpi"><span class="v">+25% a +55%</span><span class="l">Más ganancia neta en la misma venta retail si se financia con Efectibank (10% retail + 2.5-5.5% banco) <span class="tag est">ESTIMACIÓN</span>.</span></div>
+      <div class="kpi"><span class="v">30-40%</span><span class="l">De los productos de Conecta y Motocorp se venden al crédito con Efectibank (Elias) <span class="tag hyp">HIPÓTESIS</span> hasta ver BI.</span></div>
+      <div class="kpi"><span class="v">S/ 5-8.5 M</span><span class="l">Neto/año del crédito originado en el retail del grupo, margen de mercado <span class="tag est">ESTIMACIÓN</span> gruesa (<code>docs/08 §2</code>).</span></div>
+    </div>
+    <div class="scroll"><table>
+      <thead><tr><th>Negocio</th><th class="num">Base anual</th><th>Margen usado</th><th class="num">Neto base/año</th><th>Qué mueve +S/ 1 M</th><th>Palanca SEO con más neto</th><th>Evidencia</th></tr></thead>
+      <tbody>
+        <tr><td>La Curacao</td><td class="num">web S/ 60 M (neta ~30)</td><td>10%</td><td class="num">~S/ 3.0 M</td><td>+S/ 50 K</td><td>Pauta de marca (S/ 1 ahorrado = S/ 1 neto); crédito en la ficha</td><td><span class="tag ok">CONFIRMADO</span> base · <span class="tag est">ESTIMACIÓN</span> neto</td></tr>
+        <tr><td>Tiendas EFE</td><td class="num">web S/ 39 M (neta ~21)</td><td>10%</td><td class="num">~S/ 2.1 M</td><td>+S/ 55 K</td><td>Proteger orgánico +26%; pauta de marca; crédito en la ficha</td><td><span class="tag ok">CONFIRMADO</span> · <span class="tag est">ESTIMACIÓN</span></td></tr>
+        <tr><td>Juntoz (web pura)</td><td class="num">~S/ 17 M neta</td><td>comisión 7.1%</td><td class="num">~S/ 1.2 M bruto; neto negativo tras pauta y cupones</td><td>+S/ 71 K comisión (si no cuesta pauta)</td><td>Tráfico orgánico sin cupón; base técnica</td><td><span class="tag ok">CONFIRMADO</span> · audio</td></tr>
+        <tr><td>Diners + BanBif</td><td class="num">~S/ 11 M neta</td><td>8.6%</td><td class="num">~S/ 0.9 M</td><td>+S/ 86 K</td><td>Proteger al socio</td><td><span class="tag ok">CONFIRMADO</span></td></tr>
+        <tr><td>Motocorp</td><td class="num">S/ 130 M (2022)</td><td>8% + crédito</td><td class="num">~S/ 10 M (empresa)</td><td>moto financiada: S/ 80 + S/ 50-110 por S/ 1,000</td><td>Local (tiendas/talleres) + crédito en la ficha</td><td><span class="tag ok">CONFIRMADO</span> público · <span class="tag est">ESTIMACIÓN</span></td></tr>
+        <tr><td>Skullcandy</td><td class="num">S/ 0.3 M</td><td>42%</td><td class="num">~S/ 0.1 M</td><td>sin volumen</td><td>Higiene</td><td><span class="tag ok">CONFIRMADO</span></td></tr>
+        <tr><td><strong>Efectibank</strong></td><td class="num">cartera S/ 1,423 M</td><td>mercado 3-4%/año de cartera (real 7%)</td><td class="num"><strong>S/ 95.6 M real</strong></td><td>+S/ 1 M de crédito ≈ +S/ 25-35 K (real 45-55 K)</td><td>Puente desde fichas (E1), páginas de préstamo (E2), oficinas (E4), ahorro digital (E3)</td><td><span class="tag ok">CONFIRMADO</span> · <span class="tag est">ESTIMACIÓN</span></td></tr>
+      </tbody></table></div>
+    <p class="note">Lectura 360: un sol de venta financiada vale S/ 0.125-0.155 netos para el grupo frente a S/ 0.10 sin crédito; una moto financiada, hasta el doble. El SEO se mide en ventas <strong>y en créditos originados</strong>. Ninguna cifra de esta tabla es un compromiso: <code>docs/03 §1b</code>.</p>
+    <div class="grid2" style="margin-top:4px">
+      <div class="chart"><h3 style="margin:0 0 4px;font-size:15px">Neto base por negocio (S/ M/año, con los márgenes dados)</h3><p style="color:var(--muted);font-size:13px">Efectibank real; el resto es venta × margen. Motocorp incluye toda la empresa. <span class="tag est">ESTIMACIÓN</span></p><svg id="chartNeto" viewBox="0 0 560 260" role="img" aria-label="Neto base por negocio"></svg></div>
+      <div class="chart"><h3 style="margin:0 0 4px;font-size:15px">Qué deja S/ 1,000 de venta según cómo se vende (neto para el grupo)</h3><p style="color:var(--muted);font-size:13px">Retail 10% · Motocorp 8% · crédito a margen de mercado (consumo S/ 25-35; motos S/ 50-70, punto medio). <span class="tag est">ESTIMACIÓN</span></p><svg id="chartMil" viewBox="0 0 560 190" role="img" aria-label="Neto por mil soles de venta"></svg></div>
+    </div>
+  </section>
+  <section id="s2" class="card" style="display:flex;flex-direction:column;gap:10px">
+    <h2><span class="n">2</span>Grafo del ecosistema</h2>
     <div class="legend" aria-label="Leyenda de colores">
       <span><i style="background:var(--c-grupo)"></i>Grupo</span>
       <span><i style="background:var(--c-neg)"></i>Negocios</span>
@@ -118,27 +166,165 @@ a{color:var(--accent)}
       <p class="k">Haz clic en un nodo del grafo para ver sus cifras, su estado y a qué documento ir.</p>
     </div>
     <div class="card chart">
-      <h2>Venta web total por negocio (S/ millones, 12 meses)</h2>
-      <p class="k" style="color:var(--muted);font-size:13px">GA4, oct-25 a sep-26. Juntoz, Diners y BanBif: 1-ene a 15-oct 2026, venta neta. Efectibank y Coldex: SIN DATO.</p>
+      <h3 style="margin:0 0 4px;font-size:15px">Venta web total por negocio (S/ millones, 12 meses)</h3>
+      <p style="color:var(--muted);font-size:13px">GA4, oct-25 a sep-26. Juntoz, Diners y BanBif: 1-ene a 15-oct 2026, venta neta. Efectibank: no vende por web (crédito). <span class="tag ok">CONFIRMADO</span></p>
       <svg id="chartVenta" viewBox="0 0 560 300" role="img" aria-label="Barras de venta web por negocio"></svg>
     </div>
   </section>
 
-  <section class="grid2">
-    <div class="card chart">
-      <h2>Peso del orgánico en la venta web</h2>
-      <p class="k" style="color:var(--muted);font-size:13px">La Curacao 12% de S/ 60 M; Tiendas EFE 23% de la venta ene-sep 2026 (+26%). Motocorp: 51% del tráfico, venta web no aplica. Resto: SIN DATO.</p>
-      <svg id="chartOrg" viewBox="0 0 560 170" role="img" aria-label="Barras del peso del orgánico"></svg>
+  <section id="s3" class="card" style="display:flex;flex-direction:column;gap:12px">
+    <h2><span class="n">3</span>Roadmap 90 días por mes (Efectibank en paralelo a Cyber)</h2>
+    <p class="note">Fases Cyber: <strong>antes</strong> (hasta 72 h antes del 2-nov, prensa; confirmar IAB) solo cambios de CMS reversibles y diagnóstico · <strong>durante</strong> nada estructural, monitoreo diario e incidencias críticas · <strong>después</strong> estructura con evaluación de riesgo, staging y reversión; Navidad vuelve a congelar plantillas del 10-dic al 2-ene. Detalle con horas en <code>docs/04</code>.</p>
+    <div class="months">
+      <article><span class="when">Mes 1 · 17 oct → 15 nov · antes y durante Cyber</span><h3>Llegar sanos a Cyber y arrancar Efectibank</h3>
+        <ul>
+          <li><strong>Accesos y línea base</strong> (GSC, GA4, Ads por término, GBP, WordPress Efectibank) · JK 12 h, C 6 h <span class="tag none">SIN DATO</span> hasta que lleguen</li>
+          <li><strong>Landings Cyber limpias</strong> LC/EFE: canonical roto, títulos, H1, HTML incrustado, enlaces a categorías con stock · C 8 h, JK 4 h, Marketing 4 h · antes del 30-oct <span class="tag ok">COMPROBADO</span></li>
+          <li><strong>Monitoreo diario</strong> de ~300 URLs clave con script (Claude + JK) · 4 h + 0.5 h/día</li>
+          <li><strong>Efectibank: auditoría inicial</strong> de 229 páginas, mapa de intenciones, SERP de competencia · JK 16 h</li>
+          <li><strong>Efectibank: higiene y producto</strong> en WordPress (localhost, staging, tablas de tasas, H1 con producto, FAQ schema, noindex a 100+ promociones) · C 10 h, JK 4 h, Legal 2 h</li>
+          <li><strong>Pedido de datos EF1-EF9</strong> a Comercial/BI/Legal/TI de Efectibank · Elias 2 h</li>
+          <li><strong>GBP</strong>: 30 tiendas con más venta + oficinas Efectibank dentro de ellas · C 30 h</li>
+          <li>Diagnóstico (no cambio) de canonical EFE y páginas cruzadas; spec Juntoz; análisis de pauta de marca · JK 15 h</li>
+          <li>Reserva solicitudes de Marketing · JK 8-12 h/semana</li>
+        </ul>
+        <p class="say"><strong>Horas:</strong> JK 110-130 (capacidad ~100-115: ajustado), C ~60, RR 0-8. <strong>Qué se podrá decir el 15-nov:</strong> landings sanas en GSC, incidencias del evento registradas, auditoría Efectibank entregada, 30 fichas corregidas, línea base lista, cifra de pauta de marca. Sin atribuir venta al SEO aún.</p></article>
+      <article><span class="when">Mes 2 · 16 nov → 15 dic · después de Cyber, antes de Navidad</span><h3>Estructura, puente al crédito y Navidad en local</h3>
+        <ul>
+          <li><strong>Puente al crédito en las fichas (E1)</strong>: "desde S/ X al mes con Efectibank" + enlace rastreable prellenado; corregir efectiva.com.pe · JK 8 h, TI 16-24 h, Efectibank 6 h, Legal 2 h <span class="tag est">ESTIMACIÓN</span> +5 pp financiado en web ≈ S/ 60-90 K/año</li>
+          <li><strong>Canonical en todo EFE</strong> (staging → muestra → producción, 4 semanas de monitoreo) · JK 12 h, TI 16-32 h</li>
+          <li><strong>Prueba de pauta de marca</strong> en una marca/región, 2 semanas, midiendo venta total · JK 8 h, Paid 8 h <span class="tag hyp">HIPÓTESIS</span> S/ 20-75 K/mes a validar</li>
+          <li><strong>Categorías de calor / El Niño</strong> (ventiladores, aire, refrigeración, bombas) · RR 20-30 h, C 6 h · antes del 1-dic</li>
+          <li><strong>Efectibank: páginas de préstamo y ahorro que respondan la búsqueda</strong> (monto, plazo, TEA, cuota, requisitos; TREA en H1) · JK 11 h, C 14 h, RR 10-16 h, Legal 4 h</li>
+          <li><strong>Efectibank: blog</strong>, solo arquitectura y plantilla (sin tráfico esperado este trimestre) · TI Efectibank 16-24 h</li>
+          <li><strong>GBP Navidad</strong> en todas las fichas con más venta + spec de página por tienda/oficina · C 40 h, JK 6 h</li>
+          <li>Páginas cruzadas y 503 de Skullcandy; sitemaps y robots de Conecta; Juntoz lo que el CMS permita; Motocorp H1/WhatsApp/crédito · JK 23 h, TI/plataforma</li>
+        </ul>
+        <p class="say"><strong>Horas:</strong> JK 125-145 (<strong>por encima</strong>: sitemaps y Juntoz pasan a enero si no hay más capacidad), C ~70, RR 34-50 (según disponibilidad). <strong>Qué se podrá decir el 15-dic:</strong> Cyber medido vs línea base; ahorro real de pauta si hubo prueba; primeras solicitudes de crédito con origen PDP; Efectibank corregido e indexado; GBP al día.</p></article>
+      <article><span class="when">Mes 3 · 16 dic → 15 ene · Navidad, enero, El Niño</span><h3>Defensa El Niño, medición y lo que depende de TI</h3>
+        <ul>
+          <li><strong>Páginas por tienda y por oficina</strong> (primeras 30-50, zonas de El Niño primero: Piura, La Libertad, Lambayeque, San Martín) con retiro en tienda y oficina de crédito · JK 10 h, C 20 h, TI 24-48 h</li>
+          <li><strong>Páginas de estado por zona</strong> (noindex) si el despacho falla; cierres temporales en GBP · C 6 h, Logística</li>
+          <li><strong>Crédito de reposición</strong> (si Riesgos lo lanza): landing + enlaces desde fichas de refrigeradoras, lavadoras, colchones, motos · JK 4 h, RR 6 h</li>
+          <li>Datos estructurados LC/EFE y Juntoz; escalar pauta de marca si la prueba validó · JK 12 h, TI</li>
+          <li><strong>Efectibank: primeras 4-8 piezas de blog y ASO</strong> (reseñas, ficha, bug del splash a Producto) · RR 16-24 h, C 8 h</li>
+          <li><strong>Reporte de 90 días</strong> a gerencia: tres números verificables (ahorro de pauta, solicitudes con origen web/PDP, venta orgánica vs línea base) + bloqueos · JK 8 h</li>
+        </ul>
+        <p class="say"><strong>Horas:</strong> JK 90-110 (dentro de capacidad), C 35-50, RR 22-30. <strong>Qué se podrá decir el 15-ene:</strong> canonical EFE con 4 semanas de datos; páginas de tienda/oficina vivas; puente al crédito con 2 meses de datos; Efectibank con base sana y blog arrancado; Cyber/Navidad 2026 vs 2025 por grupo de URL con fechas de cambios marcadas.</p></article>
     </div>
+    <details><summary>Lo que no entra en 90 días</summary><ul><li>Migración de URLs no amigables y arquitectura de los malls (CMS/desarrollo y ventana sin campañas).</li><li>Tráfico y crédito desde el blog de Efectibank (publicar ≠ indexar ≠ posicionar ≠ convertir; se mide en 2027).</li><li>Rastreo completo de 99 K URLs y benchmarking de competencia sin licencias (solo muestras).</li><li>Cualquier cifra de venta o utilidad "generada por SEO" sin línea base y registro de cambios.</li></ul></details>
+  </section>
+
+  <section id="s4" class="grid2">
     <div class="card chart">
-      <h2>Pesos propuestos del esfuerzo SEO (90 días)</h2>
-      <p class="k" style="color:var(--muted);font-size:13px">Propuesta a evaluar con Elias (<code>docs/03</code>). Suma 100%.</p>
-      <svg id="chartPesos" viewBox="0 0 560 150" role="img" aria-label="Barra apilada de pesos por negocio"></svg>
+      <h2><span class="n">4</span>Capacidad vs horas estimadas (SEO Senior)</h2>
+      <p style="color:var(--muted);font-size:13px">Capacidad neta ~100-115 h/mes (40 h/semana menos 30-40% de solicitudes operativas y coordinaciones) <span class="tag hyp">SUPUESTO</span>. Demanda = roadmap + reserva de Marketing (8-12 h/semana) + monitoreo. <span class="tag est">ESTIMACIÓN</span></p>
+      <svg id="chartCap" viewBox="0 0 560 190" role="img" aria-label="Capacidad vs demanda por mes"></svg>
+      <p style="color:var(--muted);font-size:13px;margin-top:6px">Carol: capacidad 100-140 h/mes, demanda 60 / 70 / 45. Contenidos (Rolando y Ronald): 0-8 / 34-50 / 22-30 h, <span class="tag none">SIN DATO</span> de disponibilidad real. Claude Pro multiplica análisis y borradores; no reemplaza rastreadores ni validación humana. Nadie amarrado a una marca ni a un tipo de SEO.</p>
+    </div>
+    <div class="card">
+      <h2>Quién hace qué (por habilidades)</h2>
+      <div class="scroll"><table>
+        <thead><tr><th>Persona</th><th>Habilidades</th><th>En este roadmap</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Josh Kevin Seminario</strong> · SEO Senior</td><td>Estrategia multimarca, auditoría técnica, competencia, keywords, ecommerce, analítica, priorización, validación</td><td>Línea base, auditorías (Conecta, Efectibank, Juntoz), especificaciones para TI, prueba de pauta, QA, reporte; además atiende Marketing</td></tr>
+          <tr><td><strong>Carol</strong> · asistente SEO</td><td>GBP, fichas, sedes, seguimiento operativo; con supervisión: CMS, inventarios, ASO, QA</td><td>Landings Cyber (CMS), higiene WordPress de Efectibank, GBP de tiendas y oficinas, páginas por tienda, ASO</td></tr>
+          <tr><td><strong>Rolando y Ronald</strong> · Contenidos</td><td>PDL, PDP, blogs, landings, según disponibilidad</td><td>Categorías de calor, páginas de préstamo, blog de Efectibank, landings de Marketing</td></tr>
+          <tr><td><strong>Claude Pro</strong></td><td>Cruces de datos, borradores, specs, scripts de chequeo masivo, revisión de muestras</td><td>Monitoreo diario, cruce sitemap ↔ feed, borradores de metadatos y contenido, resúmenes</td></tr>
+          <tr><td><strong>Elias</strong></td><td>Accesos, decisiones, presupuesto, gerencia</td><td>Semana 1: accesos y datos de Efectibank; decisiones de prueba de pauta, canonical entre malls, herramientas</td></tr>
+        </tbody></table></div>
     </div>
   </section>
 
-  <section class="card">
-    <h2>Comparativo (últimos 12 meses salvo indicación)</h2>
+  <section id="s5" class="card" style="display:flex;flex-direction:column;gap:10px">
+    <h2><span class="n">5</span>Herramientas: impacto operativo de tenerlas o no (sin asumir ingresos)</h2>
+    <p class="note">Las licencias de Semrush y Screaming Frog eran <strong>personales</strong> del SEO Senior y ya no están. El plan no asume que el equipo vuelva a pagarlas. Lo que sigue es qué cambia operativamente, no cuánto vende.</p>
+    <div class="scroll"><table>
+      <thead><tr><th>Tarea</th><th>Con licencias</th><th>Sin ellas (hoy)</th><th>Caso de uso en este plan</th></tr></thead>
+      <tbody>
+        <tr><td>Rastreo completo LC/EFE (~99 K URLs c/u) y Juntoz (42 K SKU, render JS)</td><td>Horas; detecta canonical, duplicados, 4xx/5xx, títulos, huérfanas</td><td>Muestras de 500 URLs (SF gratis) o script sin render; Juntoz mal visible</td><td>Canonical EFE, sitemaps, Juntoz: diagnóstico por muestra; más riesgo de errores sin ver</td></tr>
+        <tr><td>Keywords con volumen y dificultad</td><td>Volúmenes, tendencias, clusters</td><td>Keyword Planner (rangos), GSC (solo lo que ya rankea), SERP a mano</td><td>Calor/El Niño, préstamos, ahorro: se prioriza sin volumen fiable</td></tr>
+        <tr><td>Competencia (tráfico, gap de keywords)</td><td>Por dominio</td><td>No disponible</td><td>Efectibank vs bancos/cajas/comparadores; Cyber vs Falabella, Ripley, Oechsle</td></tr>
+        <tr><td>Monitoreo en Cyber (posiciones diarias, errores nuevos)</td><td>Alertas y rastreos programados</td><td>GSC con 2-3 días de retraso + script diario de respuestas</td><td>Se detecta más tarde</td></tr>
+        <tr><td>Antes/después de cada optimización</td><td>Posiciones por keyword y URL</td><td>GSC por grupo de URL (clics/impresiones, no posiciones frescas)</td><td>Medible, más grueso</td></tr>
+        <tr><td>Costo de referencia</td><td>Semrush Pro ~US$ 140/mes; Screaming Frog ~US$ 259/año</td><td>—</td><td>Menor que una semana del Senior; justificar por casos de uso, no por ingresos</td></tr>
+      </tbody></table></div>
+    <p style="font-size:14px">Con GSC, GA4, Keyword Planner, PageSpeed, la prueba de resultados enriquecidos, GBP, Bing WT y scripts propios <strong>el plan es ejecutable</strong>; con licencias sería más profundo, más rápido y con menos riesgo. Detalle: <code>docs/09 §2</code>.</p>
+  </section>
+
+  <section id="s6" class="grid2">
+    <div class="card">
+      <h2><span class="n">6</span>Bloqueos técnicos y presupuestarios</h2>
+      <div class="scroll"><table><thead><tr><th>Bloqueo</th><th>Efecto</th><th>Salida</th></tr></thead><tbody>
+        <tr><td>Sin Search Console ni GA4 para el equipo</td><td>No se confirma indexación ni se mide nada</td><td>Escalar en semana 1; mientras, HTML público y fichas</td></tr>
+        <tr><td>Sin Semrush / Screaming Frog</td><td>Diagnóstico por muestras; sin competencia; Cyber a ciegas parcial</td><td>Presupuestar por casos de uso</td></tr>
+        <tr><td>CMS de Juntoz y malls en implementación; URLs, sitemap, canonical pendientes de verificación</td><td>Solo spec y lo mínimo; no se crean landings</td><td>Decisión de plataforma; GSC para verificar</td></tr>
+        <tr><td>TI/Magento sin ventana</td><td>Canonical, sitemaps, puente al crédito, páginas por tienda se retrasan</td><td>Pedir ventana post-Cyber ahora</td></tr>
+        <tr><td>Legal de Efectibank: TEA y cuota en página</td><td>Páginas de préstamo siguen genéricas</td><td>Reunión semana 1</td></tr>
+        <tr><td>Contenidos sin disponibilidad</td><td>Menos piezas de calor, préstamo y blog</td><td>Borradores con Claude revisados por JK</td></tr>
+        <tr><td>Solicitudes de Marketing por encima de la reserva</td><td>Roadmap se recorta</td><td>Lista única con prioridad de Elias</td></tr>
+      </tbody></table></div>
+    </div>
+    <div class="card" id="s7">
+      <h2><span class="n">7</span>Efectibank: información pendiente y responsables</h2>
+      <div class="scroll"><table><thead><tr><th>#</th><th>Qué</th><th>Para qué</th><th>Responsable</th></tr></thead><tbody>
+        <tr><td>EF1</td><td>Objetivo del canal digital: sesiones, solicitudes, aprobaciones, desembolsos, cuentas, tarjetas, clientes</td><td>El indicador que manda</td><td>Medios Digitales / Comercial</td></tr>
+        <tr><td>EF2</td><td>Productos prioritarios y rentabilidad por producto (margen neto por sol, ticket, plazo, aprobación)</td><td>Ordenar E1/E2 por plata</td><td>Finanzas / BI</td></tr>
+        <tr><td>EF3</td><td>Tráfico orgánico, páginas de entrada, consultas, conversiones 2025-26</td><td>Línea base</td><td>BI / Marketing</td></tr>
+        <tr><td>EF4</td><td>Solicitudes, aprobaciones y desembolsos por canal y página de origen; % de venta de LC/EFE/Motocorp financiada (online y piso)</td><td>Validar el 30-40% y dimensionar E1</td><td>BI / Riesgos</td></tr>
+        <tr><td>EF5</td><td>GSC, GA4, admin WordPress, plantilla, blog y páginas por oficina; política de Legal sobre TEA</td><td>Qué se puede cambiar</td><td>TI / Marketing / Legal</td></tr>
+        <tr><td>EF6</td><td>Costo de fondeo marginal; meta de depósitos digitales</td><td>Valorar ahorro digital (E3)</td><td>Finanzas</td></tr>
+        <tr><td>EF7</td><td>App: instalaciones por fuente, calificación, bug del splash, roadmap</td><td>ASO (E5)</td><td>Producto</td></tr>
+        <tr><td>EF8</td><td>Herramientas y accesos que Efectibank ya paga</td><td>Reutilizar</td><td>Marketing</td></tr>
+        <tr><td>EF9</td><td>Maestro de las 176 oficinas (dirección, horario, tienda anfitriona)</td><td>Oficinas (E4)</td><td>Operaciones</td></tr>
+      </tbody></table></div>
+      <p style="font-size:13px;color:var(--muted);margin-top:8px">Web hoy <span class="tag ok">COMPROBADO</span>: H1 de eslogan sin producto, sin montos ni TEA, enlaces a localhost/staging, dos tablas de tasas contradictorias, agencias en una sola página (176 oficinas invisibles), blog vacío, 129 de 229 páginas son promociones, formulario de solicitud con callback. App 2.6★ Android / 3.1★ iOS. Detalle: <code>docs/08 §3</code>.</p>
+    </div>
+  </section>
+
+  <section id="s8" class="grid2">
+    <div class="card">
+      <h2><span class="n">8</span>Plazos orientativos de efecto (con incertidumbre)</h2>
+      <div class="scroll"><table><thead><tr><th>Etapa</th><th>Orden de magnitud</th><th>Incertidumbre</th></tr></thead><tbody>
+        <tr><td>Publicación</td><td>Día 0</td><td>—</td></tr>
+        <tr><td>Descubrimiento</td><td>Horas-días (enlazadas desde home) · días-semanas (profundas)</td><td>Alta en sitios de 99 K URLs</td></tr>
+        <tr><td>Rastreo</td><td>Días (populares) · semanas (cola larga)</td><td>Depende de la salud del sitio</td></tr>
+        <tr><td>Indexación</td><td>Días-semanas · canonical masivo: semanas-meses</td><td>Alta</td></tr>
+        <tr><td>Posicionamiento</td><td>Marca y landings de evento: días-semanas · genéricas financieras y de calor: meses</td><td>Muy alta</td></tr>
+        <tr><td>Conversión</td><td>Después del posicionamiento y según demanda, stock, pauta</td><td>Depende de BI</td></tr>
+      </tbody></table></div>
+      <p style="font-size:13px;color:var(--muted);margin-top:8px">Consecuencias: metadatos de páginas ya indexadas publicados hoy pueden llegar a Cyber; una sección nueva (blog de Efectibank) no da tráfico relevante en su primer mes; los cambios estructurales de después de Cyber se evalúan en enero-febrero. Sin plazos exactos.</p>
+    </div>
+    <div class="card" id="s9">
+      <h2><span class="n">9</span>Riesgos comerciales y técnicos</h2>
+      <div class="scroll"><table><thead><tr><th>Riesgo</th><th>Prob.</th><th>Impacto</th><th>Mitigación</th></tr></thead><tbody>
+        <tr><td>Cambio estructural antes o durante Cyber degrada landings/categorías</td><td>Media si se hace</td><td>Muy alto</td><td>Congelamiento 72 h; solo CMS; registro; monitoreo diario</td></tr>
+        <tr><td>Redirigir una URL que Paid usa</td><td>Media</td><td>Alto</td><td>Lista de URLs de pauta; nada en Cyber</td></tr>
+        <tr><td>TI sin ventana hasta 2027</td><td>Alta</td><td>Medio</td><td>Pedir ventana post-Cyber ahora</td></tr>
+        <tr><td>Accesos GSC/GA4 no llegan</td><td>Media</td><td>Alto</td><td>Escalar semana 1</td></tr>
+        <tr><td>Senior absorbido por Marketing</td><td>Alta</td><td>Medio</td><td>Reserva explícita; lista única</td></tr>
+        <tr><td>Malls sin CMS editable en 90 días</td><td>Alta</td><td>Medio</td><td>Solo diagnóstico y spec</td></tr>
+        <tr><td>Efectibank: datos o Legal no llegan</td><td>Media</td><td>Medio-alto (es el margen)</td><td>Auditoría técnica primero; escalar con Elias</td></tr>
+        <tr><td>El Niño fuerte: despacho cortado en el norte; morosidad (PCR lo señala)</td><td>Media-alta</td><td>Alto</td><td>Páginas de tienda/oficina, retiro en tienda, estado por zona, crédito de reposición</td></tr>
+        <tr><td>Atribuir al SEO precio, stock, pauta o clima</td><td>Alta</td><td>Credibilidad</td><td>Línea base, grupos de control, fechas marcadas</td></tr>
+      </tbody></table></div>
+    </div>
+  </section>
+
+  <section id="s10" class="card">
+    <h2><span class="n">10</span>Indicadores (semanal JK · mensual Elias · 90 días gerencia)</h2>
+    <div class="scroll"><table><thead><tr><th>Indicador</th><th>Fuente</th><th>Para qué</th></tr></thead><tbody>
+      <tr><td>Clics, impresiones, CTR, posición por grupo de URL (landings, categorías, PDP top, tiendas/oficinas, préstamos, ahorro)</td><td>GSC</td><td>Efecto vs línea base y grupo de control</td></tr>
+      <tr><td>Sesiones, conversiones e ingresos orgánicos por página de entrada; venta orgánica / venta web</td><td>GA4</td><td>Venta orgánica sin reclamar causalidad</td></tr>
+      <tr><td>Inversión en términos de marca y venta total durante la prueba</td><td>Google Ads + GA4</td><td>Ahorro real</td></tr>
+      <tr><td><strong>Solicitudes y aprobaciones de crédito por página de origen y canal</strong>; participación de venta financiada</td><td>Efectibank BI + Conecta</td><td>La métrica 360</td></tr>
+      <tr><td>Depósitos digitales abiertos desde web/orgánico</td><td>Efectibank BI</td><td>Ahorro digital</td></tr>
+      <tr><td>Leads Motocorp por canal y tienda; llamadas, rutas y clics por ficha GBP</td><td>Motocorp, GBP</td><td>Local y crédito</td></tr>
+      <tr><td>Instalaciones por fuente y calificación de apps</td><td>Consolas</td><td>ASO</td></tr>
+      <tr><td>4xx/5xx en URLs clave; indexadas vs sitemap; canonical declarado = elegido</td><td>Script + GSC</td><td>Salud</td></tr>
+      <tr><td>Agosto 2026 vs PY y Cyber jul-26 vs jul-25 por canal, con registro de cambios SEO</td><td>Fichas/GA4 (cifras verificadas)</td><td>Referencia histórica: separar crecimiento comercial de lo atribuible</td></tr>
+    </tbody></table></div>
+    <h3 style="font-size:15px;margin:14px 0 6px">Comparativo de negocios (últimos 12 meses salvo indicación)</h3>
     <div class="scroll">
     <table>
       <thead><tr><th>Negocio</th><th>Plataforma</th><th class="num">Venta web/año</th><th class="num">Sesiones/mes</th><th class="num">Conversión</th><th class="num">Ticket</th><th class="num">Inversión/mes</th><th class="num">ROAS</th><th>Margen</th><th>Orgánico</th><th>Tiendas</th></tr></thead>
@@ -148,7 +334,7 @@ a{color:var(--accent)}
   </section>
 
   <footer class="foot">
-    <p>Grafo hecho a mano (SVG sin librerías). Fuentes y supuestos en <code>docs/01</code>; acciones en <code>docs/04</code>; escenarios de El Niño en <code>docs/05</code>; lo que falta en <code>docs/06</code>. Nada de esto está validado en Search Console todavía.</p>
+    <p>Dashboard sin librerías (SVG a mano). Fuentes y supuestos: <code>docs/01</code> (cifras), <code>docs/02</code> (diagnóstico), <code>docs/03</code> (plata neta y prioridades), <code>docs/04</code> (roadmap), <code>docs/05</code> (El Niño), <code>docs/06</code> (faltante), <code>docs/08</code> (Efectibank), <code>docs/09</code> (capacidad, herramientas, riesgos). Nada está validado en Search Console todavía; ninguna estimación es compromiso.</p>
   </footer>
 </div>
 
@@ -176,8 +362,8 @@ a{color:var(--accent)}
       d:['E-commerce de marca (mar-26). S/ 18 K/mes neto, 20 K sesiones, conversión 0.6% (la mejor), ticket S/ 140, margen ~42%, ROAS 4x.','Página 503 indexable; landings de Tiendas EFE dentro del dominio.'], doc:'docs/02 §5'},
     {id:'coldex', t:'neg', n:'Coldex', s:'B2B · WordPress · SIN DATO', tags:[],
       d:['"No le damos mucho cariño"; vende poco; canal dentro de Conecta. Sin revisión a fondo.'], doc:'docs/02 §5'},
-    {id:'efb', t:'neg', n:'Efectibank', s:'Mayor margen · 2.6 M clientes', tags:['efb'],
-      d:['Ex Financiera Efectiva; banco desde may-2026. Financia la venta en piso y campo; módulos dentro de tiendas LC, EFE y Motocorp. Quiere ser 100% digital.','Margen financiero "muchísimo mayor" que el de producto. SIN DATO de solicitudes, créditos o margen por canal.','Web WordPress: título de home "Efectibank", 129 de 229 páginas son promociones. App 2.6★ Android (1 K reseñas, 500 K+ descargas), 3.1★ iOS.'], doc:'docs/02 §4'},
+    {id:'efb', t:'neg', n:'Efectibank (prioridad 360)', s:'Utilidad S/ 95.6 M · cartera S/ 1,423 M', tags:['efb'],
+      d:['Banco desde may-2026 (ex Financiera Efectiva). Utilidad neta 2025 S/ 95.6 M (+58%), ROA 5.2%, la más rentable del sistema; ingresos financieros S/ 525.6 M (~39% de la cartera); margen financiero neto 53.7%; ticket S/ 3,400; 176 oficinas dentro de tiendas del grupo; 90 K usuarios de app; S/ 481 M en depósitos digitales. CONFIRMADO (Memoria 2025, PCR jun-26).','30-40% de los productos de Conecta y Motocorp se venden con su crédito (Elias). Margen de mercado para el modelo: S/ 25-35 netos por S/ 1,000 prestados (motos S/ 50-70); real S/ 45-55. ESTIMACIÓN.','Web: H1 de eslogan, sin TEA ni montos, enlaces a localhost/staging, tablas de tasas contradictorias, 176 oficinas invisibles, blog vacío, 129/229 páginas de promociones. App 2.6★/3.1★. Zonas: Lima 41%, Piura 7%, La Libertad 6%, San Martín 6%, Lambayeque 5% (El Niño).'], doc:'docs/08'},
 
     {id:'magento', t:'act', n:'Webs Magento 2 (Conecta)', s:'lacuracao.pe · efe.com.pe · motocorp.pe · skullcandy.com.pe', tags:['lc','efe','moto'],
       d:['Mismo Magento multi-tienda: páginas CMS de EFE aparecen indexables en Skullcandy y Motocorp.','EFE sin canonical; LC canonical roto en /cyber-days; sitemaps de ~99 K URLs vs ~17 K SKU; robots con "Sitemap :" mal formado.','Localizador de tiendas: una sola página, sin URL por tienda, datos por JS, sin schema Store.'], doc:'docs/02 §1'},
@@ -213,25 +399,27 @@ a{color:var(--accent)}
     {id:'sesion', t:'dat', n:'Sesión "SEO" (plan Cyber)', s:'Insumo, no decisión', tags:['lc','efe','jz'],
       d:['Artifact "Plan SEO Cyber 2026" + análisis de marcas + transcripciones. Hallazgos copiados en docs/02; sus prioridades se evalúan con Elias en docs/04.'], doc:'docs/02'},
 
-    {id:'a_marca', t:'acc', n:'2.1 Pauta de marca vs orgánico', s:'Neto S/ 240-900 K/año (HIPÓTESIS)', tags:['lc','efe','jz'],
-      d:['Medir con el reporte de términos cuánto de Search/PMax son consultas de marca; prueba controlada después de Cyber. Cada sol de pauta que el orgánico reemplaza es neto al 100%.'], doc:'docs/04 §2.1'},
-    {id:'a_cyber', t:'acc', n:'2.2 Landings Cyber limpias', s:'Antes del 30-oct · protege ~25% de la venta', tags:['lc','efe','jz'],
+    {id:'a_marca', t:'acc', n:'Pauta de marca vs orgánico', s:'Análisis mes 1 · prueba mes 2 · HIPÓTESIS', tags:['lc','efe','jz'],
+      d:['Medir con el reporte de términos cuánto de Search/PMax son consultas de marca; prueba controlada después de Cyber midiendo venta total. Cada sol de pauta que el orgánico reemplaza es neto al 100%. Cifra previa S/ 20-75 K/mes: HIPÓTESIS a validar, no compromiso.'], doc:'docs/04 §2.4'},
+    {id:'a_cyber', t:'acc', n:'Landings Cyber limpias', s:'Antes del 30-oct · solo CMS · COMPROBADO', tags:['lc','efe','jz'],
       d:['Canonical de /cyber-days (LC), títulos sin fechas pasadas, H1 visible, quitar HTML incrustado, una URL fija por evento. Solo CMS, reversible.'], doc:'docs/04 §2.2'},
-    {id:'a_canon', t:'acc', n:'2.3 Canonical en EFE + 2.4 páginas cruzadas', s:'Staging antes, producción después de Cyber', tags:['efe','moto'],
+    {id:'a_canon', t:'acc', n:'Canonical EFE + páginas cruzadas', s:'Diagnóstico mes 1 · producción mes 2 con TI', tags:['efe','moto'],
       d:['Inspeccionar en GSC; activar canonical de Magento; sacar las páginas de EFE de Skullcandy y Motocorp. Protege el orgánico que crece +26%.'], doc:'docs/04 §2.3'},
-    {id:'a_calor', t:'acc', n:'2.5 Categorías de calor / El Niño', s:'Publicar antes del 15-nov · S/ 15-60 K neto', tags:['lc','efe','nino'],
+    {id:'a_calor', t:'acc', n:'Categorías de calor / El Niño', s:'Mes 2, antes del 1-dic · Contenidos', tags:['lc','efe','nino'],
       d:['Ventiladores, aire acondicionado, refrigeración, bombas de agua: títulos, texto de categoría, guías "cómo elegir", schema con precio y stock. Verificar stock con Comercial.'], doc:'docs/04 §2.5'},
-    {id:'a_credito', t:'acc', n:'2.7 / 3.3 Puente al crédito', s:'Fichas → préstamo Efectibank · neto SIN DATO (puede ser el mayor)', tags:['lc','efe','moto','efb'],
-      d:['Texto de cuotas y enlace rastreable desde fichas de electro y motos a las páginas de préstamo; corregir enlaces a efectiva.com.pe. Medir solicitudes por página de origen.'], doc:'docs/04 §3.3'},
-    {id:'a_local', t:'acc', n:'4.1 / 3.4 SEO local: página por tienda y GBP', s:'~240 puntos · Nov-dic', tags:['lc','efe','moto','efb','nino'],
+    {id:'a_credito', t:'acc', n:'E1 Puente al crédito desde las fichas', s:'Mes 2 (post-Cyber) · la palanca 360', tags:['lc','efe','moto','efb'],
+      d:['"Desde S/ X al mes con Efectibank" con enlace rastreable y prellenado desde fichas de electro y motos; corregir enlaces a efectiva.com.pe; medir solicitudes por página de origen.','ESTIMACIÓN: +5 pp de participación financiada en la venta web neta de Conecta ≈ +S/ 2.5 M de crédito ≈ S/ 60-90 K netos/año a margen de mercado; en toda la venta de Conecta, +5 pp ≈ S/ 0.4-0.6 M. Depende de TI/Magento, Efectibank y Legal.'], doc:'docs/08 §4'},
+    {id:'a_local', t:'acc', n:'SEO local: GBP y página por tienda/oficina', s:'GBP mes 1-2 · páginas mes 3 · 176 oficinas', tags:['lc','efe','moto','efb','nino'],
       d:['Una URL por tienda, taller y agencia con NAP, horario, stock/retiro y schema Store/AutoDealer; fichas GBP completas. Lleva gente al piso (ticket 2.5x) y al crédito; sostiene la venta si el despacho falla.'], doc:'docs/04 §4.1'},
-    {id:'a_schema', t:'acc', n:'2.6 / 5.3 Datos estructurados', s:'Product/Offer/Breadcrumb · después de Cyber', tags:['lc','efe','jz'],
+    {id:'a_schema', t:'acc', n:'Datos estructurados', s:'Mes 3 · TI y plataforma', tags:['lc','efe','jz'],
       d:['Replicar en LC/EFE lo que Motocorp ya tiene; Product JSON-LD en Juntoz; títulos de ficha con el producto delante.'], doc:'docs/04 §2.6'},
-    {id:'a_jz', t:'acc', n:'5.1 / 5.2 Sitemap y canonical Juntoz', s:'Depende de dev Next.js', tags:['jz'],
+    {id:'a_jz', t:'acc', n:'Juntoz: sitemap, canonical, schema', s:'Spec mes 1 · ejecución cuando el CMS/dev pueda', tags:['jz'],
       d:['Sitemap de categorías y fichas con stock; canonical por dominio y decisión con Diners/BanBif sobre fichas duplicadas; corregir doble barra.'], doc:'docs/04 §5'},
-    {id:'a_aso', t:'acc', n:'3.2 / 7 ASO de las apps', s:'Efectibank 2.6★ · Conecta CR 1%', tags:['efb','lc','efe','jz'],
+    {id:'a_aso', t:'acc', n:'ASO de las apps', s:'Efectibank 2.6★ · Conecta CR 1% · mes 3', tags:['efb','lc','efe','jz'],
       d:['Responder reseñas, fichas con palabras clave, capturas; manifest y Smart App Banner en las webs; escalar a Producto el bug del splash.'], doc:'docs/04 §3.2'},
-    {id:'a_base', t:'acc', n:'1.x Accesos y línea base', s:'Semana 0-1 · sin esto no se mide', tags:['lc','efe','jz','moto','efb'],
+    {id:'a_efb', t:'acc', n:'E2-E3 Efectibank: préstamo y ahorro que respondan', s:'Auditoría mes 1 · páginas mes 2 · blog mes 2-3', tags:['efb'],
+      d:['Auditoría de 229 páginas; H1 con producto, monto, plazo, TEA y cuota (con Legal); FAQ schema; cuenta de ahorros 4.5% TREA y depósito 5.75% con H1 y un CTA; noindex a promociones vencidas; sección blog (sin tráfico esperado este trimestre); ASO.','ESTIMACIÓN: S/ 85-120 netos por préstamo aprobado (ticket S/ 3,400, margen de mercado). Cuántas aprobaciones trae el orgánico: SIN DATO hasta EF3/EF4.'], doc:'docs/08 §4'},
+    {id:'a_base', t:'acc', n:'Accesos, línea base y datos Efectibank', s:'Semana 1 · sin esto no se mide', tags:['lc','efe','jz','moto','efb'],
       d:['GSC, GA4, términos de Ads, GBP, admin Magento lectura, rastreo acotado, registro de cambios, fecha de Cyber y URLs de Paid.'], doc:'docs/04 §1'},
 
     {id:'e_cyber', t:'eve', n:'Cyber Wow · ~2-5 nov', s:'Un día Cyber = 4x · congelar 72 h antes', tags:['lc','efe','jz'],
@@ -246,8 +434,8 @@ a{color:var(--accent)}
     ['lc','magento'],['efe','magento'],['moto','magento'],['skull','magento'],['jz','nextjs'],['diners','nextjs'],['banbif','nextjs'],['efb','wp'],['coldex','wp'],
     ['efb','appefb'],['lc','appcon'],['efe','appcon'],['jz','appcon'],['lc','tiendas'],['efe','tiendas'],['moto','tiendas'],['efb','tiendas'],['jz','kiosko'],['lc','kiosko'],['efe','kiosko'],['lc','feeds'],['efe','feeds'],['jz','feeds'],
     ['magento','gsc'],['nextjs','gsc'],['wp','gsc'],['magento','ga4'],['nextjs','ga4'],['magento','ads'],['nextjs','ads'],['tiendas','gbp'],['nextjs','dash'],['feeds','mkt'],['magento','carritos'],['magento','sesion'],['nextjs','sesion'],
-    ['ads','a_marca'],['gsc','a_base'],['ga4','a_base'],['ads','a_base'],['gbp','a_base'],['sesion','a_cyber'],['gsc','a_cyber'],['gsc','a_canon'],['magento','a_canon'],['carritos','a_calor'],['ga4','a_calor'],['magento','a_credito'],['wp','a_credito'],['gbp','a_local'],['tiendas','a_local'],['magento','a_schema'],['nextjs','a_schema'],['nextjs','a_jz'],['dash','a_jz'],['appefb','a_aso'],['appcon','a_aso'],
-    ['a_cyber','e_cyber'],['a_marca','e_cyber'],['a_local','e_navidad'],['a_calor','e_nino'],['a_local','e_nino'],['a_credito','e_nino']
+    ['ads','a_marca'],['gsc','a_base'],['ga4','a_base'],['ads','a_base'],['gbp','a_base'],['sesion','a_cyber'],['gsc','a_cyber'],['gsc','a_canon'],['magento','a_canon'],['carritos','a_calor'],['ga4','a_calor'],['magento','a_credito'],['wp','a_credito'],['gbp','a_local'],['tiendas','a_local'],['magento','a_schema'],['nextjs','a_schema'],['nextjs','a_jz'],['dash','a_jz'],['appefb','a_aso'],['appcon','a_aso'],['wp','a_efb'],['gsc','a_efb'],['a_efb','e_nino'],
+    ['a_cyber','e_cyber'],['a_marca','e_cyber'],['a_credito','e_cyber'],['a_local','e_navidad'],['a_calor','e_nino'],['a_local','e_nino'],['a_credito','e_nino']
   ];
 
   // ---------- Layout ----------
@@ -367,23 +555,34 @@ a{color:var(--accent)}
   bars('chartVenta', [
     {n: 'La Curacao', v: 60, lbl: 'S/ 60 M'}, {n: 'Tiendas EFE', v: 39, lbl: 'S/ 39 M'}, {n: 'Juntoz (ene-oct)', v: 27, lbl: 'S/ 27 M'},
     {n: 'Diners Club Mall', v: 9.1, lbl: 'S/ 9.1 M · -27%'}, {n: 'BanBif Mall', v: 1.0, lbl: 'S/ 1.0 M'}, {n: 'Motocorp (leads)', v: 0.26, lbl: 'S/ 0.26 M'},
-    {n: 'Skullcandy', v: 0.16, lbl: 'S/ 0.16 M'}, {n: 'Efectibank', v: null}, {n: 'Coldex', v: null}
+    {n: 'Skullcandy', v: 0.16, lbl: 'S/ 0.16 M'}, {n: 'Efectibank', v: null, note: 'no aplica: crédito, no venta web'}, {n: 'Coldex', v: null}
   ], {});
-  bars('chartOrg', [
-    {n: 'Tiendas EFE', v: 23, lbl: '23% de la venta (+26%)'}, {n: 'La Curacao', v: 12, lbl: '12% de la venta (S/ 7 M)'}, {n: 'Motocorp', v: 51, lbl: '51% del tráfico', c: 'var(--s3)'},
-    {n: 'Juntoz', v: null}, {n: 'Efectibank', v: null}
-  ], {});
-  // Pesos: barra apilada con leyenda
+  bars('chartNeto', [
+    {n: 'Efectibank (real)', v: 95.6, lbl: 'S/ 95.6 M', c: 'var(--s3)'}, {n: 'Motocorp (empresa)', v: 10, lbl: '~S/ 10 M'}, {n: 'La Curacao (web)', v: 3.0, lbl: '~S/ 3.0 M'},
+    {n: 'Tiendas EFE (web)', v: 2.1, lbl: '~S/ 2.1 M'}, {n: 'Juntoz (comisión)', v: 1.2, lbl: '~S/ 1.2 M bruto'}, {n: 'Diners + BanBif', v: 0.9, lbl: '~S/ 0.9 M'},
+    {n: 'Skullcandy', v: 0.1, lbl: '~S/ 0.1 M'}, {n: 'Coldex', v: null}
+  ], {left: 160});
+  bars('chartMil', [
+    {n: 'Retail sin crédito', v: 100, lbl: 'S/ 100'}, {n: 'Retail con crédito Efectibank', v: 130, lbl: 'S/ 125-155', c: 'var(--s3)'},
+    {n: 'Moto sin crédito', v: 80, lbl: 'S/ 80'}, {n: 'Moto con crédito 36 meses', v: 140, lbl: 'S/ 130-150 (real hasta 190)', c: 'var(--s3)'}
+  ], {left: 200});
+  // Capacidad vs demanda (SEO Senior), barras agrupadas por mes
   (function () {
-    const s = document.getElementById('chartPesos'); const rows = [
-      {n: 'La Curacao', v: 30, c: 'var(--s1)'}, {n: 'Tiendas EFE', v: 20, c: 'var(--s2)'}, {n: 'Efectibank', v: 15, c: 'var(--s3)'},
-      {n: 'Motocorp', v: 15, c: 'var(--s4)'}, {n: 'Juntoz + malls', v: 15, c: 'var(--s5)'}, {n: 'Higiene (otros)', v: 5, c: 'var(--s6)'}];
-    const left = 12, w = 536, y = 14, h = 34; let x = left;
-    rows.forEach(r => { const bw = w * r.v / 100 - 2; const b = el('rect', {x, y, width: bw, height: h, fill: r.c, rx: 4}, s); const t = el('title', {}, b); t.textContent = `${r.n}: ${r.v}%`;
-      if (bw > 30) { const v = el('text', {x: x + bw / 2, y: y + 22, 'text-anchor': 'middle', class: 'val', fill: '#fff'}, s); v.textContent = r.v + '%'; v.style.fill = '#fff'; }
-      x += bw + 2; });
-    rows.forEach((r, i) => { const col = i % 3, row = Math.floor(i / 3); const lx = left + col * 180, ly = y + h + 24 + row * 22;
-      el('rect', {x: lx, y: ly - 10, width: 12, height: 12, fill: r.c, rx: 3}, s); const t = el('text', {x: lx + 18, y: ly, class: 'lbl'}, s); t.textContent = `${r.n} ${r.v}%`; });
+    const s = document.getElementById('chartCap'); const Wc = 560, left = 120, top = 14, gh = 48, w = Wc - left - 110, max = 160;
+    const rows = [
+      {n: 'Mes 1 (oct-nov)', cap: [100, 115], dem: [110, 130]},
+      {n: 'Mes 2 (nov-dic)', cap: [100, 115], dem: [125, 145]},
+      {n: 'Mes 3 (dic-ene)', cap: [100, 115], dem: [90, 110]}];
+    rows.forEach((r, i) => {
+      const y = top + i * gh;
+      const l = el('text', {x: left - 8, y: y + 22, 'text-anchor': 'end', class: 'lbl'}, s); l.textContent = r.n;
+      const c1 = el('rect', {x: left, y: y + 2, width: w * r.cap[1] / max, height: 16, fill: 'var(--s1)', rx: 4, class: 'bar'}, s); el('title', {}, c1).textContent = `Capacidad neta ${r.cap[0]}-${r.cap[1]} h`;
+      const d1 = el('rect', {x: left, y: y + 22, width: w * r.dem[1] / max, height: 16, fill: r.dem[1] > r.cap[1] ? 'var(--s2)' : 'var(--s3)', rx: 4, class: 'bar'}, s); el('title', {}, d1).textContent = `Demanda estimada ${r.dem[0]}-${r.dem[1]} h`;
+      const t1 = el('text', {x: left + w * r.cap[1] / max + 6, y: y + 14, class: 'val'}, s); t1.textContent = `cap. ${r.cap[0]}-${r.cap[1]} h`;
+      const t2 = el('text', {x: left + w * r.dem[1] / max + 6, y: y + 34, class: 'val'}, s); t2.textContent = `dem. ${r.dem[0]}-${r.dem[1]} h`;
+    });
+    el('line', {x1: left, y1: top, x2: left, y2: top + rows.length * gh, class: 'axis'}, s);
+    [[left, 'Capacidad neta', 'var(--s1)'], [left + 125, 'Demanda ≤ cap.', 'var(--s3)'], [left + 250, 'Demanda > cap.', 'var(--s2)']].forEach(([x, n, c]) => { const ly = top + rows.length * gh + 18; el('rect', {x, y: ly - 10, width: 12, height: 12, fill: c, rx: 3}, s); const tx = el('text', {x: x + 18, y: ly, class: 'lbl'}, s); tx.textContent = n; });
   })();
 
   // ---------- Tabla ----------
@@ -395,7 +594,7 @@ a{color:var(--accent)}
     ['BanBif Mall', 'Next.js', 'S/ 1.0 M*', '25 K', '0.29%', 'S/ 1,390', '0', '—', 'n.d.', 'SIN DATO', '0'],
     ['Motocorp', 'Magento 2', 'S/ 0.26 M (leads)', '165 K', 'n.d.', 'alto', 'n.d.', '—', '~8% + crédito', '51% tráfico', '22 + 6'],
     ['Skullcandy', 'Magento 2', 'S/ 0.16 M', '20 K', '0.6%', 'S/ 140', 'S/ 4.5 K', '4x', '~42%', 'SIN DATO', '0'],
-    ['Efectibank', 'WordPress', 'SIN DATO', 'SIN DATO', '—', '—', 'SIN DATO', '—', 'financiero (alto)', 'SIN DATO', '~220 oficinas'],
+    ['Efectibank', 'WordPress', 'n/a (cartera S/ 1,423 M; utilidad S/ 95.6 M)', 'SIN DATO', '—', 'S/ 3,400 (préstamo)', 'SIN DATO', '—', 'mercado 3-4% de cartera/año; real 7%', 'SIN DATO', '176 oficinas en tiendas'],
     ['Coldex', 'WordPress', 'SIN DATO', 'SIN DATO', '—', '—', '—', '—', 'SIN DATO', 'SIN DATO', '—']
   ];
   document.getElementById('tbody').innerHTML = T.map(r => `<tr>${r.map((c, i) => `<td class="${[2,3,4,5,6,7].includes(i) ? 'num' : ''}">${c}</td>`).join('')}</tr>`).join('') + '<tr><td colspan="11" style="color:var(--muted)">* 1-ene a 15-oct 2026, venta neta. Fuente: docs/01.</td></tr>';

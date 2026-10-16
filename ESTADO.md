@@ -8,8 +8,11 @@ Un solo repo con todo el conocimiento SEO del grupo, orientado a **más ganancia
 - 2026-10-16: docs 01-07, `CLAUDE.md`, `LEEME.md`, grafo `grafo/ecosistema-seo.html`.
 - 2026-10-16: requerimiento trasladado a la sesión "SEO" (`session_01Wmsu7Y3z7NFsmPgQchK5fU`) pidiendo que devuelva la data que tenga; pendiente su respuesta.
 
+- 2026-10-16 (v2): incorporadas las consideraciones de Elias: Efectibank como prioridad 360 (`docs/08`, con cifras públicas de la Memoria 2025 y PCR jun-26), plata neta por negocio con los márgenes dados y margen de mercado para Efectibank (`docs/03 §1b`), roadmap por mes con horas, dependencias, bloqueos y resultados observables (`docs/04`), capacidad real del equipo (Josh Kevin, Carol, Rolando y Ronald, Claude Pro), herramientas sin licencias y su impacto operativo, ventanas de riesgo Cyber y plazos de indexación (`docs/09`), restricciones de los malls (`docs/02 §2`). Sin porcentajes definitivos de dedicación ni promesas de ingresos.
+
 ## Pendiente (orden)
-1. **Elias**: responder las 12 preguntas de `docs/06` y dar los accesos A1-A8. Sin GSC y Ads por término no se confirma ni se mide nada.
+1. **Elias**: responder las preguntas de `docs/06`, dar los accesos A1-A8 y pedir a Efectibank los datos EF1-EF9 (`docs/08 §5`). Sin GSC y Ads por término no se confirma ni se mide nada.
+1b. **Elias**: entregar las cifras verificadas de agosto 2026 vs PY y el registro de cambios SEO (B11) para la referencia histórica; decidir el presupuesto de herramientas (`docs/09 §2b`).
 2. **Evaluar con Elias** los pesos (`docs/03`) y el plan (`docs/04`): qué entra antes de Cyber Wow (congelar 72 h antes, ~30-oct) y qué después.
 3. Guardar en Drive (no en el repo) las fichas `.docx`, audios y `analisis-marcas-seo.html` de la sesión "SEO"; enlazarlos en `docs/01`.
 4. Kevin: línea base GSC/GA4 por grupo de URL; rastreo acotado; cruce sitemap ↔ feed.

@@ -109,6 +109,21 @@ Claves (F2, A2): Juntoz fue una startup comprada con pérdida (feb-2022) y **no 
 | **Sitemaps** | EFE y LC: índice de 9 sitemaps, ~99 K URLs cada uno (vs ~17 K SKU en el feed: probable exceso de URLs sin stock/variantes). Juntoz: **sin sitemap** (404) y robots sin `Sitemap:`. Motocorp 842 URLs; Skullcandy 148; Efectibank 229 páginas | W |
 | **Medición** | GA4 por marca (hub en Google Sheets para Juntoz), trackers diarios en Excel por marca, Search Console **sin acceso del equipo**, GBP sin acceso | D1, sesión SEO |
 
+## 6b. Efectibank en cifras (públicas; detalle en `docs/08`)
+
+| Dato | Valor | Fuente |
+|---|---|---|
+| Cartera bruta | S/ 1,372 M (dic-25); S/ 1,423 M (jun-26); consumo 65%, hipotecario 21%, MYPE 14% | Memoria 2025, PCR jun-26 |
+| Ingresos financieros 2025 | S/ 525.6 M (~39% de la cartera) | Memoria 2025 |
+| Margen financiero neto 2025 | S/ 282.3 M (53.7% de ingresos) | PCR |
+| Utilidad neta 2025 | **S/ 95.6 M** (+58%); ROA 5.2%, ROE 25.7%; la más rentable del sistema | Memoria 2025 |
+| Ticket promedio | ~S/ 3,400 | Memoria 2025 |
+| Oficinas | 176, principalmente dentro de tiendas LC/EFE/Motocorp | PCR |
+| Digital | 90 K usuarios de app; S/ 481 M en depósitos digitales (+41%) | Memoria 2025 |
+| Zonas | Lima 41%, Piura 7%, La Libertad 6%, San Martín 6%, Lambayeque 5%, Loreto 4% (alta exposición a El Niño, señalada por PCR) | PCR |
+| Crédito en el retail del grupo | 30-40% de los productos de Conecta y Motocorp se venden con Efectibank (Elias) | Elias |
+| Margen de mercado usado en el modelo | S/ 25-35 netos por S/ 1,000 prestados (motos S/ 50-70); real Efectibank S/ 45-55 | `docs/08 §2` (`ESTIMACIÓN`) |
+
 ## 7. Calendario comercial relevante
 - **Cyber Wow noviembre 2026**: prensa estima 2–5 nov (confirmar con IAB Perú). Días Cyber venden ~4x un día normal.
 - **Navidad / fin de año**: pico de regalos y tecnología.

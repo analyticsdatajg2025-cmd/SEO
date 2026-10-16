@@ -18,7 +18,7 @@
 | # | Qué falta | Por qué importa |
 |---|---|---|
 | B1 | **Margen real** por marca y categoría (hoy: ~10% dicho en audio; tracker supone 10%) | Convierte venta orgánica en dinero neto; decide pesos |
-| B2 | **Efectibank**: solicitudes y créditos aprobados por canal y página de origen; ticket promedio del crédito; margen financiero por crédito; % de la venta web/piso financiada | Puede ser la mayor palanca de neto; hoy no hay ni un dato |
+| B2 | **Efectibank**: lista EF1-EF9 de `docs/08 §5` por responsable (objetivo del canal, rentabilidad por producto, tráfico orgánico y conversiones, solicitudes/aprobaciones/desembolsos por canal y página de origen, estado técnico y accesos, costo de fondeo, app, herramientas, maestro de 176 oficinas); % de la venta de Conecta y Motocorp financiada (Elias: 30-40%) | Es la palanca de mayor margen; el modelo usa margen de mercado hasta tener el real |
 | B3 | **Motocorp**: leads por canal (formulario, WhatsApp, llamada), costo por lead, % que cierra en venta, ticket promedio de moto | Define el valor de un lead orgánico y del SEO local |
 | B4 | **Juntoz**: venta y sesiones por canal de tráfico (orgánico vs pagado vs cupón); costo de cupones; resultado neto mensual | Hoy solo sabemos que no es rentable y que falta tráfico |
 | B5 | **Apps Conecta** (EFE, LC, Juntoz): instalaciones, usuarios activos, venta por app, retención; cómo se mide el "CR 1%" del instalador | Decide si vale esfuerzo ASO |
@@ -27,6 +27,8 @@
 | B8 | Plan de **stock de climatización/frío** nov-feb y zonas con despacho suspendido en escenario El Niño extraordinario | Contenido estacional y páginas de estado |
 | B9 | Resto del audio sobre Efectibank (se cortó al 3:25) y marcas de motos además de Jettor y Honda | Contexto |
 | B10 | Qué es "Mafrem Mall" / mMall y su dominio | Inventario |
+| B11 | **Resultados de agosto 2026 vs agosto 2025 (PY)** por marca y canal, con las optimizaciones SEO implementadas y sus fechas (registro de cambios del área) | Referencia histórica de la contribución del SEO: separar crecimiento comercial de lo atribuible; **solo cifras verificadas** |
+| B12 | Volumen real de solicitudes de Marketing al SEO Senior (landings, sorteos, cupones, referidos) por mes | Dimensionar la reserva de horas de `docs/09` |
 
 ## C. Preguntas para Elias (responder en una línea cada una)
 1. ¿El objetivo de 3 meses se mide en **ganancia neta** del grupo o en venta web orgánica? Si es neto, ¿aceptamos que la palanca principal sea **dejar de pagar pauta de marca** (eso toca el presupuesto de Paid)?

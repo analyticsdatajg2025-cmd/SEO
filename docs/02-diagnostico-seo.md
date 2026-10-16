@@ -26,6 +26,20 @@
 
 ## 2. Juntoz (juntoz.com) y malls · Next.js
 
+Restricción operativa: las plataformas de Juntoz, Diners Club Mall y BanBif Mall tienen **accesos y funciones de CMS en implementación**. Por eso cada hallazgo lleva además: qué puede hacer SEO hoy, qué depende de desarrollo y qué requiere habilitar el CMS.
+
+| Incidencia reportada o detectada | Estado | Hoy desde SEO | Desarrollo | CMS |
+|---|---|---|---|---|
+| Sin sitemap; robots sin `Sitemap:` | COMPROBADO (404 en raíz; sin GSC no se sabe si hay uno enviado con otra ruta) | Verificar en GSC; especificar contenido (categorías, landings, fichas con stock) | Generar y mantener el sitemap | — |
+| Sin canonical (Juntoz, Diners); doble barra en BanBif; mismas fichas `/p/…` en 3 dominios | COMPROBADO en muestra; duplicidad entre dominios HIPÓTESIS hasta ver GSC | Inspeccionar en GSC qué dominio rankea cada ficha; proponer regla con socios | Implementar canonical por dominio | — |
+| URLs no amigables | **PENDIENTE DE VERIFICACIÓN** (reportado; no se midió el alcance) | Inventario por muestra | Reescritura y redirecciones (después de campañas) | — |
+| Problemas de rastreo e indexación | PENDIENTE DE VERIFICACIÓN (sin GSC); render JS de Next.js no revisado | Pedir GSC; muestra con render (sin herramienta de pago es limitado) | Pre-render/SSR si hiciera falta | — |
+| Sin `Product` JSON-LD; título con el vendedor delante; home sin H1 | COMPROBADO en muestra | Especificar plantilla | Cambiar plantillas de ficha y home | — |
+| Limitación para crear landings SEO y editar páginas transaccionales | CONFIRMADO por el equipo | Solo metadatos donde el CMS lo permita | — | **Habilitar edición de títulos, descripciones, H1 y creación de landings** |
+| Landing Cyber "cyberdays" y cupones con metadatos pobres; cupones bancarios no enlazados | COMPROBADO | Cambiar metadatos si el CMS lo permite; inventario de cupones con GSC | — | Edición de metadatos |
+
+**No se asume que se puedan crear y posicionar landings nuevas en Juntoz en 90 días.**
+
 | Hallazgo | Estado | Impacto | Fuente |
 |---|---|---|---|
 | `robots.txt` sin `Sitemap:`; `/sitemap.xml` → 404 | COMPROBADO | Medio-alto · descubrimiento de 42 K SKU y categorías depende de enlaces | W, S |
@@ -49,6 +63,8 @@
 
 ## 4. Efectibank (efectibank.pe) · WordPress + Elementor + Yoast
 
+Detalle completo página por página en `docs/08 §3`. Resumen:
+
 | Hallazgo | Estado | Impacto | Fuente |
 |---|---|---|---|
 | Título de la home solo "Efectibank"; sin H1 identificable; headings repetidos ("Paga online desde tu app" x2) | COMPROBADO | Medio-alto · CTR en la consulta de marca y en "banco digital" | W, S |
@@ -56,7 +72,9 @@
 | Páginas de préstamo con canonical correcto y `FAQPage`; H1 de marketing ("Tu familia ya tiene casa propia") sin la palabra clave | COMPROBADO | Medio | S |
 | Naming inconsistente: "Cuenta de Ahorros Digital" vs "Cuenta de Ahorros Efectiva"; `mailto` a `efectiva.com.pe`; enlaces internos con UTM largos (duplican URLs) | COMPROBADO | Bajo-medio | W |
 | Apps: Android **2.6★** (1.02 K reseñas, 500 K+ descargas), iOS **3.1★**; reseñas recientes: se queda en el splash tras el rebrand | COMPROBADO (tiendas de apps) | **Alto**: la calificación frena la instalación desde búsquedas "efectibank app" y la conversión a 100% digital | W |
-| Negocio: el de mayor margen del grupo; quiere ser 100% digital; 2.6 M clientes; **ningún dato de solicitudes de crédito por canal** | A1, P | — | |
+| Páginas de producto: H1 de eslogan sin palabra clave; sin montos ni TEA (solo PDF); contradicciones (desgravamen incluido/opcional; dos tablas de tasas en depósito); enlaces a `localhost`, SafeLinks y staging `qa2.efectiva.com.pe`; retailers del grupo mencionados sin enlace | COMPROBADO | Alto · conversión y relevancia | W |
+| `/solicitar-prestamo/` es un formulario de contacto con callback, no una solicitud online; `/agencias/` es una sola página sin las 176 oficinas; `/blog/` sin artículos | COMPROBADO | Alto · 176 oficinas invisibles; sin contenido | W |
+| Negocio: el de mayor margen del grupo (utilidad neta S/ 95.6 M en 2025); quiere ser 100% digital; **ningún dato de solicitudes de crédito por canal** | M25, A1 | — | |
 
 ## 5. Skullcandy (skullcandy.com.pe), Coldex (coldex.pe), Diners/BanBif
 

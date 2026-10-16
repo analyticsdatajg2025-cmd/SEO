@@ -5,7 +5,7 @@ Guía para Claude Code (y para cualquier persona) que trabaje en este repo. Leer
 ## Qué es este repo
 Repositorio **único de SEO** del Grupo EFE. Consolida todo el conocimiento SEO que estaba repartido en otras sesiones y repos: cifras de negocio, diagnóstico de los sitios, pesos por negocio, plan de acciones y lo que falta. **Objetivo del área SEO: hacer ganar más dinero neto a los accionistas, solo con acciones SEO, con resultados visibles en menos de 3 meses.**
 
-Equipo SEO: **Kevin** (analista sr., perfil ingeniero de sistemas) y **Carolina** (practicante, perfil operativo). Dueño: Elias Figueroa (Head of Martech).
+Equipo SEO: **Josh Kevin Seminario** (SEO Senior: estrategia multimarca, auditoría técnica, competencia, keywords, ecommerce, analítica), **Carol** (asistente SEO: GBP, fichas, sedes y operación; con supervisión ejecuta CMS, inventarios, ASO y QA), **Rolando y Ronald** (Contenidos, según disponibilidad). Apoyo: cuenta Claude Pro. Dueño: Elias Figueroa (Head of Martech). Nadie está amarrado a un solo tipo de SEO ni a una sola marca.
 
 ## Cómo trabajar
 - Español, directo, sin jerga innecesaria. Pocas cifras, bien elegidas.
@@ -28,11 +28,14 @@ Equipo SEO: **Kevin** (analista sr., perfil ingeniero de sistemas) y **Carolina*
 | `docs/05-fenomeno-el-nino-2027.md` | Escenarios de El Niño y su efecto en demanda, despacho y SEO. |
 | `docs/06-informacion-faltante-y-preguntas.md` | Qué falta por tema y las preguntas para Elias. |
 | `docs/07-inventario-repos-y-sistemas.md` | Huella de los otros repos y sistemas (qué son, dónde viven, qué los rompe). |
+| `docs/08-efectibank-360.md` | Efectibank: cifras públicas, margen de mercado, auditoría de su web, palancas SEO en plata neta, datos que faltan por responsable, tiempos. |
+| `docs/09-capacidad-herramientas-y-riesgos.md` | Capacidad real del equipo (horas), herramientas disponibles y su impacto operativo, ventanas de riesgo Cyber, plazos de rastreo e indexación. |
 | `grafo/ecosistema-seo.html` | Grafo visual del ecosistema: negocios, activos, datos, sistemas, acciones. Abrir en el navegador. |
 
 ## Reglas de negocio que no se tocan sin preguntar
 - Venta web "total" = ingresos GA4; "venta neta" = confirmada en el tracker (aprox. la mitad en La Curacao y EFE). Ver `docs/01`.
-- Margen de producto físico: ~10% (dicho por Elias en audio; el tracker usa 10% supuesto). Skullcandy ~42% (tracker). Juntoz: comisión 7.1%; Diners 8.6%. Efectibank: margen financiero, sin dato.
+- Márgenes para el modelo (`docs/03 §1b`): producto físico ~10% (Elias; tracker supone 10%); Motocorp ~8%; Skullcandy ~42%; Juntoz comisión 7.1%; Diners 8.6%; **Efectibank: margen de mercado S/ 25-35 netos por S/ 1,000 prestados (motos S/ 50-70), real S/ 45-55** (`docs/08 §2`). 30-40% de la venta de Conecta y Motocorp se financia con Efectibank (Elias).
+- **No asignar porcentajes definitivos de dedicación ni prometer incrementos de ventas o utilidad** sin validar capacidad, datos y necesidades comerciales. Las estimaciones llevan su supuesto al lado.
 - Días Cyber: ~4x un día normal; pesan ~25% de la venta web del año.
 
 ## Comandos
