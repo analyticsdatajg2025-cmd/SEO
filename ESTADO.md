@@ -16,6 +16,8 @@ Un solo repo con todo el conocimiento SEO del grupo, orientado a **más ganancia
 
 - 2026-10-19: landing del sorteo Cyberweek de La Curacao ajustada (`landings/sorteo-televisores.html`): tipografía H1 30 / H2 22 / H3 18 / texto 14 px, "¿Cómo participar?" en 3 pasos con íconos junto al formulario, contenedor del formulario más compacto y JS de la landing corregido (dejaba invisible la sección de pasos). **Script de HubSpot intacto** (verificado byte a byte); el formulario se dibuja en iframe, así que su interior solo se ajusta desde el editor de HubSpot.
 
+- 2026-10-19 (v2): landing del sorteo: fotos de premios (TV y moto JETTOR GP 125 desde mcprod.efe.com.pe), "un televisor por día / una moto por semana", fechas de motos (jueves 5 y 12 nov.), legales estructurados y justificados con "Mostrar más", enlace de la landing en el lugar del marcador y teléfono clicable; carrusel automático sin botón de pausa. HubSpot intacto.
+
 ## Pendiente (orden)
 0. **Elias**: revisar `auditoria-seo-efectibank.html` y decidir si se presentan A01-A06 a Marketing y Legal de Efectibank esta semana (higiene + tasas; no dependen de Cyber).
 1. **Elias**: responder las preguntas de `docs/06`, dar los accesos A1-A8 y pedir a Efectibank los datos EF1-EF9 (`docs/08 §5`). Sin GSC y Ads por término no se confirma ni se mide nada.

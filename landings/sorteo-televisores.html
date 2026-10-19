@@ -17,7 +17,7 @@
   <meta name="twitter:title" content="Sorteo Cyberweek: 14 televisores y 2 motos | La Curacao">
   <meta name="twitter:description" content="Compra desde S/ 599 y participa por un TV iFFALCON de 50&quot; cada día y una moto JETTOR GP 125 cada semana.">
   <meta name="twitter:image" content="https://www.lacuracao.pe/media/catalog/product/5/0/50s55a_1.jpg?quality=85&amp;bg-color=255,255,255&amp;fit=bounds&amp;height=400&amp;width=400">
-  <link rel="preload" as="image" href="https://www.lacuracao.pe/media/catalog/product/5/0/50s55a_1.jpg?quality=85&amp;bg-color=255,255,255&amp;fit=bounds&amp;height=400&amp;width=400" fetchpriority="high">
+  <link rel="preload" as="image" href="https://mcprod.efe.com.pe/media/wysiwyg/1_32.png" fetchpriority="high">
   <style>
     /* Estilos encapsulados en #lc-sorteo: no modifica header, footer ni componentes globales de Magento */
     #lc-sorteo, #lc-sorteo * { box-sizing: border-box; }
@@ -83,7 +83,7 @@
     #lc-sorteo .lc-hero-prize:hover { transform:translateY(-4px); }
     #lc-sorteo .lc-hero-prize-img { width:100%; aspect-ratio:4/3; max-height:200px; display:flex; align-items:center; justify-content:center; margin-bottom:10px; }
     #lc-sorteo .lc-hero-prize-img img { width:auto; max-height:100%; object-fit:contain; mix-blend-mode:multiply; }
-    #lc-sorteo .lc-hero-prize-img svg { width:72%; height:auto; }
+    #lc-sorteo .lc-hero-prize .lc-prize-date { margin-top:6px; font-size:12px; font-weight:800; color:var(--lc-black); background:var(--lc-yellow-soft); border-radius:99px; padding:3px 10px; }
     #lc-sorteo .lc-qty { display:inline-block; background:var(--lc-black); color:var(--lc-yellow); font-weight:900; font-size:13px; border-radius:99px; padding:3px 11px; margin-bottom:8px; }
     #lc-sorteo .lc-hero-prize h2 { font-size:22px; line-height:1.2; letter-spacing:-.3px; margin:0 0 4px; }
     #lc-sorteo .lc-hero-prize p { margin:0; font-size:14px; color:var(--lc-muted); font-weight:700; }
@@ -193,7 +193,19 @@
     #lc-sorteo .lc-form-card .submitted-message { font-size:14px; font-weight:700; background:#e8f6ed; color:var(--lc-ok); border-left:5px solid; border-radius:12px; padding:12px 14px; }
 
     /* Términos: texto íntegro del documento, solo con contenedor visual */
-    #lc-sorteo .lc-terms-raw { white-space:pre-line; font-size:14px; line-height:1.6; color:#333; }
+    #lc-sorteo .lc-terms-doc { font-size:14px; line-height:1.7; color:#333; text-align:justify; -webkit-hyphens:auto; hyphens:auto; overflow-wrap:break-word; }
+    #lc-sorteo .lc-terms-doc .lc-terms-head { text-align:center; font-weight:900; font-size:14px; letter-spacing:.3px; color:var(--lc-black); margin:0 0 14px; }
+    #lc-sorteo .lc-terms-doc h3 { font-size:18px; line-height:1.3; text-align:left; margin:20px 0 8px; }
+    #lc-sorteo .lc-terms-doc p { margin:0 0 10px; }
+    #lc-sorteo .lc-terms-doc ul { padding-left:20px; margin:0 0 10px; }
+    #lc-sorteo .lc-terms-doc li { margin:0 0 6px; }
+    #lc-sorteo .lc-terms-doc a { font-weight:700; text-decoration:underline; overflow-wrap:anywhere; }
+    #lc-sorteo .lc-terms-doc.is-collapsed { position:relative; max-height:300px; overflow:hidden; }
+    #lc-sorteo .lc-terms-doc.is-collapsed::after { content:""; position:absolute; left:0; right:0; bottom:0; height:110px; background:linear-gradient(rgba(255,255,255,0),#fff 85%); pointer-events:none; }
+    #lc-sorteo .lc-terms-more { display:flex; align-items:center; gap:8px; margin:14px auto 0; background:var(--lc-yellow); color:var(--lc-black); border:2px solid var(--lc-black); border-radius:999px; font:inherit; font-size:14px; font-weight:900; padding:9px 22px; cursor:pointer; }
+    #lc-sorteo .lc-terms-more[hidden] { display:none; }
+    #lc-sorteo .lc-terms-more::after { content:"▾"; font-size:13px; }
+    #lc-sorteo .lc-terms-more[aria-expanded="true"]::after { content:"▴"; }
 
     /* Carrusel infinito de productos */
     #lc-sorteo .lc-marquee { position:relative; overflow:hidden; padding:8px 0 18px; }
@@ -204,8 +216,7 @@
     #lc-sorteo .lc-track { display:flex; gap:16px; width:max-content; list-style:none; margin:0; padding:0; }
     #lc-sorteo .lc-marquee.is-running .lc-track { animation:lcMarquee var(--lc-speed, 45s) linear infinite; }
     #lc-sorteo .lc-marquee.is-running:hover .lc-track,
-    #lc-sorteo .lc-marquee.is-running:focus-within .lc-track,
-    #lc-sorteo .lc-marquee.is-paused .lc-track { animation-play-state:paused; }
+    #lc-sorteo .lc-marquee.is-running:focus-within .lc-track { animation-play-state:paused; }
     @keyframes lcMarquee { from { transform:translateX(0); } to { transform:translateX(calc(-50% - 8px)); } }
     #lc-sorteo .lc-marquee:not(.is-running) { overflow-x:auto; }
     #lc-sorteo .lc-track > li { flex:0 0 200px; display:flex; margin:0; padding:0; }
@@ -222,8 +233,6 @@
     #lc-sorteo .lc-prod-combo small { font-size:12px; letter-spacing:1px; text-transform:uppercase; }
     #lc-sorteo .lc-prod h3 { font-size:18px; margin:0 0 4px; line-height:1.2; }
     #lc-sorteo .lc-prod span { font-size:12px; font-weight:800; background:var(--lc-yellow-soft); border-radius:99px; padding:3px 10px; }
-    #lc-sorteo .lc-marquee-ctrl { display:flex; justify-content:center; margin-top:8px; }
-    #lc-sorteo .lc-pause { background:none; border:2px solid var(--lc-black); border-radius:99px; font:inherit; font-size:13px; font-weight:800; padding:7px 16px; cursor:pointer; color:var(--lc-black); }
 
     /* FAQ y T&C (acordeones) */
     #lc-sorteo .lc-acc { max-width:880px; margin:0 auto; }
@@ -311,22 +320,23 @@
         <p class="lc-hero-sub"><mark>14 televisores + 2 motocicletas</mark> para ganar</p>
 
         <div class="lc-hero-prizes">
-          <a class="lc-hero-prize" href="#lc-premios">
+          <a class="lc-hero-prize" href="#lc-formulario">
             <div class="lc-hero-prize-img">
-              <img src="https://www.lacuracao.pe/media/catalog/product/5/0/50s55a_1.jpg?quality=85&amp;bg-color=255,255,255&amp;fit=bounds&amp;height=400&amp;width=400" alt="Televisor iFFALCON 50S55A QLED de 50 pulgadas, premio del sorteo Cyberweek" width="400" height="400" fetchpriority="high" decoding="async">
+              <img src="https://mcprod.efe.com.pe/media/wysiwyg/1_32.png" alt="Televisor iFFALCON QLED de 50 pulgadas, premio del sorteo Cyberweek de La Curacao" width="1000" height="1000" fetchpriority="high" decoding="async">
             </div>
             <span class="lc-qty">14 premios</span>
             <h2>TV iFFALCON 50"</h2>
-            <p>Un televisor todos los días</p>
+            <p>Un televisor por día</p>
+            <p class="lc-prize-date">Sorteos diarios del 29 oct. al 11 nov.</p>
           </a>
-          <a class="lc-hero-prize" href="#lc-premios">
-            <!-- PENDIENTE: reemplazar el ícono por la foto oficial de la JETTOR GP 125 (URL del catálogo de lacuracao.pe) -->
+          <a class="lc-hero-prize" href="#lc-formulario">
             <div class="lc-hero-prize-img">
-              <svg viewBox="0 0 124 84" role="img" aria-label="Motocicleta JETTOR GP 125, premio del sorteo Cyberweek" fill="none" stroke="#171717" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><circle cx="26" cy="60" r="15"/><circle cx="100" cy="60" r="15"/><path d="M26 60l24-6"/><path d="M100 60L86 26"/><path d="M80 23l12-3"/><path d="M38 42l18-12h26l8 12-24 4z" fill="#ffda00"/><path d="M84 32l14 6-8 6"/><path d="M16 40l26-3"/><rect x="46" y="46" width="22" height="14" rx="3" fill="#171717"/><path d="M50 64l-18 4"/></svg>
+              <img src="https://mcprod.efe.com.pe/media/wysiwyg/2_28.png" alt="Motocicleta JETTOR GP 125, premio del sorteo Cyberweek de La Curacao" width="1000" height="1000" decoding="async">
             </div>
             <span class="lc-qty">2 premios</span>
             <h2>Moto JETTOR GP 125</h2>
-            <p>Una motocicleta cada semana</p>
+            <p>Una moto por semana</p>
+            <p class="lc-prize-date">Sorteos: jueves 5 y 12 de noviembre</p>
           </a>
         </div>
 
@@ -345,8 +355,8 @@
     <!-- ===== DATOS CLAVE ===== -->
     <section class="lc-stats" aria-label="Datos principales del sorteo">
       <ul class="lc-container lc-stats-grid">
-        <li class="lc-stat"><strong>14 TV</strong><span>Uno diario</span></li>
-        <li class="lc-stat"><strong>2 motos</strong><span>Una semanal</span></li>
+        <li class="lc-stat"><strong>14 TV</strong><span>Uno por día</span></li>
+        <li class="lc-stat"><strong>2 motos</strong><span>Jueves 5 y 12 de noviembre</span></li>
         <li class="lc-stat"><strong>Desde S/ 599</strong><span>Monto mínimo de compra</span></li>
         <li class="lc-stat"><strong>16 ganadores</strong><span>Un premio por persona</span></li>
       </ul>
@@ -420,7 +430,6 @@
           <li><a class="lc-prod" href="https://www.lacuracao.pe/catalogsearch/result/?q=consolas"><div class="lc-prod-img"><img src="https://www.lacuracao.pe/media/catalog/product/t/w/twvs4001400_1.jpg?quality=85&amp;bg-color=255,255,255&amp;fit=bounds&amp;height=400&amp;width=400&amp;canvas=400:400" alt="Consolas de videojuegos en La Curacao" width="400" height="400" loading="lazy" decoding="async"></div><h3>Consolas</h3><span>Desde S/ 599</span></a></li>
         </ul>
       </div>
-      <div class="lc-marquee-ctrl"><button class="lc-pause" type="button" data-lc-pause="" aria-pressed="false">❚❚ Pausar carrusel</button></div>
     </section>
 
     <!-- ===== PREGUNTAS FRECUENTES (mismo texto que el JSON-LD) ===== -->
@@ -457,7 +466,9 @@
 
     <!-- ===== TÉRMINOS Y CONDICIONES =====
          Texto íntegro de "Rev. 01 TyC Sorteo CYBERWEEK - La Curacao", sin resumir ni corregir.
-         Única intervención: el marcador "***COLOCAR ENLACE***" del documento se reemplazó por un enlace a esta landing.
+         Intervenciones de formato: estructura en títulos, párrafos y viñetas; se quitaron guiones de corte de línea del Word
+         (condi-ciones, partici-parán, requi-sitos, inten-tos); el marcador "***COLOCAR EN-LACE**" se reemplazó por el enlace a esta landing
+         y el teléfono quedó como enlace tel:. Ninguna palabra del documento se cambió.
          Al publicarse la versión final del documento legal, reemplazar este bloque completo. -->
     <section class="lc-section" aria-labelledby="lc-tyc-title">
       <div class="lc-container">
@@ -465,115 +476,79 @@
           <p class="lc-kicker">Información legal</p>
           <h2 id="lc-tyc-title">Términos y condiciones</h2>
         </div>
-<div class="lc-terms-box lc-terms-raw">TÉRMINOS Y CONDICIONES DE LA CAMPAÑA
-
-“CYBERWEEK” – LA CURACAO
-
-1. RAZON SOCIAL DEL LOS ORGANIZADORES
-
-Razón social: CONECTA RETAIL S.A.
-
-RUC: 20141189850
-
-Domicilio: Av. El Derby N°254, Oficinas 2101 – 2104 – 2105, distrito de Santiago de Surco, provincia y departamento de Lima.
-
-2. DESCRIPCIÓN DE LA CAMPAÑA
-
-EL ORGANIZADOR promueve y organiza EL SORTEO CYBERWEEK el cual tendrá validez a nivel nacional desde el 29 de octubre al 11 de noviembre de 2026 y está sujeto al cumplimiento de los presentes Términos y Condiciones. La participación de los concursantes implica una aceptación integral de todas las condiciones del presente documento.
-
-3. ¿CÓMO PARTICIPAR?
-
-Podrán participar en el SORTEO todas las personas naturales mayores de dieciocho (18) años que, durante la vigencia de la campaña, cumplan con los siguientes requisitos:
-
-· Realizar en las tiendas La Curacao la compra de al menos un (1) producto, de monto mínimo de S/ 599.00.
-
-· Para participar en el sorteo el cliente deberá registrar sus datos personales en la landing page habilitada para la campaña, disponible en el siguiente enlace: ***COLOCAR EN-LACE**.
-
-· En caso de que la compra sea pagada con Efectibank, el participante obtendrá una (01) participación adicional, contando con un total de dos (02) participaciones por dicha compra.
-
-· Respecto del sorteo diario de televisores: por cada compra que cumpla con las condi-ciones de la campaña, el participante obtendrá una (01) participación para el sorteo diario correspondiente a la fecha en que se realizó la compra. En cada sorteo partici-parán las compras válidas realizadas durante el día correspondiente.
-
-· Respecto del sorteo semanal de motocicletas: por cada compra que cumpla con las con-diciones de la campaña, el participante obtendrá una (01) participación para el sorteo semanal correspondiente a la semana en que se realizó la compra. En cada sorteo par-ticiparán las compras válidas realizadas durante el periodo semanal correspondiente.
-
-La participación en el SORTEO es voluntaria y estará sujeta al cumplimiento de todos los requi-sitos antes señalados y de los presentes Términos y Condiciones.
-
-4. DETALLE Y STOCK DE PREMIOS
-
-Stock: 16 premios.
-
-Descripción de los premios:
-
-· Catorce (14) televisores marca IFFALCON 50S55A QLED de 50” (SKU 50S55A).
-
-· Dos (02) motocicletas JETTOR GP 125.
-
-Condiciones:
-
-· Se otorgará un (01) televisor IFFALCON 50S55A QLED de 50” por cada sorteo diario realizado durante la vigencia de la promoción, siendo catorce (14) televisores en total.
-
-· Se otorgará una (01) motocicleta JETTOR GP 125 por cada sorteo semanal realizado durante la vigencia de la promoción, siendo dos (02) motocicletas en total.
-
-· Cada ganador tendrá derecho únicamente a un (01) premio.
-
-· Una vez que un participante resulte ganador de cualquiera de los premios, no podrá ser seleccionado nuevamente durante la vigencia de la promoción.
-
-· En total, se seleccionarán dieciséis (16) ganadores.
-
-5. ELECCIÓN DE GANADORES
-
-La elección de los dieciséis (16) ganadores se realizará mediante un SORTEO entre todos los participantes que hayan cumplido con los Términos y Condiciones del presente SORTEO.
-
-6. PUBLICACIÓN Y COMUNICACIÓN DE GANADORES
-
-· Los sorteos de los televisores se realizarán de forma diaria durante la vigencia de la campaña, otorgándose un (01) televisor por día. Los ganadores serán anunciados al día siguiente de efectuada su participación y/o del sorteo correspondiente, a través de los canales oficiales de La Curacao, incluidos Instagram y Facebook.
-
-· Asimismo, se realizará un (01) sorteo semanal de una motocicleta JETTOR GP 125, cuyo ganador será anunciado al día siguiente de realizado el sorteo, a través de los mismos canales oficiales.
-
-· Los ganadores serán contactados por correo electrónico y/o vía telefónica utilizando los datos proporcionados al momento de la compra. Se realizarán hasta tres (3) inten-tos de contacto para informarles sobre su condición de ganadores.
-
-· En caso de que algún ganador haya consignado datos incorrectos o no pueda ser ubicado tras los intentos realizados, perderá automáticamente su derecho al premio, sin derecho a reclamo, compensación o indemnización alguna.
-
-7. ENTREGA DE PREMIOS
-
-La entrega del premio se realizará como máximo en noventa (90) días calendario contados desde la fecha en que se comunique al ganador su condición como tal.
-
-Para la entrega del premio, el ganador deberá presentar su documento nacional de identidad (DNI) o carné de extranjería (CE), ambos vigentes. Asimismo, deberá recoger el premio en la tienda que acuerde previamente con el organizador.
-
-Al momento de la entrega, el ganador deberá:
-
-· Firmar un acta de entrega de premio.
-
-· Presentar copia simple y legible de su DNI o CE.
-
-· El premio no será canjeable por dinero y por ningún otro bien o servicio.
-
-En caso el ganador no recoja el premio dentro de los siente (07) días calendario siguiente a la comunicación de recojo, perderá automáticamente el derecho al mismo, sin posibilidad de reclamo, compensación o indemnización alguna.
-
-8. VIGENCIA DE LA CAMPAÑA
-
-EL SORTEO tiene las siguientes vigencias:
-
-· Inicio: 29/10/2026.
-
-· Fin: 11/11/2026.
-
-· Sorteo de televisores: Se realizará un (01) sorteo diario durante la vigencia de la campaña. En cada sorteo participarán las compras válidas realizadas durante el día correspondiente.
-
-· Sorteo de motocicletas: Se realizará un (01) sorteo semanal durante la vigencia de la campaña. En cada sorteo participarán las compras válidas realizadas durante el periodo semanal correspondiente.
-
-· Publicación de ganadores: Los ganadores de cada sorteo serán publicados al día siguiente de realizado el sorteo correspondiente, a través de los canales oficiales de La Curacao, incluidos Instagram y Facebook.
-
-9. CONSIDERACIONES
-
-· EL SORTEO es válido a nivel nacional.
-
-· El participante es responsable de asegurarse de que la información proporcionada en el sitio web sea correcta y precisa. EL ORGANIZADOR no se hacen responsables por datos incorrectos o incompletos ingresados por el participante.
-
-· No podrán participar los trabajadores del ORGANIZADOR, ni sus familiares directos hasta el segundo grado de consanguinidad o afinidad, ni aquellas personas vinculadas de manera directa o indirecta a la organización del presente SORTEO.
-
-· Los ganadores perderán el derecho de recibir el premio en caso de que se detecten acciones fraudulentas en su participación en EL SORTEO o si LOS ORGANIZADORES detectan cualquier práctica irregular de los ganadores.
-
-· Para cualquier duda o comentario respecto a los términos y condiciones de EL SORTEO, pueden ponerse en contacto con nosotros a través de nuestras Página Oficial de Facebook e Instagram de La Curacao o llamando a nuestra central telefónica (01) 641-2412.</div>
+<div class="lc-terms-box" id="lc-terminos">
+          <div class="lc-terms-doc" id="lc-terms-doc" lang="es">
+            <p class="lc-terms-head">TÉRMINOS Y CONDICIONES DE LA CAMPAÑA<br>“CYBERWEEK” – LA CURACAO</p>
+            <h3>1. RAZON SOCIAL DEL LOS ORGANIZADORES</h3>
+            <p><strong>Razón social:</strong> CONECTA RETAIL S.A.</p>
+            <p><strong>RUC:</strong> 20141189850</p>
+            <p><strong>Domicilio:</strong> Av. El Derby N°254, Oficinas 2101 – 2104 – 2105, distrito de Santiago de Surco, provincia y departamento de Lima.</p>
+            <h3>2. DESCRIPCIÓN DE LA CAMPAÑA</h3>
+            <p>EL ORGANIZADOR promueve y organiza EL SORTEO CYBERWEEK el cual tendrá validez a nivel nacional desde el 29 de octubre al 11 de noviembre de 2026 y está sujeto al cumplimiento de los presentes Términos y Condiciones. La participación de los concursantes implica una aceptación integral de todas las condiciones del presente documento.</p>
+            <h3>3. ¿CÓMO PARTICIPAR?</h3>
+            <p>Podrán participar en el SORTEO todas las personas naturales mayores de dieciocho (18) años que, durante la vigencia de la campaña, cumplan con los siguientes requisitos:</p>
+            <ul>
+            <li>Realizar en las tiendas La Curacao la compra de al menos un (1) producto, de monto mínimo de S/ 599.00.</li>
+            <li>Para participar en el sorteo el cliente deberá registrar sus datos personales en la landing page habilitada para la campaña, disponible en el siguiente enlace: <a href="https://www.lacuracao.pe/sorteo-televisores-iffalcon">www.lacuracao.pe/sorteo-televisores-iffalcon</a>.</li>
+            <li>En caso de que la compra sea pagada con Efectibank, el participante obtendrá una (01) participación adicional, contando con un total de dos (02) participaciones por dicha compra.</li>
+            <li>Respecto del sorteo diario de televisores: por cada compra que cumpla con las condiciones de la campaña, el participante obtendrá una (01) participación para el sorteo diario correspondiente a la fecha en que se realizó la compra. En cada sorteo participarán las compras válidas realizadas durante el día correspondiente.</li>
+            <li>Respecto del sorteo semanal de motocicletas: por cada compra que cumpla con las condiciones de la campaña, el participante obtendrá una (01) participación para el sorteo semanal correspondiente a la semana en que se realizó la compra. En cada sorteo participarán las compras válidas realizadas durante el periodo semanal correspondiente.</li>
+            </ul>
+            <p>La participación en el SORTEO es voluntaria y estará sujeta al cumplimiento de todos los requisitos antes señalados y de los presentes Términos y Condiciones.</p>
+            <h3>4. DETALLE Y STOCK DE PREMIOS</h3>
+            <p><strong>Stock:</strong> 16 premios.</p>
+            <p>Descripción de los premios:</p>
+            <ul>
+            <li>Catorce (14) televisores marca IFFALCON 50S55A QLED de 50” (SKU 50S55A).</li>
+            <li>Dos (02) motocicletas JETTOR GP 125.</li>
+            </ul>
+            <p>Condiciones:</p>
+            <ul>
+            <li>Se otorgará un (01) televisor IFFALCON 50S55A QLED de 50” por cada sorteo diario realizado durante la vigencia de la promoción, siendo catorce (14) televisores en total.</li>
+            <li>Se otorgará una (01) motocicleta JETTOR GP 125 por cada sorteo semanal realizado durante la vigencia de la promoción, siendo dos (02) motocicletas en total.</li>
+            <li>Cada ganador tendrá derecho únicamente a un (01) premio.</li>
+            <li>Una vez que un participante resulte ganador de cualquiera de los premios, no podrá ser seleccionado nuevamente durante la vigencia de la promoción.</li>
+            <li>En total, se seleccionarán dieciséis (16) ganadores.</li>
+            </ul>
+            <h3>5. ELECCIÓN DE GANADORES</h3>
+            <p>La elección de los dieciséis (16) ganadores se realizará mediante un SORTEO entre todos los participantes que hayan cumplido con los Términos y Condiciones del presente SORTEO.</p>
+            <h3>6. PUBLICACIÓN Y COMUNICACIÓN DE GANADORES</h3>
+            <ul>
+            <li>Los sorteos de los televisores se realizarán de forma diaria durante la vigencia de la campaña, otorgándose un (01) televisor por día. Los ganadores serán anunciados al día siguiente de efectuada su participación y/o del sorteo correspondiente, a través de los canales oficiales de La Curacao, incluidos Instagram y Facebook.</li>
+            <li>Asimismo, se realizará un (01) sorteo semanal de una motocicleta JETTOR GP 125, cuyo ganador será anunciado al día siguiente de realizado el sorteo, a través de los mismos canales oficiales.</li>
+            <li>Los ganadores serán contactados por correo electrónico y/o vía telefónica utilizando los datos proporcionados al momento de la compra. Se realizarán hasta tres (3) intentos de contacto para informarles sobre su condición de ganadores.</li>
+            <li>En caso de que algún ganador haya consignado datos incorrectos o no pueda ser ubicado tras los intentos realizados, perderá automáticamente su derecho al premio, sin derecho a reclamo, compensación o indemnización alguna.</li>
+            </ul>
+            <h3>7. ENTREGA DE PREMIOS</h3>
+            <p>La entrega del premio se realizará como máximo en noventa (90) días calendario contados desde la fecha en que se comunique al ganador su condición como tal.</p>
+            <p>Para la entrega del premio, el ganador deberá presentar su documento nacional de identidad (DNI) o carné de extranjería (CE), ambos vigentes. Asimismo, deberá recoger el premio en la tienda que acuerde previamente con el organizador.</p>
+            <p>Al momento de la entrega, el ganador deberá:</p>
+            <ul>
+            <li>Firmar un acta de entrega de premio.</li>
+            <li>Presentar copia simple y legible de su DNI o CE.</li>
+            <li>El premio no será canjeable por dinero y por ningún otro bien o servicio.</li>
+            </ul>
+            <p>En caso el ganador no recoja el premio dentro de los siente (07) días calendario siguiente a la comunicación de recojo, perderá automáticamente el derecho al mismo, sin posibilidad de reclamo, compensación o indemnización alguna.</p>
+            <h3>8. VIGENCIA DE LA CAMPAÑA</h3>
+            <p>EL SORTEO tiene las siguientes vigencias:</p>
+            <ul>
+            <li><strong>Inicio:</strong> 29/10/2026.</li>
+            <li><strong>Fin:</strong> 11/11/2026.</li>
+            <li><strong>Sorteo de televisores:</strong> Se realizará un (01) sorteo diario durante la vigencia de la campaña. En cada sorteo participarán las compras válidas realizadas durante el día correspondiente.</li>
+            <li><strong>Sorteo de motocicletas:</strong> Se realizará un (01) sorteo semanal durante la vigencia de la campaña. En cada sorteo participarán las compras válidas realizadas durante el periodo semanal correspondiente.</li>
+            <li><strong>Publicación de ganadores:</strong> Los ganadores de cada sorteo serán publicados al día siguiente de realizado el sorteo correspondiente, a través de los canales oficiales de La Curacao, incluidos Instagram y Facebook.</li>
+            </ul>
+            <h3>9. CONSIDERACIONES</h3>
+            <ul>
+            <li>EL SORTEO es válido a nivel nacional.</li>
+            <li>El participante es responsable de asegurarse de que la información proporcionada en el sitio web sea correcta y precisa. EL ORGANIZADOR no se hacen responsables por datos incorrectos o incompletos ingresados por el participante.</li>
+            <li>No podrán participar los trabajadores del ORGANIZADOR, ni sus familiares directos hasta el segundo grado de consanguinidad o afinidad, ni aquellas personas vinculadas de manera directa o indirecta a la organización del presente SORTEO.</li>
+            <li>Los ganadores perderán el derecho de recibir el premio en caso de que se detecten acciones fraudulentas en su participación en EL SORTEO o si LOS ORGANIZADORES detectan cualquier práctica irregular de los ganadores.</li>
+            <li>Para cualquier duda o comentario respecto a los términos y condiciones de EL SORTEO, pueden ponerse en contacto con nosotros a través de nuestras Página Oficial de Facebook e Instagram de La Curacao o llamando a nuestra central telefónica <a href="tel:+5116412412">(01) 641-2412</a>.</li>
+            </ul>
+          </div>
+          <button class="lc-terms-more" type="button" aria-controls="lc-terms-doc" aria-expanded="false" hidden>Mostrar más</button>
+        </div>
       </div>
     </section>
 
@@ -666,7 +641,6 @@ EL SORTEO tiene las siguientes vigencias:
 
       /* --- Carrusel infinito de productos --- */
       var marquee = root.querySelector('[data-lc-marquee]');
-      var pauseBtn = root.querySelector('[data-lc-pause]');
       if (marquee) {
         var track = marquee.querySelector('.lc-track');
         Array.prototype.slice.call(track.children).forEach(function (item) {
@@ -677,12 +651,24 @@ EL SORTEO tiene las siguientes vigencias:
         });
         marquee.style.setProperty('--lc-speed', (track.children.length * 3.2) + 's');
         if (!reduceMotion) marquee.classList.add('is-running');
-        else pauseBtn.hidden = true;
-        pauseBtn.addEventListener('click', function () {
-          var paused = marquee.classList.toggle('is-paused');
-          pauseBtn.setAttribute('aria-pressed', paused ? 'true' : 'false');
-          pauseBtn.textContent = paused ? '▶ Reanudar carrusel' : '❚❚ Pausar carrusel';
-        });
+      }
+
+      /* --- Términos: mostrar los primeros párrafos y "Mostrar más" --- */
+      var termsDoc = root.querySelector('#lc-terms-doc');
+      var termsMore = root.querySelector('.lc-terms-more');
+      if (termsDoc && termsMore) {
+        termsDoc.classList.add('is-collapsed');
+        if (termsDoc.scrollHeight > termsDoc.clientHeight + 40) {
+          termsMore.hidden = false;
+          termsMore.addEventListener('click', function () {
+            var open = termsDoc.classList.toggle('is-collapsed') === false;
+            termsMore.setAttribute('aria-expanded', open ? 'true' : 'false');
+            termsMore.textContent = open ? 'Mostrar menos' : 'Mostrar más';
+            if (!open) root.querySelector('#lc-terminos').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+          });
+        } else {
+          termsDoc.classList.remove('is-collapsed');
+        }
       }
 
       /* El registro lo gestiona íntegramente el formulario de HubSpot. */
