@@ -4,11 +4,11 @@
   <meta name="description" content="Compra desde S/ 599 en La Curacao del 29 de octubre al 11 de noviembre y participa por 14 TV iFFALCON QLED de 50&quot; (uno diario) y 2 motos JETTOR GP 125.">
   <meta name="robots" content="index,follow,max-image-preview:large">
   <!-- Canonical: debe coincidir con la URL final de la página CMS en Magento. Hoy (19/10/2026) responde 404 porque aún no está publicada. -->
-  <link rel="canonical" href="https://www.lacuracao.pe/sorteo-televisores-iffalcon">
+  <link rel="canonical" href="https://www.lacuracao.pe/sorteo-cyberweek">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="es_PE">
   <meta property="og:site_name" content="La Curacao">
-  <meta property="og:url" content="https://www.lacuracao.pe/sorteo-televisores-iffalcon">
+  <meta property="og:url" content="https://www.lacuracao.pe/sorteo-cyberweek">
   <meta property="og:title" content="Sorteo Cyberweek: 14 televisores y 2 motos | La Curacao">
   <meta property="og:description" content="Compra desde S/ 599 del 29 de octubre al 11 de noviembre y participa por un TV iFFALCON QLED de 50&quot; cada día y una moto JETTOR GP 125 cada semana.">
   <meta property="og:image" content="https://www.lacuracao.pe/media/catalog/product/5/0/50s55a_1.jpg?quality=85&amp;bg-color=255,255,255&amp;fit=bounds&amp;height=400&amp;width=400">
@@ -131,7 +131,21 @@
 
     /* Cómo participar + formulario (compacto) */
     #lc-sorteo .lc-join { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,440px); gap:clamp(20px,4vw,48px); align-items:start; justify-content:center; max-width:960px; }
-    #lc-sorteo .lc-join-intro h2 { text-align:left; margin-bottom:14px; }
+    #lc-sorteo .lc-join { align-items:stretch; }
+    #lc-sorteo .lc-join-intro { display:flex; flex-direction:column; gap:12px; }
+    #lc-sorteo .lc-join-intro .lc-kicker { margin:0; }
+    #lc-sorteo .lc-join-intro h2 { text-align:left; margin:0; }
+    #lc-sorteo .lc-join-intro .lc-steps { margin:0; }
+    #lc-sorteo .lc-info { background:#fff; border:1px solid var(--lc-line); border-radius:14px; padding:14px 16px; }
+    #lc-sorteo .lc-info h3 { font-size:18px; line-height:1.25; margin:0 0 10px; }
+    #lc-sorteo .lc-cal { list-style:none; padding:0; margin:0; display:grid; gap:8px; }
+    #lc-sorteo .lc-cal li { display:flex; justify-content:space-between; align-items:center; gap:12px; font-size:14px; padding:8px 12px; background:var(--lc-soft); border-radius:10px; }
+    #lc-sorteo .lc-cal b { font-weight:800; }
+    #lc-sorteo .lc-cal span { font-weight:800; background:var(--lc-yellow); border-radius:99px; padding:2px 10px; white-space:nowrap; font-size:13px; }
+    #lc-sorteo .lc-notes { list-style:none; padding:0; margin:0; display:grid; gap:6px; font-size:14px; color:#3d3d3d; }
+    #lc-sorteo .lc-notes li { padding-left:22px; position:relative; line-height:1.4; }
+    #lc-sorteo .lc-notes li::before { content:"✓"; position:absolute; left:0; font-weight:900; color:var(--lc-black); }
+    #lc-sorteo .lc-join-intro .lc-info:last-child { flex:1; }
     #lc-sorteo .lc-steps { list-style:none; padding:0; margin:0 0 14px; display:grid; gap:10px; counter-reset:lcstep; }
     #lc-sorteo .lc-step { display:flex; gap:12px; align-items:center; background:#fff; border:1px solid var(--lc-line); border-radius:14px; padding:10px 14px; }
     #lc-sorteo .lc-step-ico { position:relative; flex:0 0 40px; height:40px; border-radius:12px; background:var(--lc-yellow); display:flex; align-items:center; justify-content:center; }
@@ -139,9 +153,6 @@
     #lc-sorteo .lc-step-ico::after { counter-increment:lcstep; content:counter(lcstep); position:absolute; top:-6px; right:-6px; width:18px; height:18px; border-radius:50%; background:var(--lc-black); color:#fff; font-size:11px; font-weight:900; line-height:18px; text-align:center; }
     #lc-sorteo .lc-step h3 { font-size:18px; margin:0; line-height:1.25; }
     #lc-sorteo .lc-step p { margin:1px 0 0; color:var(--lc-muted); font-size:14px; line-height:1.35; }
-    #lc-sorteo .lc-bonus { display:flex; gap:10px; align-items:center; background:var(--lc-black); color:#fff; border-radius:14px; padding:10px 14px; font-size:14px; line-height:1.4; margin:0; }
-    #lc-sorteo .lc-bonus b { flex:0 0 auto; background:var(--lc-yellow); color:var(--lc-black); border-radius:10px; padding:4px 9px; font-size:14px; }
-    #lc-sorteo .lc-bonus strong { color:var(--lc-yellow); }
 
     /* Contenedor del formulario: solo estilo visual. El formulario lo genera el script de HubSpot. */
     #lc-sorteo .lc-form-card {
@@ -373,18 +384,33 @@
           <ol class="lc-steps">
             <li class="lc-step">
               <span class="lc-step-ico"><svg viewBox="0 0 24 24" fill="none" stroke="#171717" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 7h12l-1 13H7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg></span>
-              <div><h3>Compra desde S/ 599</h3><p>En tiendas La Curacao, del 29 oct. al 11 nov.</p></div>
+              <div><h3>Compra desde S/ 599</h3><p>Al menos un producto en tiendas La Curacao.</p></div>
             </li>
             <li class="lc-step">
               <span class="lc-step-ico"><svg viewBox="0 0 24 24" fill="none" stroke="#171717" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v3H9z"/><path d="M9 12h6M9 16h4"/></svg></span>
-              <div><h3>Registra tus datos</h3><p>Con tu boleta o factura. Sin registro no participas.</p></div>
+              <div><h3>Registra tus datos</h3><p>Completa el formulario. Sin registro no participas.</p></div>
             </li>
             <li class="lc-step">
               <span class="lc-step-ico"><svg viewBox="0 0 24 24" fill="none" stroke="#171717" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="9" width="18" height="12" rx="1.5"/><path d="M12 9v12M3 13h18"/><path d="M12 9C10 5 6.5 5.5 7.5 8 8 9 12 9 12 9zM12 9c2-4 5.5-3.5 4.5-1-.5 1-4.5 1-4.5 1z"/></svg></span>
-              <div><h3>Participa</h3><p>TV diarios y motos semanales.</p></div>
+              <div><h3>Participa en los sorteos</h3><p>Entras al sorteo diario de TV y al semanal de motos.</p></div>
             </li>
           </ol>
-          <p class="lc-bonus"><b aria-hidden="true">x2</b><span>¿Pagaste con <strong>Efectibank</strong>? Tu compra vale doble participación.</span></p>
+          <div class="lc-info">
+            <h3>Calendario de sorteos</h3>
+            <ul class="lc-cal">
+              <li><b>TV iFFALCON 50"</b><span>1 diario · 29 oct. al 11 nov.</span></li>
+              <li><b>Moto JETTOR GP 125</b><span>Jueves 5 y 12 nov.</span></li>
+            </ul>
+          </div>
+          <div class="lc-info">
+            <h3>Ten en cuenta</h3>
+            <ul class="lc-notes">
+              <li>Participan personas mayores de 18 años.</li>
+              <li>Cada ganador se lleva un solo premio: 16 ganadores en total.</li>
+              <li>Ganadores al día siguiente de cada sorteo en Instagram y Facebook de La Curacao.</li>
+              <li>Para recoger el premio presenta tu DNI o CE vigente.</li>
+            </ul>
+          </div>
         </div>
 
         <!-- Formulario HubSpot: no modificar el script ni su configuración. Solo se estiliza el contenedor desde el CSS de arriba. -->
@@ -424,7 +450,7 @@
           <li><a class="lc-prod" href="https://www.lacuracao.pe/catalogsearch/result/?q=exhibidora"><div class="lc-prod-img"><img src="https://www.lacuracao.pe/media/catalog/product/e/x/ex309-m_principal.jpg?quality=85&amp;bg-color=255,255,255&amp;fit=bounds&amp;height=400&amp;width=400&amp;canvas=400:400" alt="Exhibidoras en La Curacao" width="400" height="400" loading="lazy" decoding="async"></div><h3>Exhibidoras</h3><span>Desde S/ 599</span></a></li>
           <li><a class="lc-prod" href="https://www.lacuracao.pe/catalogsearch/result/?q=congeladora"><div class="lc-prod-img"><img src="https://www.lacuracao.pe/media/catalog/product/c/o/co250b-m_principal.jpg?quality=85&amp;bg-color=255,255,255&amp;fit=bounds&amp;height=400&amp;width=400&amp;canvas=400:400" alt="Congeladoras en La Curacao" width="400" height="400" loading="lazy" decoding="async"></div><h3>Congeladoras</h3><span>Desde S/ 599</span></a></li>
           <li><a class="lc-prod" href="https://www.lacuracao.pe/catalogsearch/result/?q=cafetera+expreso"><div class="lc-prod-img"><img src="https://www.lacuracao.pe/media/catalog/product/b/v/bvstem7301_1.jpg?quality=85&amp;bg-color=255,255,255&amp;fit=bounds&amp;height=400&amp;width=400&amp;canvas=400:400" alt="Cafeteras expreso en La Curacao" width="400" height="400" loading="lazy" decoding="async"></div><h3>Cafeteras expreso</h3><span>Desde S/ 599</span></a></li>
-          <li><a class="lc-prod" href="https://www.lacuracao.pe/catalogsearch/result/?q=combo"><div class="lc-prod-img lc-prod-combo" aria-hidden="true"><b>1+1</b><small>Combos</small></div><h3>Combos de productos</h3><span>Desde S/ 599</span></a></li>
+          <li><a class="lc-prod" href="https://www.lacuracao.pe/electrohogar/electrodomesticos/combos.html?price=600-1900"><div class="lc-prod-img lc-prod-combo" aria-hidden="true"><b>1+1</b><small>Combos</small></div><h3>Combos de productos</h3><span>Desde S/ 599</span></a></li>
           <li><a class="lc-prod" href="https://www.lacuracao.pe/catalogsearch/result/?q=aire+acondicionado"><div class="lc-prod-img"><img src="https://www.lacuracao.pe/media/catalog/product/m/m/mmt09cdbwcc32ec1_1.jpg?quality=85&amp;bg-color=255,255,255&amp;fit=bounds&amp;height=400&amp;width=400&amp;canvas=400:400" alt="Aire acondicionado en La Curacao" width="400" height="400" loading="lazy" decoding="async"></div><h3>Aire acondicionado</h3><span>Desde S/ 599</span></a></li>
           <li><a class="lc-prod" href="https://www.lacuracao.pe/catalogsearch/result/?q=smart+tv"><div class="lc-prod-img"><img src="https://www.lacuracao.pe/media/catalog/product/5/5/55nu800bpsb_1.jpg?quality=85&amp;bg-color=255,255,255&amp;fit=bounds&amp;height=400&amp;width=400&amp;canvas=400:400" alt="Smart TV en La Curacao" width="400" height="400" loading="lazy" decoding="async"></div><h3>Smart TV</h3><span>Desde S/ 599</span></a></li>
           <li><a class="lc-prod" href="https://www.lacuracao.pe/catalogsearch/result/?q=consolas"><div class="lc-prod-img"><img src="https://www.lacuracao.pe/media/catalog/product/t/w/twvs4001400_1.jpg?quality=85&amp;bg-color=255,255,255&amp;fit=bounds&amp;height=400&amp;width=400&amp;canvas=400:400" alt="Consolas de videojuegos en La Curacao" width="400" height="400" loading="lazy" decoding="async"></div><h3>Consolas</h3><span>Desde S/ 599</span></a></li>
@@ -489,7 +515,7 @@
             <p>Podrán participar en el SORTEO todas las personas naturales mayores de dieciocho (18) años que, durante la vigencia de la campaña, cumplan con los siguientes requisitos:</p>
             <ul>
             <li>Realizar en las tiendas La Curacao la compra de al menos un (1) producto, de monto mínimo de S/ 599.00.</li>
-            <li>Para participar en el sorteo el cliente deberá registrar sus datos personales en la landing page habilitada para la campaña, disponible en el siguiente enlace: <a href="https://www.lacuracao.pe/sorteo-televisores-iffalcon">www.lacuracao.pe/sorteo-televisores-iffalcon</a>.</li>
+            <li>Para participar en el sorteo el cliente deberá registrar sus datos personales en la landing page habilitada para la campaña, disponible en el siguiente enlace: <a href="https://www.lacuracao.pe/sorteo-cyberweek">www.lacuracao.pe/sorteo-cyberweek</a>.</li>
             <li>En caso de que la compra sea pagada con Efectibank, el participante obtendrá una (01) participación adicional, contando con un total de dos (02) participaciones por dicha compra.</li>
             <li>Respecto del sorteo diario de televisores: por cada compra que cumpla con las condiciones de la campaña, el participante obtendrá una (01) participación para el sorteo diario correspondiente a la fecha en que se realizó la compra. En cada sorteo participarán las compras válidas realizadas durante el día correspondiente.</li>
             <li>Respecto del sorteo semanal de motocicletas: por cada compra que cumpla con las condiciones de la campaña, el participante obtendrá una (01) participación para el sorteo semanal correspondiente a la semana en que se realizó la compra. En cada sorteo participarán las compras válidas realizadas durante el periodo semanal correspondiente.</li>

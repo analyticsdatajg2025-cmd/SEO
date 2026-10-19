@@ -14,9 +14,11 @@ Un solo repo con todo el conocimiento SEO del grupo, orientado a **más ganancia
 
 - 2026-10-19: **auditoría SEO de Efectibank** como dashboard `auditoria-seo-efectibank.html` (rastreo propio de 274 URLs, Lighthouse móvil en 9 páginas, benchmark con tasas SBS y webs de 11 competidores, keywords sin volumen, SEO vs pauta con calculadora vacía, priorización A01-A18, roadmap 30-60-90, dependencias). Resumen de hallazgos nuevos en `docs/08 §7`. No se modificó la web.
 
-- 2026-10-19: landing del sorteo Cyberweek de La Curacao ajustada (`landings/sorteo-televisores.html`): tipografía H1 30 / H2 22 / H3 18 / texto 14 px, "¿Cómo participar?" en 3 pasos con íconos junto al formulario, contenedor del formulario más compacto y JS de la landing corregido (dejaba invisible la sección de pasos). **Script de HubSpot intacto** (verificado byte a byte); el formulario se dibuja en iframe, así que su interior solo se ajusta desde el editor de HubSpot.
+- 2026-10-19: landing del sorteo Cyberweek de La Curacao ajustada (`landings/sorteo-cyberweek.html`): tipografía H1 30 / H2 22 / H3 18 / texto 14 px, "¿Cómo participar?" en 3 pasos con íconos junto al formulario, contenedor del formulario más compacto y JS de la landing corregido (dejaba invisible la sección de pasos). **Script de HubSpot intacto** (verificado byte a byte); el formulario se dibuja en iframe, así que su interior solo se ajusta desde el editor de HubSpot.
 
 - 2026-10-19 (v2): landing del sorteo: fotos de premios (TV y moto JETTOR GP 125 desde mcprod.efe.com.pe), "un televisor por día / una moto por semana", fechas de motos (jueves 5 y 12 nov.), legales estructurados y justificados con "Mostrar más", enlace de la landing en el lugar del marcador y teléfono clicable; carrusel automático sin botón de pausa. HubSpot intacto.
+
+- 2026-10-19 (v3): landing renombrada a `landings/sorteo-cyberweek.html` (URL final `lacuracao.pe/sorteo-cyberweek` en canonical, og:url y legales); enlace de combos a la categoría con filtro de precio; "¿Cómo participar?" sin Efectibank, con calendario de sorteos y "Ten en cuenta", a la misma altura que el formulario.
 
 ## Pendiente (orden)
 0. **Elias**: revisar `auditoria-seo-efectibank.html` y decidir si se presentan A01-A06 a Marketing y Legal de Efectibank esta semana (higiene + tasas; no dependen de Cyber).
