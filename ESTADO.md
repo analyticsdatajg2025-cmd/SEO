@@ -22,6 +22,8 @@ Un solo repo con todo el conocimiento SEO del grupo, orientado a **más ganancia
 
 - 2026-10-19 (v4): versión Tiendas EFE de la landing (`landings/sorteo-cyberweek-efe.html`): dominio efe.com.pe (misma URL `/sorteo-cyberweek`), formulario HubSpot de EFE (formId d9029fe2…), colores de marca EFE (azul #0071CE, azul oscuro #00328C, celeste, blanco; #FCB75D solo como acento sutil, sin amarillo), marca La Curacao → Tiendas EFE en textos, SEO y legales (texto del .odt Rev. 01, validar con Legal). Imágenes y enlaces de categorías verificados en efe.com.pe.
 
+- 2026-10-19 (v5): `landings/seccion-ganadores-ruleta.html`: ruleta con regla de un ganador por sorteo (diario); sin campos de N.° de premios, suplentes ni eliminar duplicados (cada línea es una participación); el anuncio dice "¡Felicidades!" sin nombrar el premio.
+
 ## Pendiente (orden)
 0. **Elias**: revisar `auditoria-seo-efectibank.html` y decidir si se presentan A01-A06 a Marketing y Legal de Efectibank esta semana (higiene + tasas; no dependen de Cyber).
 1. **Elias**: responder las preguntas de `docs/06`, dar los accesos A1-A8 y pedir a Efectibank los datos EF1-EF9 (`docs/08 §5`). Sin GSC y Ads por término no se confirma ni se mide nada.
