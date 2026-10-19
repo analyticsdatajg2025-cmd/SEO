@@ -24,6 +24,8 @@ Un solo repo con todo el conocimiento SEO del grupo, orientado a **más ganancia
 
 - 2026-10-19 (v5): `landings/seccion-ganadores-ruleta.html`: ruleta con regla de un ganador por sorteo (diario); sin campos de N.° de premios, suplentes ni eliminar duplicados (cada línea es una participación); el anuncio dice "¡Felicidades!" sin nombrar el premio.
 
+- 2026-10-19 (v6): `dashboard-seo-cyber.html`: panel con las 16 tareas principales (de `docs/04`, ESTADO y auditoría) y cruce con GSC por CSV para Cyber 2026 vs 2025 (nov: 2–5 vs 3–6; jul: 13–16 vs 14–17; abr: 20–23 vs 7–10; fuentes de prensa, IAB sin confirmar nov-2026). **Urgente**: exportar a Drive el GSC de Cyber julio 2025 antes del ~14-nov (retención de 16 meses).
+
 ## Pendiente (orden)
 0. **Elias**: revisar `auditoria-seo-efectibank.html` y decidir si se presentan A01-A06 a Marketing y Legal de Efectibank esta semana (higiene + tasas; no dependen de Cyber).
 1. **Elias**: responder las preguntas de `docs/06`, dar los accesos A1-A8 y pedir a Efectibank los datos EF1-EF9 (`docs/08 §5`). Sin GSC y Ads por término no se confirma ni se mide nada.
