@@ -22,13 +22,17 @@
     /* Estilos encapsulados en #lc-sorteo: no modifica header, footer ni componentes globales de Magento */
     #lc-sorteo, #lc-sorteo * { box-sizing: border-box; }
     #lc-sorteo {
-      /* Paleta Tiendas EFE: se conservan los nombres de variable de la plantilla */
-      --lc-yellow: #ffa400;
+      /* Paleta Tiendas EFE (sin amarillo): azul #0071CE, azul oscuro #00328C, celeste, blanco y #FCB75D solo como acento sutil.
+         Se conservan los nombres de variable de la plantilla. */
+      --lc-yellow: #e5f1fb;
       --lc-yellow-dark: #0071ce;
-      --lc-yellow-soft: #e8f2fc;
+      --lc-yellow-soft: #eef6fd;
       --efe-blue: #0071ce;
-      --efe-blue-dark: #005bab;
-      --efe-navy: #003b73;
+      --efe-blue-dark: #00328c;
+      --efe-navy: #00328c;
+      --efe-sky: #e5f1fb;
+      --efe-sky-mid: #9ccbf2;
+      --efe-accent: #fcb75d;
       --lc-black: #171717;
       --lc-white: #fff;
       --lc-muted: #5a5a5a;
@@ -281,21 +285,31 @@
     #lc-sorteo .lc-hero { background:var(--efe-blue); color:#fff; }
     #lc-sorteo .lc-hero::before { border-color:rgba(255,255,255,.16); }
     #lc-sorteo .lc-eyebrow { background:var(--efe-navy); color:#fff; }
+    #lc-sorteo .lc-eyebrow span { background:var(--efe-accent); }
     #lc-sorteo .lc-hero h1 { color:#fff; }
     #lc-sorteo .lc-hero-sub mark { background:#fff; color:var(--efe-blue); }
-    #lc-sorteo .lc-hero-prize { color:var(--lc-black); box-shadow:0 18px 40px rgba(0,40,90,.28); }
+    #lc-sorteo .lc-hero-prize { color:var(--lc-black); box-shadow:0 18px 40px rgba(0,50,140,.28); }
     #lc-sorteo .lc-qty { background:var(--efe-blue); color:#fff; }
-    #lc-sorteo .lc-hero .lc-btn-dark { background:var(--lc-yellow); color:var(--lc-black); border-color:var(--lc-yellow); }
+    #lc-sorteo .lc-hero-prize .lc-prize-date { background:var(--efe-sky); color:var(--efe-navy); }
+    #lc-sorteo .lc-hero .lc-btn-dark { background:#fff; color:var(--efe-navy); border-color:#fff; }
+    #lc-sorteo .lc-hero .lc-btn-dark:hover { box-shadow:0 7px 0 rgba(0,50,140,.35); }
     #lc-sorteo .lc-countdown-label { color:#fff; }
     #lc-sorteo .lc-cd-box { background:var(--efe-navy); }
+    #lc-sorteo .lc-cd-box strong { color:var(--efe-accent); }
     #lc-sorteo .lc-stats { background:var(--efe-navy); }
-    #lc-sorteo .lc-step-ico { background:var(--lc-yellow); }
-    #lc-sorteo .lc-step-ico::after { background:var(--efe-blue); }
-    #lc-sorteo .lc-cal span { background:var(--lc-yellow-soft); color:var(--efe-blue-dark); }
+    #lc-sorteo .lc-stat strong { color:#fff; }
+    #lc-sorteo .lc-stat span { color:var(--efe-sky-mid); }
+    #lc-sorteo .lc-step-ico { background:var(--efe-sky); }
+    #lc-sorteo .lc-step-ico svg { stroke:var(--efe-blue); }
+    #lc-sorteo .lc-step-ico::after { background:var(--efe-navy); }
+    #lc-sorteo .lc-cal span { background:var(--efe-sky); color:var(--efe-navy); }
     #lc-sorteo .lc-notes li::before { color:var(--efe-blue); }
     #lc-sorteo .lc-form-card { border-color:var(--efe-blue); }
-    #lc-sorteo .lc-prize-freq { background:var(--lc-yellow-soft); }
-    #lc-sorteo .lc-prod span { color:var(--efe-blue-dark); }
+    #lc-sorteo .lc-prize-badge { background:var(--efe-blue); color:#fff; }
+    #lc-sorteo .lc-prize-freq { background:var(--efe-sky); }
+    #lc-sorteo .lc-prod span { background:var(--efe-sky); color:var(--efe-navy); }
+    #lc-sorteo .lc-prod-combo { background:var(--efe-blue); color:#fff; }
+    #lc-sorteo .lc-terms-more { background:var(--efe-blue); color:#fff; border-color:var(--efe-blue); }
     #lc-sorteo .lc-terms-doc a, #lc-sorteo .lc-acc a { color:var(--efe-blue); }
     #lc-sorteo .lc-back-top { background:var(--efe-blue); color:#fff; }
     #lc-sorteo :focus-visible { outline-color:var(--efe-blue); }
