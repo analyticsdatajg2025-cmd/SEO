@@ -30,6 +30,7 @@ Equipo SEO: **Josh Kevin Seminario** (SEO Senior: estrategia multimarca, auditor
 | `docs/07-inventario-repos-y-sistemas.md` | Huella de los otros repos y sistemas (qué son, dónde viven, qué los rompe). |
 | `docs/08-efectibank-360.md` | Efectibank: cifras públicas, margen de mercado, auditoría de su web, palancas SEO en plata neta, datos que faltan por responsable, tiempos. |
 | `docs/09-capacidad-herramientas-y-riesgos.md` | Capacidad real del equipo (horas), herramientas disponibles y su impacto operativo, ventanas de riesgo Cyber, plazos de rastreo e indexación. |
+| `gsc-bigquery/` | GSC → BigQuery → Looker Studio: SQL del modelo, actualización diaria, reportes rápidos y carga de historial. Piloto Efectibank; listo para sumar LC, EFE, Juntoz. Ver su `LEEME.md`. |
 | `grafo/ecosistema-seo.html` | Grafo visual del ecosistema: negocios, activos, datos, sistemas, acciones. Abrir en el navegador. |
 
 ## Reglas de negocio que no se tocan sin preguntar
@@ -39,7 +40,7 @@ Equipo SEO: **Josh Kevin Seminario** (SEO Senior: estrategia multimarca, auditor
 - Días Cyber: ~4x un día normal; pesan ~25% de la venta web del año.
 
 ## Comandos
-No hay build. El grafo es un HTML sin dependencias: `python3 -m http.server` en `grafo/` o abrir el archivo directo.
+No hay build. Reportes GSC: `gsc-bigquery/scripts/reporte.sh lista` (requiere `PROYECTO` y credencial de solo lectura). El grafo es un HTML sin dependencias: `python3 -m http.server` en `grafo/` o abrir el archivo directo.
 
 ## Al terminar una tarea
 1. `ESTADO.md` actualizado (hecho / pendiente / decisiones).
