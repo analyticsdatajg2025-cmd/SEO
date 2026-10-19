@@ -12,11 +12,14 @@ Un solo repo con todo el conocimiento SEO del grupo, orientado a **más ganancia
 
 - 2026-10-16 (v3): corregidas las bases de la tabla de plata neta (solo web vs empresa completa; Motocorp por debajo de LC y EFE en total), Efectibank marcado como negocio que sí vende en digital (cuentas y créditos vía pauta), y nuevos pedidos B13 (venta de piso por marca) y B14 (pauta digital de Efectibank por objetivo).
 
+- 2026-10-19: `gsc-bigquery/` armado para Efectibank (piloto): exportación masiva de GSC a BigQuery, resúmenes diarios por grupo de URL con consulta programada, 7 reportes rápidos de pocas filas (sin gasto de tokens en el flujo diario), carga de historial por API y guía de Looker Studio. Reglas de grupos probadas contra el sitemap real (238 URLs, 129 de promociones). Diseñado para sumar LC, EFE y Juntoz (+100 K URLs) sin rehacer. **Sin ejecutar en BigQuery**: falta proyecto GCP y acceso de propietario a GSC.
+
 ## Pendiente (orden)
 1. **Elias**: responder las preguntas de `docs/06`, dar los accesos A1-A8 y pedir a Efectibank los datos EF1-EF9 (`docs/08 §5`). Sin GSC y Ads por término no se confirma ni se mide nada.
 1b. **Elias**: entregar las cifras verificadas de agosto 2026 vs PY y el registro de cambios SEO (B11) para la referencia histórica; decidir el presupuesto de herramientas (`docs/09 §2b`).
 2. **Evaluar con Elias** los pesos (`docs/03`) y el plan (`docs/04`): qué entra antes de Cyber Wow (congelar 72 h antes, ~30-oct) y qué después.
 3. Guardar en Drive (no en el repo) las fichas `.docx`, audios y `analisis-marcas-seo.html` de la sesión "SEO"; enlazarlos en `docs/01`.
+3b. **Elias/TI**: proyecto de Google Cloud con facturación y acceso de propietario en GSC de Efectibank → Kevin sigue `gsc-bigquery/LEEME.md` (≈1 día). Activar la exportación de LC y EFE **antes de Cyber** aunque el dashboard venga después. Cuenta de servicio de solo lectura en la configuración del entorno para que Claude corra los reportes.
 4. Kevin: línea base GSC/GA4 por grupo de URL; rastreo acotado; cruce sitemap ↔ feed.
 5. Carolina: inventario de landings Cyber y cupones; exporte GBP + maestro de tiendas; reseñas de apps.
 6. Decidir qué hacer con los repos vacíos (SEO-LOCAL, SEO-Landing, BI-REPO, Contenido-Repo) y con el PR #38 "panel SEO" de MKT-SISTEMA.
