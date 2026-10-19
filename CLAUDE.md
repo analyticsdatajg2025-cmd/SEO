@@ -30,6 +30,7 @@ Equipo SEO: **Josh Kevin Seminario** (SEO Senior: estrategia multimarca, auditor
 | `docs/07-inventario-repos-y-sistemas.md` | Huella de los otros repos y sistemas (qué son, dónde viven, qué los rompe). |
 | `docs/08-efectibank-360.md` | Efectibank: cifras públicas, margen de mercado, auditoría de su web, palancas SEO en plata neta, datos que faltan por responsable, tiempos. |
 | `docs/09-capacidad-herramientas-y-riesgos.md` | Capacidad real del equipo (horas), herramientas disponibles y su impacto operativo, ventanas de riesgo Cyber, plazos de rastreo e indexación. |
+| `auditoria-seo-efectibank.html` | Dashboard de auditoría SEO de Efectibank (19-oct-2026): hallazgos con evidencia, 274 URLs, Core Web Vitals de laboratorio, keywords, benchmark, SEO vs pauta, priorización, roadmap 30-60-90 y dependencias. Abrir en el navegador. |
 | `grafo/ecosistema-seo.html` | Grafo visual del ecosistema: negocios, activos, datos, sistemas, acciones. Abrir en el navegador. |
 
 ## Reglas de negocio que no se tocan sin preguntar

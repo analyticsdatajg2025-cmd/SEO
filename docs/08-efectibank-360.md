@@ -107,3 +107,19 @@ Posicionamiento competitivo observado en búsquedas (`HIPÓTESIS` desde SERP del
 | Descubrimiento e indexación de lo nuevo | Sitemap, enlaces internos, solicitud en GSC | Días a semanas tras publicar | Alta |
 | Posicionamiento | Marca y páginas ya indexadas: semanas. Términos financieros genéricos: **meses** (compiten bancos, cajas y comparadores) | 2027 | Muy alta |
 | Conversión medible | Solicitudes por página de origen | Desde que haya medición (EF3/EF4) | Depende de BI |
+
+## 7. Auditoría técnica externa del 19-oct-2026
+
+Dashboard completo: `auditoria-seo-efectibank.html` (raíz del repo). Rastreo propio de 274 URLs (sitemaps + enlaces), Lighthouse móvil en 9 páginas y benchmark con tasas de la SBS. Sin GSC, GA4 ni herramientas de pago. Lo nuevo frente a §3 (`COMPROBADO`, salvo indicación):
+
+- **Menú global con 404**: "Preguntas frecuentes" apunta a `/?page_id=1412` en 253 de 255 páginas; la FAQ real `/preguntas-frecuentes/` responde 200 pero está huérfana y fuera del sitemap.
+- **Canonical de formularios a una redirección**: `/solicitar-prestamo/electro/`, `/convenio/`, `/hipotecario/` y `/efectinegocios/` declaran canonical `/solicitar-prestamo/`, que hace 302 a `/solicitar-prestamo/efectivo/`.
+- **Home**: "Ver Producto" de pago de servicios → `/pago-de-servicio-nuevo-bulk/` (404); banner con UTM sin barra final (301).
+- **15 páginas de prueba o sistema indexables** (`/test/`, `/prueba/`, `/sample-page/`, `/hello-world/`, `/blog-2/` con "cURL ERROR 0", `/portada-marzo-2023/`, archivos de autor que exponen usuarios de WordPress).
+- **Enlaces a localhost y SafeLinks de Outlook** en 68 páginas, incluidas política de privacidad y términos; los SafeLinks llevan correos internos en el parámetro.
+- **Blog**: `/blog/` sin contenido y solo enlazada a sí misma; existen 3 artículos (desgravamen, membresía de tarjeta, CTS) huérfanos.
+- **Sin TEA/TCEA** en ninguna de las 6 páginas de préstamo revisadas; 206 de 255 páginas sin meta description; 51 indexables sin H1.
+- **Móvil (laboratorio)**: rendimiento 24-42, LCP 4.4-24.3 s, TBT 1.9-3.3 s; terceros bloquean 4.4 s en la home (GTM, Facebook, HubSpot, TikTok). Escritorio home: 75. Datos de campo: `SIN DATO`.
+- **Corregido desde el 16-oct**: el enlace a staging `qa2.efectiva.com.pe` del formulario ya no aparece.
+- `HIPÓTESIS`: `http://` respondió 503 desde el entorno de auditoría (proxy); verificar desde fuera.
+- Benchmark: SBS al 16-oct-2026 ubica a Efectiva con la tasa de ahorro (4.50%) y de plazo > 360 d (5.52%) más altas de la banca; en la muestra de búsquedas observada (buscador genérico, no Google Perú) efectibank.pe no apareció en ninguna de las 10 consultas.

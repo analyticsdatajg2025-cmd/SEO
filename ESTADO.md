@@ -12,7 +12,10 @@ Un solo repo con todo el conocimiento SEO del grupo, orientado a **más ganancia
 
 - 2026-10-16 (v3): corregidas las bases de la tabla de plata neta (solo web vs empresa completa; Motocorp por debajo de LC y EFE en total), Efectibank marcado como negocio que sí vende en digital (cuentas y créditos vía pauta), y nuevos pedidos B13 (venta de piso por marca) y B14 (pauta digital de Efectibank por objetivo).
 
+- 2026-10-19: **auditoría SEO de Efectibank** como dashboard `auditoria-seo-efectibank.html` (rastreo propio de 274 URLs, Lighthouse móvil en 9 páginas, benchmark con tasas SBS y webs de 11 competidores, keywords sin volumen, SEO vs pauta con calculadora vacía, priorización A01-A18, roadmap 30-60-90, dependencias). Resumen de hallazgos nuevos en `docs/08 §7`. No se modificó la web.
+
 ## Pendiente (orden)
+0. **Elias**: revisar `auditoria-seo-efectibank.html` y decidir si se presentan A01-A06 a Marketing y Legal de Efectibank esta semana (higiene + tasas; no dependen de Cyber).
 1. **Elias**: responder las preguntas de `docs/06`, dar los accesos A1-A8 y pedir a Efectibank los datos EF1-EF9 (`docs/08 §5`). Sin GSC y Ads por término no se confirma ni se mide nada.
 1b. **Elias**: entregar las cifras verificadas de agosto 2026 vs PY y el registro de cambios SEO (B11) para la referencia histórica; decidir el presupuesto de herramientas (`docs/09 §2b`).
 2. **Evaluar con Elias** los pesos (`docs/03`) y el plan (`docs/04`): qué entra antes de Cyber Wow (congelar 72 h antes, ~30-oct) y qué después.

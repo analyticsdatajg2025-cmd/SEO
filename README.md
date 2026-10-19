@@ -5,6 +5,7 @@ Repositorio único del área SEO: cifras de negocio, diagnóstico de los sitios,
 - Leer primero `CLAUDE.md` (reglas) y `ESTADO.md` (en qué vamos).
 - Guía para personas: `LEEME.md`.
 - Grafo del ecosistema: `grafo/ecosistema-seo.html`.
-- Documentos: `docs/01` a `docs/07`.
+- Auditoría SEO de Efectibank (dashboard): `auditoria-seo-efectibank.html`.
+- Documentos: `docs/01` a `docs/09`.
 
 Repo privado. No subir datos crudos ni credenciales.

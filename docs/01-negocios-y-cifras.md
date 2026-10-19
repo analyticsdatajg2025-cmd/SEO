@@ -125,6 +125,8 @@ Claves (F2, A2): Juntoz fue una startup comprada con pérdida (feb-2022) y **no 
 | Venta digital propia | Sí: apertura de cuentas y solicitudes de crédito; buena parte de su pauta va a esos dos objetivos (Elias). Orgánico: `SIN DATO` | Elias |
 | Alcance de la data de Conecta | **Solo web** (GA4 + tracker). La venta de piso de LC y EFE no está en las fichas; prensa y Elias: digital ≈ 25-32% del total | F1, A1 |
 | Margen de mercado usado en el modelo | S/ 25-35 netos por S/ 1,000 prestados (motos S/ 50-70); real Efectibank S/ 45-55 | `docs/08 §2` (`ESTIMACIÓN`) |
+| Tasas pasivas vs. banca (SBS) | Ahorro **4.50%** (promedio bancos 0.13%); plazo > 360 d **5.52%**, la más alta de la banca (promedio 4.10%). Moneda nacional, 30 días útiles al 16-oct-2026; validar columnas en el portal | SBS, consultado 19-oct-2026 |
+| Tasas publicadas en su web | Cuenta de ahorros digital TREA 4.50%; depósito a plazo TREA máx. 5.75% (1,080 d), con dos tablas contradictorias en la página | efectibank.pe, 19-oct-2026 |
 
 ## 7. Calendario comercial relevante
 - **Cyber Wow noviembre 2026**: prensa estima 2–5 nov (confirmar con IAB Perú). Días Cyber venden ~4x un día normal.
