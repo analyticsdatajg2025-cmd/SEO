@@ -125,6 +125,13 @@ Claves (F2, A2): Juntoz fue una startup comprada con pérdida (feb-2022) y **no 
 | Venta digital propia | Sí: apertura de cuentas y solicitudes de crédito; buena parte de su pauta va a esos dos objetivos (Elias). Orgánico: `SIN DATO` | Elias |
 | Alcance de la data de Conecta | **Solo web** (GA4 + tracker). La venta de piso de LC y EFE no está en las fichas; prensa y Elias: digital ≈ 25-32% del total | F1, A1 |
 | Margen de mercado usado en el modelo | S/ 25-35 netos por S/ 1,000 prestados (motos S/ 50-70); real Efectibank S/ 45-55 | `docs/08 §2` (`ESTIMACIÓN`) |
+| Tasas pasivas vs. banca (SBS) | Ahorro **4.50%** (promedio bancos 0.13%); plazo > 360 d **5.52%**, la más alta de la banca (promedio 4.10%). Moneda nacional, 30 días útiles al 16-oct-2026; validar columnas en el portal | SBS, consultado 19-oct-2026 |
+| Tasas publicadas en su web | Cuenta de ahorros digital TREA 4.50%; depósito a plazo TREA máx. 5.75% (1,080 d), con dos tablas contradictorias en la página | efectibank.pe, 19-oct-2026 |
+| Tráfico de campañas `EFECTIVA_…` a las webs de las tiendas | 1,951 sesiones y 0 compras web en 60 días (EFE 1,901; LC 50) | `cyber-dashboard/historico.json`, Yandex Metrica, 20-ago a 18-oct-2026 |
+| Demanda de búsqueda "motos a crédito" (genérica) | ~3,990 búsquedas/mes sin duplicar; Efectibank con < 1% de cuota de impresiones de anuncios en las dos principales | Planificador de Google Ads, oct-25 a sep-26, exportado 20-oct-2026 (`docs/08 §9`) |
+| Demanda de búsqueda "tarjeta digital / débito digital" | ~1,830 genérica + ~5,790 con marca de otro banco; −27% en 12 meses | Ídem |
+| efectibank.pe, septiembre 2026: vistas "gracias" (proxy de solicitud, no desembolso) | Landing simplificada 23,691 (+2,109 aprobado); préstamo efectivo 3,991; motos 1,310; electro 730; captación Rimac 15,147 | GA4, URL × sesiones, sep-2026, exportado 20-oct-2026 (`docs/08 §10`) |
+| efectibank.pe, septiembre 2026: canal visible por parámetros de URL | 78% sin parámetro; interno web 7.5%; Meta 6.5%; email 2.6%; app 1.7%; Comparabien 1.0%; Google Ads 0.8%; Grupo EFE 0.6% | Ídem |
 
 ## 7. Calendario comercial relevante
 - **Cyber Wow noviembre 2026**: prensa estima 2–5 nov (confirmar con IAB Perú). Días Cyber venden ~4x un día normal.

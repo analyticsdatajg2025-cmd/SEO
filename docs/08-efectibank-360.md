@@ -107,3 +107,146 @@ Posicionamiento competitivo observado en búsquedas (`HIPÓTESIS` desde SERP del
 | Descubrimiento e indexación de lo nuevo | Sitemap, enlaces internos, solicitud en GSC | Días a semanas tras publicar | Alta |
 | Posicionamiento | Marca y páginas ya indexadas: semanas. Términos financieros genéricos: **meses** (compiten bancos, cajas y comparadores) | 2027 | Muy alta |
 | Conversión medible | Solicitudes por página de origen | Desde que haya medición (EF3/EF4) | Depende de BI |
+
+## 7. Auditoría técnica externa del 19-oct-2026
+
+Dashboard completo: `auditoria-seo-efectibank.html` (raíz del repo). Rastreo propio de 274 URLs (sitemaps + enlaces), Lighthouse móvil en 9 páginas y benchmark con tasas de la SBS. Sin GSC, GA4 ni herramientas de pago. Lo nuevo frente a §3 (`COMPROBADO`, salvo indicación):
+
+- **Menú global con 404**: "Preguntas frecuentes" apunta a `/?page_id=1412` en 253 de 255 páginas; la FAQ real `/preguntas-frecuentes/` responde 200 pero está huérfana y fuera del sitemap.
+- **Canonical de formularios a una redirección**: `/solicitar-prestamo/electro/`, `/convenio/`, `/hipotecario/` y `/efectinegocios/` declaran canonical `/solicitar-prestamo/`, que hace 302 a `/solicitar-prestamo/efectivo/`.
+- **Home**: "Ver Producto" de pago de servicios → `/pago-de-servicio-nuevo-bulk/` (404); banner con UTM sin barra final (301).
+- **15 páginas de prueba o sistema indexables** (`/test/`, `/prueba/`, `/sample-page/`, `/hello-world/`, `/blog-2/` con "cURL ERROR 0", `/portada-marzo-2023/`, archivos de autor que exponen usuarios de WordPress).
+- **Enlaces a localhost y SafeLinks de Outlook** en 68 páginas, incluidas política de privacidad y términos; los SafeLinks llevan correos internos en el parámetro.
+- **Blog**: `/blog/` sin contenido y solo enlazada a sí misma; existen 3 artículos (desgravamen, membresía de tarjeta, CTS) huérfanos.
+- **Sin TEA/TCEA** en ninguna de las 6 páginas de préstamo revisadas; 206 de 255 páginas sin meta description; 51 indexables sin H1.
+- **Móvil (laboratorio)**: rendimiento 24-42, LCP 4.4-24.3 s, TBT 1.9-3.3 s; terceros bloquean 4.4 s en la home (GTM, Facebook, HubSpot, TikTok). Escritorio home: 75. Datos de campo: `SIN DATO`.
+- **Corregido desde el 16-oct**: el enlace a staging `qa2.efectiva.com.pe` del formulario ya no aparece.
+- `HIPÓTESIS`: `http://` respondió 503 desde el entorno de auditoría (proxy); verificar desde fuera.
+- Benchmark: SBS al 16-oct-2026 ubica a Efectiva con la tasa de ahorro (4.50%) y de plazo > 360 d (5.52%) más altas de la banca; en la muestra de búsquedas observada (buscador genérico, no Google Perú) efectibank.pe no apareció en ninguna de las 10 consultas.
+
+## 8. De qué canal vienen las ventas de Efectibank (cruce del 20-oct-2026)
+
+### Dónde está cada dato (revisión de los repos, 20-oct-2026)
+| Dato | Dónde está | Herramienta | Marcas | ¿Efectibank? |
+|---|---|---|---|---|
+| Sesiones, ingresos gross, compras y campañas por día | `cyber-dashboard` (`historico.json`, 60 días; `data.json`, hoy) | **Yandex Metrica**, no GA4 (atribución `lastsign`) | La Curacao, Tiendas EFE; Juntoz solo en Cyber | No: solo campañas `EFECTIVA_…` que llegan a las tiendas |
+| Venta neta diaria, CR y ticket neto | `cyber-dashboard` (`neto.json`, desde el Sheet del reporte diario) | Google Sheet | Tiendas EFE, La Curacao | No |
+| GA4 por canal y embudo | `dashboard-martech-efe`: el código del hub está en el repo; **los datos viven en Google Sheets / Drive**, no en el repo | GA4 Data API (una propiedad por script) | Juntoz (LC/EFE en homologación, sin código) | No |
+| Venta gross / neta oficial | `dashboard-martech-efe`: Excel Daily y Pedidos, cargados en el navegador (no en el repo) | Excel manual | Juntoz | No |
+| Conector GA4 | `ga4-mcp-powerbi` (servidor, sin datos) | GA4 Data API | Una propiedad (no se sabe cuál) | SIN DATO |
+| Search Console | En ningún repo. El panel SEO de MKT-SISTEMA guarda GSC de la tienda en la nube (Cloudflare), aún sin clave | GSC API | Tiendas EFE | No |
+| Solicitudes, desembolsos, cartera por canal | En ningún repo (core financiero / CRM de Efectibank) | — | — | **SIN DATO** |
+
+**Conclusión:** hoy no existe GA4, Search Console ni venta (desembolsos) de efectibank.pe en ningún repo. El cruce GA4 × ventas × GSC para Efectibank **no se puede hacer** hasta tener esos tres accesos.
+
+### Lo único medible: la pauta de Efectiva que aterriza en las tiendas (COMPROBADO, Yandex, 20-ago a 18-oct-2026)
+| Sitio | Campaña (utm_campaign) | Sesiones | Compras | Ingresos |
+|---|---|---|---|---|
+| Tiendas EFE | `EFECTIVA_social-media_facebook_prestamo_aon_2026_7_alcance_prestamos-electro-julio` (y la `_6_`) | 1,869 | 0 | S/ 0 |
+| Tiendas EFE | `41216298-EFECTIVA_JUNTOZ` | 32 | 0 | S/ 0 |
+| La Curacao | `41216298-EFECTIVA_JUNTOZ` y `efectiva_captacion_2025q3` | 50 | 0 | S/ 0 |
+
+Fuente: `cyber-dashboard/historico.json` (Yandex Metrica, último clic significativo), generado 19-oct-2026. Para comparar: en esos 60 días Tiendas EFE tuvo 1.71 M sesiones y S/ 5.53 M de ingresos gross; La Curacao, 1.70 M sesiones y S/ 8.40 M.
+
+Lectura:
+- Una campaña de Meta de Efectiva **de alcance**, nombrada "julio", sigue trayendo tráfico en octubre (58 de 60 días). Revisar con pauta si está activa a propósito. `HIPÓTESIS`: la campaña lleva a la página de préstamo electro dentro de la tienda.
+- 0 compras no prueba que no venda: el crédito se cierra en tienda o en el core, y el CRM no está cruzado con estas visitas. Solo dice que **la web de la tienda no registra venta online atribuida a esa campaña**.
+
+### Canales de Efectibank × keywords principales (estado al 20-oct-2026)
+Volumen de búsqueda, clics y ventas por canal: `SIN DATO` mientras no haya GSC, GA4 y CRM de Efectibank. Las keywords salen de la auditoría del 19-oct (`auditoria-seo-efectibank.html`, pestaña Keywords).
+
+| Canal | Keywords principales | Dato de tráfico | Dato de venta (desembolso) | Estado |
+|---|---|---|---|---|
+| SEO marca | efectibank, efectibank app, financiera efectiva, banco efectiva | SIN DATO (falta GSC) | SIN DATO | No suma como SEO incremental: es demanda de marca |
+| SEO no marca · préstamos | préstamo efectivo, préstamo personal, préstamo con DNI, préstamo sin aval, préstamo para moto, crédito moto 0% inicial, crédito para electrodomésticos | SIN DATO | SIN DATO | Prioridad de captación (`docs/08 §4`) |
+| SEO no marca · ahorro | cuenta de ahorros mejor tasa, depósito a plazo fijo mejor tasa, plazo fijo 1 año | SIN DATO | SIN DATO | Diferencial de tasa (SBS) sin usar en titles |
+| SEO local | efectibank Piura, agencias efectibank, préstamo en Trujillo | SIN DATO (sin GBP) | SIN DATO | Cierra en oficina: necesita GBP + páginas por oficina |
+| Paid Social (Meta) | — | 1,951 sesiones a tiendas (arriba) | 0 compras web; desembolsos SIN DATO | Único canal con dato, y solo hacia las tiendas |
+| Paid Search | — | SIN DATO | SIN DATO | Falta inversión, CPA y términos de búsqueda |
+| Referido retail (Conecta: LC + EFE, Motocorp) | — | SIN DATO | 30-40% de la venta de Conecta y Motocorp se financia con Efectibank (Elias) | Es el canal grande conocido, pero no se mide por web |
+| App | efectibank app | SIN DATO | SIN DATO | Ficha Android 2.6★ (§3) |
+
+### Qué hace falta para responder con datos (y dónde cargarlo)
+1. **GA4 de efectibank.pe**: dar Lector a la cuenta de servicio o exportar CSV de adquisición de tráfico (fuente / medio / campaña / página de destino + eventos clave).
+2. **Search Console de efectibank.pe**: export Fechas + Consultas (o la API) para separar marca de no marca.
+3. **CRM / core**: solicitudes y desembolsos con id, fecha, monto, margen y `utm_source` / `utm_medium` / `utm_campaign` de origen (o "tienda / oficina" cuando es presencial).
+4. **Pauta de Efectiva**: inversión y conversiones por campaña.
+Con esos cuatro, `dashboard-atribucion-canales.html` arma el cruce (canal × keyword × desembolso) sin código nuevo.
+
+## 9. Demanda de búsqueda: planificador de palabras clave (archivo del 20-oct-2026)
+
+**Qué es el archivo:** `Keyword_Stats_2026-10-20_at_11_26_28.csv` (subido por Elias, no está en el repo). Es una exportación del **Planificador de palabras clave de Google Ads**, no de Search Console: trae búsquedas mensuales promedio, competencia y CPC de **oct-2025 a sep-2026** (12 meses). No trae clics, impresiones ni posición de efectibank.pe. Las columnas de cuota de impresiones orgánica y posición orgánica vienen **vacías** (la cuenta de Ads no está vinculada a Search Console), así que **la posición orgánica de Efectibank sigue en `SIN DATO`**.
+
+785 keywords en dos temas. El planificador repite el volumen en variantes cercanas ("motos a credito" y "motocicletas a credito", 880 cada una), así que se suma sin duplicar series idénticas (`HIPÓTESIS`: puede juntar dos keywords distintas con la misma serie).
+
+| Tema | Keywords | Búsquedas/mes sin duplicar | Tendencia (oct-25 → sep-26) | CPC parte alta de la página (USD) |
+|---|---|---|---|---|
+| Motos a crédito, genéricas | 320 | ~3,990 | Estable a creciente; pico mar–may (~4,100–4,280/mes) | 0.02–0.63 (muy barato) |
+| Motos a crédito con marca de moto (Honda, Bajaj, Yamaha…) | 86 | ~490 | — | bajo |
+| Tarjeta de débito / tarjeta digital, genéricas | 140 | ~1,830 | En caída: el tema total pasa de 7,750 a 5,640 (−27%) | 0.3–6.7 |
+| Tarjeta digital de otro banco (Interbank, BCP, BBVA…) | 136 | ~5,790 | En caída | 0.3–28 |
+| Otros (financiamiento por marca de moto, CMR, bancos de otros países) | 103 | ~590 | — | — |
+| **Marca Efectibank / Efectiva** | 0 | — | — | No está en el plan |
+
+Fuente: planificador de Google Ads, exportado el 20-oct-2026. Algunas keywords son de otros países ("banco de bogota", "brubank", "uala"): revisar la ubicación del plan.
+
+**Keywords principales (genéricas)**
+- Motos: *motos a credito* / *motocicletas a credito* (880/mes, +22% interanual), *financiamiento de motos* (390, +22%), *motos en cuotas* (210), *moto a credito sin cuota inicial* (170, −35%), *financiamiento moto* / *credito para moto* (110–140), *moto en cuotas solo con dni* (110, **+125%**), *motos en cuotas sin interes* (110, **+100%**).
+- Tarjeta: *tarjeta digital* (880, −18%), *tarjeta de débito digital* (110, −36%), *tarjeta de crédito digital* (110).
+
+**Cómo estamos (lo que el archivo sí dice)**
+- **Pauta:** Efectibank aparece con cuota de impresiones de anuncios **< 1%** en *motos a credito* y *motocicletas a credito* (las de más volumen) y 3–10% en tres de cola larga (*moto electrica a credito*, *motos a credito sin inicial*, *quiero sacar una moto a credito*). En el resto, nada. Casi no compite en pago por la demanda de motos, y el clic es de centavos.
+- **Orgánico:** `SIN DATO`. Para saberlo hace falta Search Console de efectibank.pe (Fechas + Consultas) o vincular Search Console con la cuenta de Ads, que llena las dos columnas orgánicas de este mismo archivo.
+- **Lo que no está en el plan:** préstamo efectivo / personal, préstamo con DNI, cuenta de ahorros, depósito a plazo, simulador y la marca. Son los grupos de la auditoría (`auditoria-seo-efectibank.html`, Keywords): para medir su demanda hay que repetir el planificador con esas semillas.
+
+**Lectura para el plan (`HIPÓTESIS`, validar con Search Console)**
+1. Motos a crédito es la demanda genérica más grande y estable del archivo (~4 K búsquedas/mes), crece en lo que dice "solo con DNI" y "sin interés", y conecta con Motocorp (30–40% de su venta se financia con Efectibank). Es el primer candidato para la landing por intención de la acción A14 de la auditoría.
+2. Tarjeta digital es demanda de otros bancos (3 de cada 4 búsquedas nombran a Interbank, BCP o BBVA) y va en caída: segunda prioridad.
+3. Siguiente paso: exportar de Search Console de efectibank.pe los últimos 3 meses (Fechas y Consultas) para ver en qué posición está para estas keywords y cuántos clics de marca y no marca tiene.
+
+## 10. GA4 de efectibank.pe, septiembre 2026 (archivo del 20-oct-2026)
+
+**Qué es el archivo:** `ga4_efectibank_setiembre_2026.csv` (subido por Elias, no está en el repo): 29,865 filas de **URL de página completa × sesiones** de septiembre 2026. **No trae fuente / medio, eventos clave ni ingresos.** Dos límites:
+- La suma por página (338,454) **no es el total de sesiones**: una sesión que ve 3 páginas cuenta 3 veces. `SIN DATO` el total real.
+- El canal solo se puede deducir de los parámetros de la URL (`cod_canal`, `cod_campana`, `fbclid`, `gclid`, `_hsenc`…). El 78% de las vistas no trae parámetros: ahí están juntos orgánico, directo y referidos no marcados, y **no se pueden separar** con este archivo.
+
+### Canal deducido por parámetros de URL (vistas de página con sesión, sep-2026)
+| Canal (por parámetro) | Sesiones | % | Qué es |
+|---|---|---|---|
+| Sin parámetro (orgánico + directo + referido sin marcar) | 265,457 | 78.4% | No separable sin la dimensión fuente / medio |
+| Interno web (`cod_canal` 300/307: banner de producto, home, menú, asistente María) | 25,551 | 7.5% | Tráfico que ya estaba en el sitio y pasa a la landing simplificada: **no es captación** |
+| Meta (`fbclid`) | 21,850 | 6.5% | Sobre todo a la home (7,561) y a remesas (6,533) |
+| Email (HubSpot `_hsenc`, `Mailing2026`) | 8,727 | 2.6% | Lleva la mayoría de las solicitudes de motos y electro (abajo) |
+| App (`APPbannerpromo`) | 5,912 | 1.7% | |
+| Comparabien (comparador) | 3,328 | 1.0% | |
+| Google Ads (`gclid`, `gad_source`, campaña "Brain") | 2,784 | 0.8% | Cuenta de ahorros 446 |
+| Referido Grupo EFE (`cod_canal` 309, `GRUPOEFE092026a-d`) | 2,003 | 0.6% | Botones o enlaces desde el retail del grupo |
+| Referido Juntoz (`BotonWebJuntoz`) | 771 | 0.2% | |
+| Otros (call center, QR, volantes, tienda, posts orgánicos) | 2,071 | 0.6% | |
+
+### Embudos (vistas de la página "gracias", proxy de solicitud enviada; no es desembolso)
+| Flujo | Formulario | Gracias | Gracias / formulario | Canal visible del formulario |
+|---|---|---|---|---|
+| Landing simplificada (préstamo efectivo) | 55,876 | 23,691 (+ 2,109 en `/aprobado/`) | 42% (aprobado: 3.8% del formulario) | Interno web 46%, sin parámetro 27%, app 11%, Comparabien 6% |
+| Solicitar préstamo efectivo | 7,863 | 3,991 | 51% | Sin parámetro |
+| Solicitar préstamo motos | 6,782 | 1,310 | 19% | **Email 81%** |
+| Solicitar préstamo electro | 2,277 | 730 | 32% | **Email 62%** |
+| Captación de datos Rimac | 25,876 | 15,147 | 59% | Sin parámetro (es captación para un aliado, no préstamo) |
+
+Las páginas "gracias" pierden los parámetros: la conversión **no se puede atribuir por URL**. Se necesita el informe con fuente / medio y eventos clave.
+
+### Lo que dice para el SEO (`HIPÓTESIS`, validar con fuente / medio y Search Console)
+- **Motos:** la demanda genérica es ~4 K búsquedas/mes (`§9`), pero la página de producto `/prestamos/prestamo/prestamo-motos/` tuvo solo 1,053 sesiones en el mes y las solicitudes de motos llegan en un 81% por email. El orgánico y la pauta casi no captan esa demanda: la landing de motos por intención (acción A14) es la oportunidad más clara.
+- **Préstamo efectivo:** página de producto con 11,511 sesiones casi sin parámetros: es la que más puede venir de búsqueda (marca o no marca, `SIN DATO` sin GSC).
+- **Ahorros:** cuenta de ahorros (13,858) y depósito a plazo (6,054) casi sin pauta: candidatas fuertes a tráfico orgánico; confirmar con GSC.
+- **Agencias** (13,870) y **simulador** (5,446) tienen tráfico alto sin parámetros: demanda local y de cálculo que respalda las páginas por oficina y el simulador indexable.
+
+### Problemas de calidad de datos (para BI y TI de Efectibank)
+1. **Datos personales en GA4:** 123 URLs (327 sesiones) llevan número de documento, tipo de documento o celular en la URL. Va contra las políticas de Google Analytics y la ley de protección de datos personales: hay que sacarlos de la URL (enviar por POST) y pedir a Google el borrado de esos datos. **Urgente.**
+2. **Hosts ajenos en la propiedad de producción:** QA (`qa2.efectiva.com.pe`), un servidor de pruebas en DigitalOcean, un dominio de terceros y `127.0.0.1`. Filtrar por host en GA4.
+3. **Doble sistema de marcado:** `cod_canal`/`cod_campana` propios conviven con UTM casi sin usar y con `cod_campania` (otra grafía). Unificar con UTM + el código interno.
+4. **Tráfico interno marcado como campaña:** banners y menú del propio sitio usan `cod_campana`; si eso pisa la fuente en GA4, la captación real queda subestimada.
+
+### Qué pedir para cerrar "de qué canal vienen las ventas"
+GA4 › Explorar › Exploración libre de septiembre (y del año anterior): **Fuente / medio de la sesión, Campaña de la sesión, Página de destino** + **Sesiones, Eventos clave** (y el evento de solicitud enviada). Más Search Console (Fechas + Consultas) y desembolsos del core con el canal de origen. Todo entra en `dashboard-atribucion-canales.html`.
+

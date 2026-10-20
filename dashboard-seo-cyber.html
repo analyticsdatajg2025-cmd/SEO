@@ -1,0 +1,505 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Panel SEO Cyber</title>
+<meta name="description" content="Tareas principales del área SEO del Grupo EFE y cruce con Google Search Console para comparar clics de Cyber vs el año anterior.">
+<meta name="robots" content="noindex, nofollow">
+<style>
+:root{
+  --bg:#c9ced8; --app:#f6f7fb; --side:#ffffff; --card:#ffffff; --soft:#eef0fb; --soft-2:#f3f4fa;
+  --line:#e7e9f2; --text:#1d2238; --muted:#6b7190; --faint:#9aa0b8;
+  --accent:#5b5bd6; --accent-2:#8a8af0; --accent-soft:#e6e6fb; --teal:#22c3b4; --teal-soft:#dcf6f2;
+  --py:#b8bdd6;
+  --crit:#d64545; --crit-soft:#fdeaea; --high:#d9822b; --high-soft:#fdf0e1; --med:#b89411; --med-soft:#faf3d6;
+  --ok:#1e9e6a; --ok-soft:#e1f5ec; --block:#7a5bd6; --block-soft:#efe9fd;
+  --shadow:0 1px 2px rgba(30,35,70,.04),0 6px 18px rgba(30,35,70,.06);
+  --r:16px; --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0c0e16; --app:#11141f; --side:#161a27; --card:#181c2a; --soft:#1f2437; --soft-2:#1b2031;
+    --line:#2a3046; --text:#e7e9f4; --muted:#a3a9c4; --faint:#747b98;
+    --accent:#8e8ef7; --accent-2:#6c6ce6; --accent-soft:#272a52; --teal:#3dd9c9; --teal-soft:#173a37; --py:#5d6383;
+    --crit:#f07c7c; --crit-soft:#3b1d22; --high:#f2a65a; --high-soft:#3a2a18; --med:#e3c24f; --med-soft:#352f15;
+    --ok:#4fd19a; --ok-soft:#163327; --block:#b39cf5; --block-soft:#2a2246; --shadow:none;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0c0e16; --app:#11141f; --side:#161a27; --card:#181c2a; --soft:#1f2437; --soft-2:#1b2031;
+  --line:#2a3046; --text:#e7e9f4; --muted:#a3a9c4; --faint:#747b98;
+  --accent:#8e8ef7; --accent-2:#6c6ce6; --accent-soft:#272a52; --teal:#3dd9c9; --teal-soft:#173a37; --py:#5d6383;
+  --crit:#f07c7c; --crit-soft:#3b1d22; --high:#f2a65a; --high-soft:#3a2a18; --med:#e3c24f; --med-soft:#352f15;
+  --ok:#4fd19a; --ok-soft:#163327; --block:#b39cf5; --block-soft:#2a2246; --shadow:none;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--text);font:14px/1.5 "Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;padding:24px 16px}
+button,input,select{font:inherit;color:inherit}
+a{color:var(--accent)}
+.app{max-width:1280px;margin:0 auto;background:var(--app);border-radius:22px;overflow:hidden;display:grid;grid-template-columns:220px minmax(0,1fr);min-height:calc(100vh - 48px);box-shadow:0 20px 60px rgba(20,25,60,.18)}
+/* Sidebar */
+aside{background:var(--side);border-right:1px solid var(--line);padding:22px 16px;display:flex;flex-direction:column;gap:6px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:16px;margin:0 6px 22px}
+.brand i{width:28px;height:28px;border-radius:50%;background:conic-gradient(var(--accent) 0 70%,var(--teal) 70% 100%);display:inline-block;position:relative}
+.brand i::after{content:"";position:absolute;inset:7px;border-radius:50%;background:var(--side)}
+.nav-h{font-size:11px;font-weight:700;color:var(--faint);text-transform:uppercase;letter-spacing:.06em;margin:14px 8px 4px}
+.nav button{display:flex;align-items:center;gap:10px;width:100%;background:none;border:0;border-radius:10px;padding:8px 10px;color:var(--muted);cursor:pointer;text-align:left;font-size:13px}
+.nav button:hover{background:var(--soft-2)}
+.nav button[aria-current="true"]{background:var(--accent-soft);color:var(--accent);font-weight:700}
+.nav svg{width:16px;height:16px;flex:none}
+.side-foot{margin-top:auto;background:var(--soft-2);border-radius:14px;padding:12px;font-size:12px;color:var(--muted)}
+.side-foot b{display:block;color:var(--text);font-size:13px}
+/* Main */
+main{padding:22px 26px 34px;min-width:0}
+.top{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+.top h1{font-size:20px;margin:0 8px 0 0}
+.search{flex:1 1 220px;max-width:340px;display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:7px 12px;color:var(--faint)}
+.search input{border:0;outline:0;background:none;width:100%;color:var(--text)}
+.top .icons{margin-left:auto;display:flex;gap:8px}
+.icon-btn{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:var(--card);display:grid;place-items:center;cursor:pointer;color:var(--muted)}
+.icon-btn svg{width:16px;height:16px}
+.view{display:none}
+.view.active{display:block}
+.card{background:var(--card);border-radius:var(--r);padding:18px;box-shadow:var(--shadow);min-width:0;border:1px solid var(--line)}
+.card h3{margin:0;font-size:15px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.card .sub{color:var(--muted);font-size:12px;margin:2px 0 12px}
+.more{color:var(--faint);font-weight:800;letter-spacing:2px}
+.grid{display:grid;gap:16px}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g2-1{grid-template-columns:minmax(0,2fr) minmax(0,1fr)}
+.g1-1{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (max-width:1100px){.g3{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:900px){.app{grid-template-columns:1fr}aside{flex-direction:row;flex-wrap:wrap;align-items:center;padding:12px 14px;border-right:0;border-bottom:1px solid var(--line)}.brand{margin:0 10px 0 0}.nav-h,.side-foot{display:none}.nav{display:flex;flex-wrap:wrap;gap:4px}.nav button{width:auto}.g3,.g2-1,.g1-1{grid-template-columns:1fr}main{padding:18px 14px 28px}body{padding:0}.app{border-radius:0;min-height:100vh}}
+/* Hero */
+.hero{position:relative;overflow:hidden;border-radius:var(--r);padding:20px;background:linear-gradient(120deg,var(--accent-soft),var(--soft) 55%,var(--teal-soft));margin-bottom:16px;border:1px solid var(--line)}
+.hero::after{content:"";position:absolute;right:-60px;top:-80px;width:340px;height:340px;border-radius:50%;background:repeating-radial-gradient(circle at 50% 50%,rgba(91,91,214,.18) 0 2px,transparent 2px 9px);pointer-events:none}
+.hero h2{margin:0;font-size:18px}
+.hero p{margin:2px 0 14px;color:var(--muted);font-size:12px}
+.tiles{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;position:relative;z-index:1}
+@media (max-width:1000px){.tiles{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:560px){.tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.tile{background:color-mix(in srgb,var(--card) 82%,transparent);backdrop-filter:blur(6px);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.tile .v{font-size:24px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.15}
+.tile .v small{font-size:12px;font-weight:600;color:var(--muted);margin-left:4px}
+.tile .l{font-size:12px;color:var(--muted)}
+/* Donut */
+.donut-wrap{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.donut{width:150px;height:150px;flex:none}
+.legend{display:grid;gap:8px;font-size:12px}
+.legend div{display:flex;align-items:center;gap:8px}
+.legend i{width:9px;height:9px;border-radius:50%;flex:none}
+.legend b{font-variant-numeric:tabular-nums}
+/* Bars */
+.bars-v{display:flex;align-items:flex-end;gap:14px;height:170px;padding:8px 4px 0;border-bottom:1px solid var(--line)}
+.bars-v .col{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end}
+.bars-v .stack{position:relative;width:min(42px,100%);height:100%;display:flex;align-items:flex-end}
+.bars-v .cap{position:absolute;left:-6px;right:-6px;border-top:2px dashed var(--teal)}
+.bars-v .rng{width:100%;border-radius:10px 10px 4px 4px;background:linear-gradient(var(--accent),var(--accent-2))}
+.bars-v .rng.lo{background:var(--accent-soft);position:absolute;bottom:0}
+.bars-v .lab{font-size:11px;color:var(--muted);text-align:center}
+.bars-key{display:flex;gap:14px;font-size:11px;color:var(--muted);margin-top:8px;flex-wrap:wrap}
+.bars-key span{display:flex;align-items:center;gap:6px}
+.bars-key i{width:14px;height:8px;border-radius:3px;display:inline-block}
+/* Timeline */
+.tl{display:grid;gap:8px}
+.tl div{display:grid;grid-template-columns:86px 1fr;gap:10px;font-size:12px;align-items:start}
+.tl b{color:var(--accent);font-variant-numeric:tabular-nums}
+.tl .now{color:var(--crit)}
+/* Tasks */
+.filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+.filters select{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:6px 10px}
+.count{color:var(--muted);font-size:12px;margin-left:auto}
+.tasks{display:grid;gap:8px}
+.task{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:start;padding:12px;border-radius:12px;background:var(--soft-2);border:1px solid transparent}
+.task:hover{border-color:var(--line)}
+.task .ico{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font-weight:800;font-size:12px}
+.task h4{margin:0;font-size:13.5px}
+.task .meta{font-size:11.5px;color:var(--muted);margin-top:2px}
+.task .why{font-size:12px;color:var(--muted);margin-top:4px}
+.task .right{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.task select{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:3px 8px;font-size:11.5px;font-weight:700}
+.tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.t-crit{background:var(--crit-soft);color:var(--crit)} .t-high{background:var(--high-soft);color:var(--high)} .t-med{background:var(--med-soft);color:var(--med)}
+.t-ok{background:var(--ok-soft);color:var(--ok)} .t-block{background:var(--block-soft);color:var(--block)} .t-acc{background:var(--accent-soft);color:var(--accent)} .t-nd{background:var(--soft);color:var(--muted)}
+.dep{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--line)}
+.dep:last-child{border-bottom:0}
+.dep .av{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:12px;color:#fff;flex:none}
+.dep b{font-size:13px;display:block}
+.dep small{color:var(--muted);font-size:11.5px}
+.dep .end{margin-left:auto;text-align:right;font-size:12px;font-weight:700}
+/* GSC */
+.upl{display:grid;gap:10px}
+.drop{border:1.5px dashed var(--line);border-radius:12px;padding:12px;background:var(--soft-2);font-size:12px;color:var(--muted)}
+.drop b{color:var(--text);font-size:13px;display:block;margin-bottom:2px}
+.drop input[type=file]{margin-top:8px;max-width:100%;font-size:12px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:end}
+.row label{font-size:12px;color:var(--muted);display:grid;gap:3px}
+.row input[type=date],.row select{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:6px 8px}
+.btn{background:var(--accent);color:#fff;border:0;border-radius:10px;padding:8px 14px;font-weight:700;cursor:pointer}
+.btn.ghost{background:var(--accent-soft);color:var(--accent)}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:16px}
+@media (max-width:900px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;box-shadow:var(--shadow)}
+.kpi .l{font-size:12px;color:var(--muted)}
+.kpi .v{font-size:22px;font-weight:800;font-variant-numeric:tabular-nums;line-height:1.2}
+.kpi .d{font-size:12px;font-weight:700;margin-top:2px}
+.up{color:var(--ok)} .down{color:var(--crit)} .flat{color:var(--muted)}
+.chart{width:100%;height:auto;display:block}
+.chart text{fill:var(--faint);font-size:11px;font-family:inherit}
+.tip{position:fixed;pointer-events:none;background:var(--text);color:var(--card);font-size:12px;padding:6px 9px;border-radius:8px;opacity:0;transition:opacity .1s;z-index:10;white-space:nowrap}
+.tablewrap{overflow:auto;max-height:420px;border:1px solid var(--line);border-radius:12px}
+table{border-collapse:collapse;width:100%;font-size:12.5px}
+th,td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{position:sticky;top:0;background:var(--soft-2);color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.04em}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+td.u{max-width:380px;overflow-wrap:anywhere;font-family:var(--mono);font-size:11.5px}
+.empty{border:1.5px dashed var(--line);border-radius:14px;padding:26px;text-align:center;color:var(--muted);font-size:13px}
+.note{background:var(--soft-2);border-left:3px solid var(--accent);border-radius:8px;padding:10px 12px;font-size:12px;color:var(--muted);margin:12px 0}
+.note.warn{border-left-color:var(--high)}
+.note b{color:var(--text)}
+.seg{display:inline-flex;background:var(--soft);border-radius:10px;padding:3px;gap:2px}
+.seg button{border:0;background:none;border-radius:8px;padding:5px 10px;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--card);color:var(--accent);box-shadow:var(--shadow)}
+.sites{display:flex;gap:6px;flex-wrap:wrap}
+.sites button{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:4px 10px;font-size:12px;cursor:pointer;color:var(--muted)}
+.sites button[aria-pressed="true"]{background:var(--accent);color:#fff;border-color:var(--accent)}
+.sites button .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--ok);margin-left:6px;vertical-align:middle}
+h2.section{font-size:16px;margin:0 0 4px}
+p.lead{color:var(--muted);margin:0 0 14px;font-size:13px;max-width:900px}
+footer{color:var(--faint);font-size:11px;margin-top:22px}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside>
+    <div class="brand"><i aria-hidden="true"></i>SEO Grupo EFE</div>
+    <div class="nav-h">Inicio</div>
+    <nav class="nav" aria-label="Secciones">
+      <button data-v="panel" aria-current="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg>Panel</button>
+      <button data-v="tareas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 6l1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2"/></svg>Tareas</button>
+      <button data-v="gsc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l5-6 4 3 5-7 4 4"/><path d="M3 21h18"/></svg>Cyber vs año pasado</button>
+      <button data-v="datos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>Fechas y fuentes</button>
+    </nav>
+    <div class="side-foot"><b>Hoy: 19-oct-2026</b>Cyber Wow nov.: 2–5 nov (prensa, falta confirmación de IAB). Congelamiento SEO: 30-oct.</div>
+  </aside>
+
+  <main>
+    <div class="top">
+      <h1 id="title">Panel</h1>
+      <label class="search"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="q" type="search" placeholder="Buscar tarea, sitio o responsable" aria-label="Buscar"></label>
+      <div class="icons"><button class="icon-btn" id="theme" type="button" aria-label="Cambiar tema"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 13A9 9 0 1111 3a7 7 0 0010 10z"/></svg></button></div>
+    </div>
+
+    <!-- PANEL -->
+    <section class="view active" id="v-panel">
+      <div class="hero">
+        <h2>Tareas SEO · antes, durante y después de Cyber</h2>
+        <p>Estado de las tareas principales (lo editas en la pestaña Tareas; se guarda en este navegador).</p>
+        <div class="tiles" id="tiles"></div>
+      </div>
+      <div class="grid g3">
+        <div class="card">
+          <h3>Tareas por estado <span class="more">···</span></h3>
+          <p class="sub">Total de tareas principales</p>
+          <div class="donut-wrap"><svg class="donut" id="donut" viewBox="0 0 120 120" role="img" aria-label="Tareas por estado"></svg><div class="legend" id="donutLeg"></div></div>
+        </div>
+        <div class="card">
+          <h3>Carga vs capacidad del SEO Senior <span class="more">···</span></h3>
+          <p class="sub">Horas/mes, ESTIMACIÓN de docs/04 (no es medición)</p>
+          <div class="bars-v" id="load"></div>
+          <div class="bars-key"><span><i style="background:var(--accent-soft)"></i>Carga mínima</span><span><i style="background:linear-gradient(var(--accent),var(--accent-2))"></i>Rango hasta la máxima</span><span><i style="border-top:2px dashed var(--teal);height:0;width:16px"></i>Capacidad máx.</span></div>
+        </div>
+        <div class="card">
+          <h3>Calendario Cyber <span class="more">···</span></h3>
+          <p class="sub">Ventanas que mandan sobre las tareas</p>
+          <div class="tl" id="tl"></div>
+        </div>
+      </div>
+      <div class="grid g2-1" style="margin-top:16px">
+        <div class="card">
+          <h3>Clics orgánicos en Cyber · 2026 vs 2025 <button class="btn ghost" type="button" data-go="gsc">Cargar GSC</button></h3>
+          <p class="sub" id="miniSub">Sin datos de Search Console cargados</p>
+          <div id="miniChart"><div class="empty">Sube el export de Search Console en "Cyber vs año pasado" para ver la comparación.<br><b>Ningún número de esta sección se inventa.</b></div></div>
+        </div>
+        <div class="card">
+          <h3>Lo urgente esta semana <span class="more">···</span></h3>
+          <p class="sub">Críticas y no terminadas</p>
+          <div id="urgent"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAREAS -->
+    <section class="view" id="v-tareas">
+      <h2 class="section">Tareas principales a atacar</h2>
+      <p class="lead">Priorizadas por impacto en dinero neto y por la ventana de Cyber. Fuente: <code>docs/04</code> (roadmap), <code>ESTADO.md</code> y la auditoría de Efectibank. El estado se guarda solo en este navegador.</p>
+      <div class="grid g2-1">
+        <div class="card">
+          <div class="filters">
+            <select id="fSite" aria-label="Sitio"><option value="">Todos los sitios</option></select>
+            <select id="fPri" aria-label="Prioridad"><option value="">Toda prioridad</option><option value="crit">Crítica</option><option value="high">Alta</option><option value="med">Media</option></select>
+            <select id="fSt" aria-label="Estado"><option value="">Todo estado</option></select>
+            <select id="fWin" aria-label="Ventana"><option value="">Toda ventana</option><option>Antes de Cyber</option><option>Durante Cyber</option><option>Después de Cyber</option></select>
+            <span class="count" id="tCount"></span>
+          </div>
+          <div class="tasks" id="tasks"></div>
+        </div>
+        <div class="card">
+          <h3>De quién depende <span class="more">···</span></h3>
+          <p class="sub">Tareas abiertas por responsable externo al equipo SEO</p>
+          <div id="deps"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GSC -->
+    <section class="view" id="v-gsc">
+      <h2 class="section">Cruce con Search Console: clics de Cyber vs año pasado</h2>
+      <p class="lead">No hay acceso directo a GSC desde aquí: descargas el export y lo subes. Los datos se procesan solo en tu navegador, no se envían a ningún lado. Compara la ventana Cyber de este año con la del año pasado (mismos días de la semana) y con las 4 semanas previas a cada una, para separar el efecto Cyber de la tendencia del sitio.</p>
+      <div class="grid g1-1">
+        <div class="card upl">
+          <h3>1. Sitio y evento</h3>
+          <div class="sites" id="sites"></div>
+          <div class="row">
+            <label>Evento<select id="ev"></select></label>
+            <label>Inicio 2026<input type="date" id="c0"></label>
+            <label>Fin 2026<input type="date" id="c1"></label>
+            <label>Inicio año pasado<input type="date" id="p0"></label>
+            <label>Fin año pasado<input type="date" id="p1"></label>
+          </div>
+          <div class="note">El año pasado se alinea por día de la semana (Cyber Wow nov. 2025 fue de lunes 3 a jueves 6; el de 2026 sería de lunes 2 a jueves 5). Cambia las fechas si IAB confirma otras.</div>
+        </div>
+        <div class="card upl">
+          <h3>2. Sube los exports de GSC</h3>
+          <div class="drop"><b>Fechas.csv (obligatorio)</b>GSC › Rendimiento › Resultados de búsqueda › rango "Últimos 16 meses" (o uno que cubra ambos Cyber) › Exportar › CSV. Descomprime el ZIP y sube <code>Fechas.csv</code>.<br><input type="file" id="fDates" accept=".csv,text/csv"></div>
+          <div class="drop"><b>Páginas.csv o Consultas.csv (opcional)</b>Exporta con <i>Comparar</i> (rango personalizado: Cyber 2026 vs Cyber año pasado). El archivo trae dos columnas de clics y se calcula quién gana y quién pierde.<br><input type="file" id="fCmp" accept=".csv,text/csv"></div>
+          <p class="sub" id="upMsg" role="status"></p>
+        </div>
+      </div>
+
+      <div id="gscOut" style="margin-top:16px"><div class="empty">Aún no hay datos. Sube <b>Fechas.csv</b> del sitio seleccionado.</div></div>
+      <div class="note warn"><b>Ojo con la retención de 16 meses de GSC.</b> Los datos de Cyber Wow julio 2025 (14–17 jul) desaparecen de GSC alrededor del 14-nov-2026 y los de noviembre 2025 (3–6 nov) alrededor del 3-mar-2027. Exporta y guarda en Drive ya: después no se recuperan.</div>
+    </section>
+
+    <!-- DATOS -->
+    <section class="view" id="v-datos">
+      <h2 class="section">Fechas, fuentes y cómo leer el cruce</h2>
+      <div class="grid g1-1">
+        <div class="card">
+          <h3>Fechas de Cyber Wow</h3>
+          <div class="tablewrap" style="margin-top:10px"><table>
+            <thead><tr><th>Edición</th><th>2025</th><th>2026</th><th>Fuente</th></tr></thead>
+            <tbody>
+              <tr><td>Abril</td><td>7–10 abr</td><td>20–23 abr</td><td>Líbero, Caretas</td></tr>
+              <tr><td>Julio</td><td>14–17 jul</td><td>13–16 jul</td><td>Líbero, El Comercio</td></tr>
+              <tr><td>Noviembre</td><td>3–6 nov</td><td>2–5 nov <span class="tag t-high">sin confirmar por IAB</span></td><td>Canal N, Sodimac, Caretas</td></tr>
+            </tbody></table></div>
+          <p class="sub" style="margin-top:8px">Consultado el 19-oct-2026. Abril 2025 ya salió de la retención de GSC.</p>
+        </div>
+        <div class="card">
+          <h3>Cómo leer la comparación</h3>
+          <ul style="margin:8px 0 0;padding-left:18px;font-size:13px;color:var(--muted)">
+            <li><b style="color:var(--text)">Δ Cyber vs año pasado</b>: clics de la ventana 2026 frente a la de 2025. Mezcla tendencia del sitio, pauta, precios, stock y SEO.</li>
+            <li><b style="color:var(--text)">Lift vs 4 semanas previas</b>: cuánto sube el tráfico en Cyber frente a su propio mes anterior, en cada año. Si 2026 crece vs 2025 pero el lift es menor, el sitio creció pero el evento rindió menos.</li>
+            <li>Los datos de GSC llegan con 2-3 días de retraso: la lectura del Cyber de noviembre estará lista alrededor del <b style="color:var(--text)">8-nov</b>.</li>
+            <li>Posición media ponderada por impresiones; CTR = clics ÷ impresiones del periodo.</li>
+            <li>Clics no son ventas: el cruce con GA4 y el tracker (venta neta) va aparte.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    <footer>Grupo EFE · Área SEO · Documento interno. Las tareas vienen de <code>docs/04</code> y <code>ESTADO.md</code>; las horas son estimaciones; los datos de GSC solo existen si los subes.</footer>
+  </main>
+</div>
+<div class="tip" id="tip"></div>
+
+<script>
+(function(){
+const $=s=>document.querySelector(s), esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+
+/* ===== Tareas (docs/04, ESTADO.md, auditoría Efectibank) ===== */
+const ST={pend:'Pendiente',curso:'En curso',bloq:'Bloqueada',hecho:'Hecha'};
+const STC={pend:'t-nd',curso:'t-acc',bloq:'t-block',hecho:'t-ok'};
+const STCOL={pend:'var(--py)',curso:'var(--accent)',bloq:'var(--block)',hecho:'var(--teal)'};
+const PRI={crit:'Crítica',high:'Alta',med:'Media'};
+const T=[
+ {id:'1.1',t:'Conseguir accesos: GSC (9 propiedades), GA4, términos de Ads, GBP',site:'Todos',who:'Elias · JK',dep:'TI, Paid, Operaciones',due:'Semana 1',win:'Antes de Cyber',pri:'crit',st:'pend',why:'Sin GSC no se confirma indexación ni se mide Cyber vs año pasado.'},
+ {id:'1.2',t:'Línea base GSC por grupo de URL y registro de cambios',site:'LC · EFE',who:'JK · Carol',dep:'1.1',due:'Antes del 30-oct',win:'Antes de Cyber',pri:'crit',st:'pend',why:'Es la referencia contra la que se compara el Cyber.'},
+ {id:'G1',t:'Exportar y guardar en Drive el GSC de Cyber julio y noviembre 2025',site:'Todos',who:'JK',dep:'1.1',due:'Antes del 14-nov',win:'Antes de Cyber',pri:'crit',st:'pend',why:'GSC guarda 16 meses: julio 2025 se pierde ~14-nov-2026.'},
+ {id:'1.3',t:'Landings Cyber limpias (canonical, título, H1, enlaces a categorías con stock)',site:'LC · EFE',who:'Carol · JK · Marketing',dep:'Lista de URLs de Paid',due:'30-oct',win:'Antes de Cyber',pri:'crit',st:'pend',why:'Un día Cyber vende ~4x un día normal; Cyber pesa ~25% de la venta web del año.'},
+ {id:'L1',t:'Publicar landing del sorteo /sorteo-cyberweek en LC y EFE',site:'LC · EFE',who:'Marketing',dep:'Legal (términos EFE)',due:'Antes del 29-oct',win:'Antes de Cyber',pri:'high',st:'curso',why:'Código listo en landings/; efe.com.pe/sorteo-cyberweek hoy muestra la versión de La Curacao.'},
+ {id:'1.5',t:'Congelamiento SEO y lista de URLs en pauta',site:'Todos',who:'JK · Paid',dep:'Paid',due:'30-oct',win:'Antes de Cyber',pri:'high',st:'pend',why:'No redirigir ni cambiar estructura en URLs que usa la pauta.'},
+ {id:'1.12',t:'GBP: horarios de Cyber en las 30 tiendas con más venta',site:'LC · EFE',who:'Carol',dep:'Exporte GBP + maestro',due:'1-nov',win:'Antes de Cyber',pri:'high',st:'pend',why:'Búsquedas locales en el evento; ficha con horario errado = visita perdida.'},
+ {id:'1.11',t:'Juntoz: título, H1 y descripción de la landing Cyber',site:'Juntoz',who:'Carol · JK',dep:'CMS Juntoz',due:'30-oct',win:'Antes de Cyber',pri:'med',st:'pend',why:'Lo poco que el CMS permita antes del evento.'},
+ {id:'1.4',t:'Monitoreo diario de ~300 URLs clave (códigos, canonical, noindex)',site:'Todos',who:'JK',dep:'—',due:'2–5 nov',win:'Durante Cyber',pri:'crit',st:'pend',why:'Detectar en menos de 24 h cualquier URL caída en el evento.'},
+ {id:'G2',t:'Medir Cyber nov. 2026 vs 2025 en GSC (este panel)',site:'Todos',who:'JK',dep:'1.1, G1',due:'8–15 nov',win:'Después de Cyber',pri:'high',st:'pend',why:'Clics, impresiones, CTR y lift vs 4 semanas previas, por sitio.'},
+ {id:'E1',t:'Efectibank: higiene A01–A06 (menú 404, prueba, localhost, tasas)',site:'Efectibank',who:'Marketing Efectibank',dep:'Legal',due:'18-nov',win:'Antes de Cyber',pri:'high',st:'pend',why:'Auditoría del 19-oct: correcciones baratas que no dependen de Cyber.'},
+ {id:'E2',t:'Efectibank: páginas de préstamo con TEA/TCEA, monto, plazo y requisitos',site:'Efectibank',who:'Marketing · Legal',dep:'Legal y Cumplimiento',due:'18-dic',win:'Después de Cyber',pri:'high',st:'pend',why:'El margen del grupo está en el crédito (S/ 85-120 netos por préstamo, ESTIMACIÓN).'},
+ {id:'2.1',t:'Puente al crédito en fichas de LC, EFE y Motocorp',site:'LC · EFE · Motocorp',who:'JK · TI Magento',dep:'TI, Efectibank, Legal',due:'Dic',win:'Después de Cyber',pri:'high',st:'pend',why:'Más venta financiada = más neto por la misma venta.'},
+ {id:'2.2',t:'Canonical en todo EFE (staging → muestra → producción)',site:'EFE',who:'JK · TI',dep:'TI (ventana post-Cyber)',due:'Dic',win:'Después de Cyber',pri:'med',st:'pend',why:'Afecta ~99 K URLs; solo después de Cyber y con reversión.'},
+ {id:'2.4',t:'Prueba controlada de pauta de marca',site:'EFE',who:'JK · Paid · Elias',dep:'Paid',due:'Dic',win:'Después de Cyber',pri:'med',st:'pend',why:'Posible ahorro de pauta; se valida con prueba, no se promete.'},
+ {id:'A0',t:'Auditoría SEO de Efectibank (dashboard)',site:'Efectibank',who:'JK',dep:'—',due:'19-oct',win:'Antes de Cyber',pri:'high',st:'hecho',why:'auditoria-seo-efectibank.html: 274 URLs, 20 hallazgos, plan 30-60-90.'},
+];
+const saved=store.get('seo-cyber-tasks',{});
+T.forEach(t=>{if(saved[t.id])t.st=saved[t.id]});
+function saveTasks(){const o={};T.forEach(t=>o[t.id]=t.st);store.set('seo-cyber-tasks',o)}
+
+function renderTiles(){
+ const c=k=>T.filter(t=>t.st===k).length, crit=T.filter(t=>t.pri==='crit'&&t.st!=='hecho').length;
+ const items=[[T.length,'Tareas principales',''],[crit,'Críticas abiertas',''],[c('curso'),'En curso',''],[c('bloq'),'Bloqueadas',''],[c('hecho'),'Hechas',Math.round(100*c('hecho')/T.length)+'%']];
+ $('#tiles').innerHTML=items.map(i=>`<div class="tile"><div class="v">${i[0]}${i[2]?`<small>(${i[2]})</small>`:''}</div><div class="l">${i[1]}</div></div>`).join('');
+}
+function renderDonut(){
+ const ks=['pend','curso','bloq','hecho'], n=T.length, r=46, C=2*Math.PI*r; let off=0, s=`<circle cx="60" cy="60" r="${r}" fill="none" stroke="var(--soft)" stroke-width="14"/>`;
+ ks.forEach(k=>{const v=T.filter(t=>t.st===k).length; if(!v)return; const len=C*v/n; s+=`<circle cx="60" cy="60" r="${r}" fill="none" stroke="${STCOL[k]}" stroke-width="14" stroke-dasharray="${(len-2).toFixed(1)} ${C.toFixed(1)}" stroke-dashoffset="${(-off).toFixed(1)}" transform="rotate(-90 60 60)" stroke-linecap="round"><title>${ST[k]}: ${v}</title></circle>`; off+=len;});
+ const open=T.filter(t=>t.st!=='hecho').length;
+ s+=`<text x="60" y="58" text-anchor="middle" style="font-size:20px;font-weight:800;fill:var(--text)">${open}</text><text x="60" y="74" text-anchor="middle" style="font-size:9px;fill:var(--muted)">abiertas</text>`;
+ $('#donut').innerHTML=s;
+ $('#donutLeg').innerHTML=ks.map(k=>`<div><i style="background:${STCOL[k]}"></i>${ST[k]} <b>${T.filter(t=>t.st===k).length}</b></div>`).join('');
+}
+function renderLoad(){
+ const M=[['Mes 1','17 oct–15 nov',110,130,115],['Mes 2','16 nov–15 dic',125,145,115],['Mes 3','16 dic–15 ene',90,110,115]], max=160;
+ $('#load').innerHTML=M.map(m=>`<div class="col" title="${m[0]}: carga ${m[2]}-${m[3]} h · capacidad ~100-${m[4]} h"><div class="stack"><div class="rng lo" style="height:${m[2]/max*100}%;width:100%"></div><div class="rng" style="position:absolute;bottom:${m[2]/max*100}%;height:${(m[3]-m[2])/max*100}%"></div><div class="cap" style="bottom:${m[4]/max*100}%"></div></div><div class="lab"><b>${m[2]}–${m[3]} h</b><br>${m[0]}</div></div>`).join('');
+}
+function renderTL(){
+ const L=[['19-oct','Hoy: auditoría Efectibank lista; landings del sorteo listas',1],['29-oct','Arranca el sorteo Cyberweek (LC y EFE)'],['30-oct','Último día de cambios en CMS; congelamiento SEO'],['2–5 nov','Cyber Wow (prensa; confirmar con IAB)'],['~8-nov','GSC ya muestra el Cyber: medir vs 2025'],['~14-nov','Se pierde en GSC el Cyber julio 2025'],['16-nov','Ventana para cambios estructurales (TI)']];
+ $('#tl').innerHTML=L.map(l=>`<div><b class="${l[2]?'now':''}">${l[0]}</b><span>${esc(l[1])}</span></div>`).join('');
+}
+function renderUrgent(){
+ const u=T.filter(t=>t.pri==='crit'&&t.st!=='hecho').slice(0,5);
+ $('#urgent').innerHTML=u.map(t=>`<div class="dep"><div class="av" style="background:var(--crit)">${esc(t.id)}</div><div><b>${esc(t.t)}</b><small>${esc(t.who)} · ${esc(t.due)}</small></div><span class="end"><span class="tag ${STC[t.st]}">${ST[t.st]}</span></span></div>`).join('')||'<div class="empty">Sin críticas abiertas.</div>';
+}
+const SITES=[...new Set(T.flatMap(t=>t.site.split(' · ')))];
+$('#fSite').innerHTML+=SITES.map(s=>`<option>${esc(s)}</option>`).join('');
+$('#fSt').innerHTML+=Object.entries(ST).map(([k,v])=>`<option value="${k}">${v}</option>`).join('');
+function renderTasks(){
+ const q=$('#q').value.toLowerCase(), fs=$('#fSite').value, fp=$('#fPri').value, ft=$('#fSt').value, fw=$('#fWin').value;
+ const l=T.filter(t=>(!fs||t.site.includes(fs))&&(!fp||t.pri===fp)&&(!ft||t.st===ft)&&(!fw||t.win===fw)&&(!q||JSON.stringify(t).toLowerCase().includes(q)));
+ $('#tCount').textContent=`${l.length} de ${T.length}`;
+ const pc={crit:'t-crit',high:'t-high',med:'t-med'};
+ $('#tasks').innerHTML=l.map(t=>`<div class="task"><div class="ico ${pc[t.pri]}">${esc(t.id)}</div><div><h4>${esc(t.t)}</h4><div class="meta">${esc(t.site)} · ${esc(t.who)} · vence: <b>${esc(t.due)}</b> · ${esc(t.win)}</div><div class="why">${esc(t.why)}${t.dep&&t.dep!=='—'?' Depende de: '+esc(t.dep)+'.':''}</div></div><div class="right"><span class="tag ${pc[t.pri]}">${PRI[t.pri]}</span><select data-id="${esc(t.id)}" aria-label="Estado de ${esc(t.id)}">${Object.entries(ST).map(([k,v])=>`<option value="${k}"${k===t.st?' selected':''}>${v}</option>`).join('')}</select></div></div>`).join('')||'<div class="empty">Ninguna tarea coincide.</div>';
+}
+$('#tasks').addEventListener('change',e=>{const s=e.target.closest('select[data-id]');if(!s)return;T.find(t=>t.id===s.dataset.id).st=s.value;saveTasks();refresh()});
+['#fSite','#fPri','#fSt','#fWin','#q'].forEach(id=>$(id).addEventListener('input',()=>{renderTasks(); if(id==='#q'&&$('#q').value) show('tareas')}));
+function renderDeps(){
+ const D=[['TI / Magento','TI','#5b5bd6'],['Paid','Paid','#22c3b4'],['Legal','Legal','#d64545'],['Marketing','Mk','#d9822b'],['Operaciones','Op','#1e9e6a'],['Efectibank','Ef','#7a5bd6']];
+ $('#deps').innerHTML=D.map(d=>{const n=T.filter(t=>t.st!=='hecho'&&(t.dep+' '+t.who).includes(d[0].split(' ')[0])).length;return `<div class="dep"><div class="av" style="background:${d[2]}">${d[1]}</div><div><b>${d[0]}</b><small>tareas abiertas que lo necesitan</small></div><span class="end">${n}</span></div>`}).join('');
+}
+function refresh(){renderTiles();renderDonut();renderUrgent();renderTasks();renderDeps()}
+
+/* ===== Navegación ===== */
+function show(v){document.querySelectorAll('.view').forEach(s=>s.classList.toggle('active',s.id==='v-'+v));document.querySelectorAll('.nav button').forEach(b=>b.setAttribute('aria-current',b.dataset.v===v));$('#title').textContent={panel:'Panel',tareas:'Tareas',gsc:'Cyber vs año pasado',datos:'Fechas y fuentes'}[v];store.set('seo-cyber-view',v)}
+document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>show(b.dataset.v)));
+document.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g)show(g.dataset.go)});
+const root=document.documentElement; const th=store.get('seo-cyber-theme',null); if(th)root.dataset.theme=th;
+$('#theme').addEventListener('click',()=>{const dark=root.dataset.theme?root.dataset.theme==='dark':matchMedia('(prefers-color-scheme: dark)').matches;root.dataset.theme=dark?'light':'dark';store.set('seo-cyber-theme',root.dataset.theme)});
+
+/* ===== GSC ===== */
+const EVENTS={nov:['Cyber Wow noviembre','2026-11-02','2026-11-05','2025-11-03','2025-11-06'],jul:['Cyber Wow julio','2026-07-13','2026-07-16','2025-07-14','2025-07-17'],abr:['Cyber Wow abril','2026-04-20','2026-04-23','2025-04-07','2025-04-10'],custom:['Personalizado','','','','']};
+$('#ev').innerHTML=Object.entries(EVENTS).map(([k,v])=>`<option value="${k}">${v[0]}</option>`).join('');
+function setEvent(k){const e=EVENTS[k];if(k==='custom')return;$('#c0').value=e[1];$('#c1').value=e[2];$('#p0').value=e[3];$('#p1').value=e[4]}
+$('#ev').addEventListener('change',()=>{setEvent($('#ev').value);analyze()});
+['#c0','#c1','#p0','#p1'].forEach(id=>$(id).addEventListener('change',analyze));
+setEvent('nov');
+const GSITES=['La Curacao','Tiendas EFE','Motocorp','Efectibank','Juntoz','Skullcandy'];
+const DATA={}; let site='La Curacao';
+function renderSites(){$('#sites').innerHTML=GSITES.map(s=>`<button type="button" aria-pressed="${s===site}" data-s="${esc(s)}">${esc(s)}${DATA[s]?.dates?'<span class="dot" title="con datos"></span>':''}</button>`).join('')}
+$('#sites').addEventListener('click',e=>{const b=e.target.closest('button[data-s]');if(!b)return;site=b.dataset.s;renderSites();$('#fDates').value='';$('#fCmp').value='';analyze()});
+renderSites();
+
+function parseCSV(text){
+ text=text.replace(/^﻿/,'');
+ const first=text.split(/\r?\n/)[0]; const d=(first.split(';').length>first.split(',').length)?';':',';
+ const rows=[]; let row=[],f='',q=false;
+ for(let i=0;i<text.length;i++){const c=text[i];
+  if(q){if(c==='"'){if(text[i+1]==='"'){f+='"';i++}else q=false}else f+=c}
+  else if(c==='"')q=true; else if(c===d){row.push(f);f=''} else if(c==='\n'||c==='\r'){if(c==='\r'&&text[i+1]==='\n')i++;row.push(f);rows.push(row);row=[];f=''} else f+=c}
+ if(f||row.length){row.push(f);rows.push(row)}
+ return rows.filter(r=>r.some(x=>x.trim()!==''));
+}
+function num(v){if(v==null)return NaN;let s=String(v).trim().replace(/%|\s/g,'');if(s==='')return NaN;
+ if(/,\d{1,2}$/.test(s)&&!/\.\d{3},/.test(s)&&s.indexOf('.')===-1)s=s.replace(',','.');else if(/^\d{1,3}(\.\d{3})+(,\d+)?$/.test(s))s=s.replace(/\./g,'').replace(',','.');else s=s.replace(/,/g,'');return parseFloat(s)}
+function pdate(v){v=String(v).trim();let m=v.match(/^(\d{4})-(\d{2})-(\d{2})/);if(m)return m[1]+'-'+m[2]+'-'+m[3];m=v.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);if(m)return m[3]+'-'+m[2].padStart(2,'0')+'-'+m[1].padStart(2,'0');return null}
+const col=(h,re)=>h.findIndex(x=>re.test(x));
+function readFile(input,cb){const f=input.files[0];if(!f)return;const r=new FileReader();r.onload=()=>cb(r.result,f.name);r.readAsText(f,'utf-8')}
+$('#fDates').addEventListener('change',()=>readFile($('#fDates'),(txt,name)=>{
+ const rows=parseCSV(txt), h=rows[0].map(x=>x.trim().toLowerCase());
+ const iD=col(h,/^(fecha|date)/), iC=col(h,/^(clic|click)/), iI=col(h,/^(impres)/), iP=col(h,/^(posici|position)/);
+ if(iD<0||iC<0||iI<0){$('#upMsg').textContent=`No reconozco ${name}: necesito columnas Fecha, Clics e Impresiones (export "Fechas" de GSC).`;return}
+ const m={};rows.slice(1).forEach(r=>{const d=pdate(r[iD]);if(!d)return;m[d]={c:num(r[iC])||0,i:num(r[iI])||0,p:iP>=0?num(r[iP]):NaN}});
+ DATA[site]=DATA[site]||{};DATA[site].dates=m;DATA[site].file=name;
+ const ks=Object.keys(m).sort();$('#upMsg').textContent=`${name}: ${ks.length} días (${ks[0]} a ${ks[ks.length-1]}) cargados para ${site}.`;
+ renderSites();analyze();
+}));
+$('#fCmp').addEventListener('change',()=>readFile($('#fCmp'),(txt,name)=>{
+ const rows=parseCSV(txt), hr=rows[0].map(x=>x.trim()), h=hr.map(x=>x.toLowerCase());
+ const cl=h.map((x,i)=>/^(clic|click)/.test(x)?i:-1).filter(i=>i>=0), im=h.map((x,i)=>/^(impres)/.test(x)?i:-1).filter(i=>i>=0), po=h.map((x,i)=>/^(posici|position)/.test(x)?i:-1).filter(i=>i>=0);
+ if(cl.length<2){$('#upMsg').textContent=`${name} no trae comparación: expórtalo desde GSC con "Comparar" activado (dos columnas de clics).`;return}
+ const items=rows.slice(1).map(r=>({k:r[0],c:num(r[cl[0]])||0,cp:num(r[cl[1]])||0,i:im.length>1?num(r[im[0]])||0:NaN,ip:im.length>1?num(r[im[1]])||0:NaN,p:po.length>1?num(r[po[0]]):NaN,pp:po.length>1?num(r[po[1]]):NaN}));
+ DATA[site]=DATA[site]||{};DATA[site].cmp={items,kind:/p[aá]gina|page/i.test(hr[0])?'Página':'Consulta',head:[hr[cl[0]],hr[cl[1]]],file:name};
+ $('#upMsg').textContent=`${name}: ${items.length} filas comparadas (${hr[cl[0]]} vs ${hr[cl[1]]}).`;analyze();
+}));
+
+const addDays=(d,n)=>{const x=new Date(d+'T00:00:00Z');x.setUTCDate(x.getUTCDate()+n);return x.toISOString().slice(0,10)};
+function sum(m,a,b){let c=0,i=0,pw=0,days=0,miss=0;for(let d=a;d<=b;d=addDays(d,1)){const r=m[d];if(!r){miss++;continue}days++;c+=r.c;i+=r.i;if(isFinite(r.p))pw+=r.p*r.i}return{c,i,ctr:i?c/i:NaN,pos:i?pw/i:NaN,days,miss}}
+const fmt=n=>isFinite(n)?Math.round(n).toLocaleString('es-PE'):'—', pct=n=>isFinite(n)?(n>0?'+':'')+(n*100).toFixed(1)+'%':'—';
+const cls=n=>!isFinite(n)?'flat':n>0.005?'up':n<-0.005?'down':'flat';
+function analyze(){
+ const d=DATA[site]?.dates, c0=$('#c0').value,c1=$('#c1').value,p0=$('#p0').value,p1=$('#p1').value;
+ if(!d){$('#gscOut').innerHTML=`<div class="empty">Aún no hay datos de <b>${esc(site)}</b>. Sube su <b>Fechas.csv</b>.</div>`;mini();return}
+ if(!(c0&&c1&&p0&&p1)){$('#gscOut').innerHTML='<div class="empty">Define las cuatro fechas del evento.</div>';return}
+ const len=Math.round((new Date(c1)-new Date(c0))/864e5);
+ const cur=sum(d,c0,c1), py=sum(d,p0,p1), preC=sum(d,addDays(c0,-28),addDays(c0,-1)), preP=sum(d,addDays(p0,-28),addDays(p0,-1));
+ const daysW=len+1, liftC=preC.days?(cur.c/cur.days)/(preC.c/preC.days)-1:NaN, liftP=preP.days?(py.c/py.days)/(preP.c/preP.days)-1:NaN;
+ let warn=''; if(cur.days<daysW)warn+=`<div class="note warn"><b>Ventana 2026 incompleta:</b> faltan ${cur.miss} de ${daysW} días en el archivo (¿el evento aún no ocurre o GSC no lo publica todavía?).</div>`;
+ if(py.days<daysW)warn+=`<div class="note warn"><b>Ventana del año pasado incompleta:</b> faltan ${py.miss} de ${daysW} días. Revisa el rango del export o la retención de 16 meses.</div>`;
+ const k=(l,a,b,f,inv)=>{const dv=isFinite(a)&&isFinite(b)&&b?(a-b)/b:NaN;const c=inv?cls(-dv):cls(dv);return `<div class="kpi"><div class="l">${l}</div><div class="v">${f(a)}</div><div class="d ${c}">${pct(dv)} <span class="flat" style="font-weight:500">vs ${f(b)}</span></div></div>`};
+ const f2=n=>isFinite(n)?(n*100).toFixed(2)+'%':'—', f1=n=>isFinite(n)?n.toFixed(1):'—';
+ let html=warn+`<div class="kpis">${k('Clics en Cyber 2026',cur.c,py.c,fmt)}${k('Impresiones',cur.i,py.i,fmt)}${k('CTR',cur.ctr,py.ctr,f2)}${k('Posición media',cur.pos,py.pos,f1,true)}</div>`;
+ html+=`<div class="grid g2-1"><div class="card"><h3>Clics diarios · ${esc(site)}</h3><p class="sub">Del día −14 al +7 respecto del inicio de cada Cyber, alineado por día de la semana. Zona sombreada = evento.</p>${chart(d,c0,p0,len)}</div>
+ <div class="card"><h3>Lift del evento</h3><p class="sub">Clics/día en Cyber vs 4 semanas previas</p>
+ <div class="dep"><div class="av" style="background:var(--accent)">26</div><div><b>2026</b><small>${fmt(cur.c/Math.max(1,cur.days))} vs ${fmt(preC.c/Math.max(1,preC.days))} clics/día</small></div><span class="end ${cls(liftC)}">${pct(liftC)}</span></div>
+ <div class="dep"><div class="av" style="background:var(--py)">25</div><div><b>Año pasado</b><small>${fmt(py.c/Math.max(1,py.days))} vs ${fmt(preP.c/Math.max(1,preP.days))} clics/día</small></div><span class="end ${cls(liftP)}">${pct(liftP)}</span></div>
+ <div class="dep"><div class="av" style="background:var(--teal)">Δ</div><div><b>Tendencia del sitio</b><small>4 semanas previas 2026 vs año pasado</small></div><span class="end ${cls(preP.c?preC.c/preP.c-1:NaN)}">${pct(preP.c?preC.c/preP.c-1:NaN)}</span></div>
+ <p class="sub" style="margin-top:10px">Lectura: si el Δ total es positivo pero el lift 2026 es menor que el del año pasado, el crecimiento viene de la tendencia del sitio, no del evento.</p></div></div>`;
+ const cmp=DATA[site]?.cmp;
+ if(cmp){const it=cmp.items.map(x=>({...x,d:x.c-x.cp})).sort((a,b)=>Math.abs(b.d)-Math.abs(a.d)).slice(0,40);
+  html+=`<div class="card" style="margin-top:16px"><h3>${cmp.kind}s que más ganan y pierden clics</h3><p class="sub">${esc(cmp.file)} · ${esc(cmp.head[0])} vs ${esc(cmp.head[1])} · 40 mayores cambios absolutos</p><div class="tablewrap"><table><thead><tr><th>${cmp.kind}</th><th class="n">Clics actual</th><th class="n">Clics anterior</th><th class="n">Δ clics</th><th class="n">Δ %</th><th class="n">Posición</th></tr></thead><tbody>${it.map(x=>`<tr><td class="u">${esc(x.k)}</td><td class="n">${fmt(x.c)}</td><td class="n">${fmt(x.cp)}</td><td class="n ${cls(x.d)}">${x.d>0?'+':''}${fmt(x.d)}</td><td class="n ${cls(x.cp?x.d/x.cp:NaN)}">${x.cp?pct(x.d/x.cp):'nuevo'}</td><td class="n">${isFinite(x.p)?x.p.toFixed(1):'—'}${isFinite(x.pp)?' <span class="flat">('+x.pp.toFixed(1)+')</span>':''}</td></tr>`).join('')}</tbody></table></div></div>`}
+ const loaded=GSITES.filter(s=>DATA[s]?.dates);
+ if(loaded.length>1){html+=`<div class="card" style="margin-top:16px"><h3>Resumen por sitio</h3><div class="tablewrap" style="margin-top:10px"><table><thead><tr><th>Sitio</th><th class="n">Clics 2026</th><th class="n">Clics año pasado</th><th class="n">Δ %</th><th class="n">Lift 2026</th><th class="n">Lift año pasado</th></tr></thead><tbody>${loaded.map(s=>{const m=DATA[s].dates,a=sum(m,c0,c1),b=sum(m,p0,p1),pa=sum(m,addDays(c0,-28),addDays(c0,-1)),pb=sum(m,addDays(p0,-28),addDays(p0,-1));const la=pa.days?(a.c/a.days)/(pa.c/pa.days)-1:NaN,lb=pb.days?(b.c/b.days)/(pb.c/pb.days)-1:NaN;return `<tr><td>${esc(s)}</td><td class="n">${fmt(a.c)}</td><td class="n">${fmt(b.c)}</td><td class="n ${cls(b.c?a.c/b.c-1:NaN)}">${pct(b.c?a.c/b.c-1:NaN)}</td><td class="n">${pct(la)}</td><td class="n">${pct(lb)}</td></tr>`}).join('')}</tbody></table></div></div>`}
+ $('#gscOut').innerHTML=html; bindTip(); mini();
+}
+function series(d,start,len){const out=[];for(let o=-14;o<=len+7;o++){const k=addDays(start,o);out.push({o,k,v:d[k]?d[k].c:null})}return out}
+function chart(d,c0,p0,len,h=240){
+ const A=series(d,c0,len),B=series(d,p0,len),W=720,H=h,pl=46,pr=12,pt=14,pb=26;
+ const vals=A.concat(B).map(x=>x.v).filter(v=>v!=null),max=Math.max(1,...vals)*1.1,n=A.length;
+ const x=i=>pl+i*(W-pl-pr)/(n-1),y=v=>pt+(H-pt-pb)*(1-v/max);
+ const path=S=>{let p='',on=false;S.forEach((s,i)=>{if(s.v==null){on=false;return}p+=(on?'L':'M')+x(i).toFixed(1)+' '+y(s.v).toFixed(1);on=true});return p};
+ const area=S=>{const pts=S.map((s,i)=>s.v==null?null:[x(i),y(s.v)]).filter(Boolean);if(!pts.length)return'';return 'M'+pts[0][0]+' '+(H-pb)+pts.map(p=>'L'+p[0].toFixed(1)+' '+p[1].toFixed(1)).join('')+'L'+pts[pts.length-1][0]+' '+(H-pb)+'Z'};
+ const i0=14,i1=14+len;let g='';
+ for(let t=0;t<=4;t++){const v=max/1.1*t/4,yy=y(v);g+=`<line x1="${pl}" x2="${W-pr}" y1="${yy}" y2="${yy}" stroke="var(--line)"/><text x="${pl-6}" y="${yy+4}" text-anchor="end">${fmt(v)}</text>`}
+ [-14,-7,0,len,len+7].forEach(o=>{const i=o+14;g+=`<text x="${x(i)}" y="${H-8}" text-anchor="middle">${o===0?'Inicio':o===len?'Fin':(o>0?'+':'')+o+'d'}</text>`});
+ return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Clics diarios de Search Console, Cyber de este año contra el año pasado">
+ <defs><linearGradient id="gA" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--accent)" stop-opacity=".25"/><stop offset="1" stop-color="var(--accent)" stop-opacity="0"/></linearGradient></defs>
+ <rect x="${x(i0)-6}" y="${pt}" width="${x(i1)-x(i0)+12}" height="${H-pt-pb}" fill="var(--teal-soft)" rx="6"/>${g}
+ <path d="${area(A)}" fill="url(#gA)"/><path d="${path(B)}" fill="none" stroke="var(--py)" stroke-width="2" stroke-dasharray="5 4"/><path d="${path(A)}" fill="none" stroke="var(--accent)" stroke-width="2.6"/>
+ ${A.map((s,i)=>`<rect class="hit" x="${x(i)-(W-pl-pr)/(n-1)/2}" y="${pt}" width="${(W-pl-pr)/(n-1)}" height="${H-pt-pb}" fill="transparent" data-tip="${esc(`${s.k}: ${s.v==null?'sin dato':fmt(s.v)} · ${B[i].k}: ${B[i].v==null?'sin dato':fmt(B[i].v)}`)}"/>`).join('')}
+ </svg><div class="bars-key"><span><i style="background:var(--accent)"></i>2026</span><span><i style="background:var(--py)"></i>Año pasado</span><span><i style="background:var(--teal-soft)"></i>Días del evento</span></div>`;
+}
+function bindTip(){const tip=$('#tip');document.querySelectorAll('.chart .hit').forEach(r=>{r.addEventListener('mousemove',e=>{tip.textContent=r.dataset.tip;tip.style.opacity=1;tip.style.left=Math.min(e.clientX+12,innerWidth-tip.offsetWidth-8)+'px';tip.style.top=(e.clientY-34)+'px'});r.addEventListener('mouseleave',()=>tip.style.opacity=0)})}
+function mini(){
+ const d=DATA[site]?.dates,c0=$('#c0').value,c1=$('#c1').value,p0=$('#p0').value,p1=$('#p1').value;
+ if(!d||!c0||!p0){$('#miniSub').textContent='Sin datos de Search Console cargados';$('#miniChart').innerHTML='<div class="empty">Sube el export de Search Console en "Cyber vs año pasado" para ver la comparación.<br><b>Ningún número de esta sección se inventa.</b></div>';return}
+ const len=Math.round((new Date(c1)-new Date(c0))/864e5),a=sum(d,c0,c1),b=sum(d,p0,p1);
+ $('#miniSub').innerHTML=`${esc(site)} · ${esc($('#ev').selectedOptions[0].text)} · clics ${fmt(a.c)} vs ${fmt(b.c)} <b class="${cls(b.c?a.c/b.c-1:NaN)}">${pct(b.c?a.c/b.c-1:NaN)}</b>`;
+ $('#miniChart').innerHTML=chart(d,c0,p0,len,200); bindTip();
+}
+
+renderLoad();renderTL();refresh();show(store.get('seo-cyber-view','panel'));
+})();
+</script>
+</body>
+</html>
