@@ -1,0 +1,1892 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Atribución y canales</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/sql-wasm.js"></script>
+<style>
+:root{--bg:#0d0f14;--panel:#151821;--panel2:#1c2030;--line:#262b3b;--txt:#e7e9f0;--dim:#9aa1b5;--faint:#6b7288;--st:#a78bfa;--ok:#34d399;--warn:#fbbf24;--bad:#f87171;--r:10px;color-scheme:dark}
+*{box-sizing:border-box}[hidden]{display:none!important}
+html,body{margin:0;min-height:100%}
+body{background:var(--bg);color:var(--txt);font:14px/1.4 "Segoe UI",system-ui,-apple-system,sans-serif}
+code{font-family:ui-monospace,Consolas,monospace;font-size:.9em;color:var(--st)}
+a{color:var(--st)}
+button,input,select{font:inherit;color:inherit}
+input,select{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:7px 9px;min-width:0}
+textarea{font:inherit;color:inherit;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:7px 9px;resize:vertical;min-width:0}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--st);outline-offset:1px}
+h2{margin:0}h3{margin:4px 0 0;font-size:12px;color:var(--faint);font-weight:600}
+.fila{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.btn{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:7px 11px;cursor:pointer;white-space:nowrap}
+.btn:hover{border-color:var(--faint)}.btn.pri{background:var(--st);border-color:var(--st);color:#111;font-weight:600}.btn:disabled{opacity:.5;cursor:not-allowed}.btn.malo{color:var(--bad)}
+.barra{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{background:var(--panel);border:1px solid var(--line);border-radius:99px;padding:3px 10px;cursor:pointer}.chip.on{border-color:var(--st)}
+.cTit{flex:1;min-width:0;font-size:16px;color:var(--txt)}
+.nota{font-size:12px;color:var(--faint);margin:0}.dim{color:var(--faint)}
+.seoSub{margin:-6px 0 0;color:var(--faint);font-size:12.5px;overflow-wrap:anywhere}
+.seoError{margin:0;padding:10px 12px;border:1px solid var(--bad);border-radius:var(--r);background:#f8717114}.seoError b{color:var(--bad)}
+.seoPin{max-width:360px;display:flex;flex-direction:column;gap:6px;padding:14px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r)}
+.toast{position:fixed;left:50%;bottom:20px;transform:translate(-50%,20px);background:var(--panel2);border:1px solid var(--line);padding:9px 14px;border-radius:9px;opacity:0;pointer-events:none;transition:.2s;max-width:min(560px,calc(100% - 32px));font-size:13px;z-index:60}
+.toast.on{opacity:1;transform:translate(-50%,0)}.toast.mal{border-color:var(--bad)}
+.canVista{max-width:1440px;margin:0 auto}
+.cargaLog{white-space:pre-wrap;font-size:12px;color:var(--dim);margin:8px 0}.cargaLog:empty{display:none}
+.cargaResumen{margin:6px 0;padding-left:18px;color:var(--dim);font-size:12.5px}
+.cargaAyuda{margin:8px 0;font-size:12.5px;color:var(--dim)}.cargaAyuda summary{cursor:pointer}.cargaAyuda li{margin:4px 0}
+#cargaPanel label{display:flex;align-items:center;gap:6px;color:var(--dim);font-size:12.5px}
+#cargaPanel label.btn{color:#111}#cargaPanel label.btn:not(.pri){color:var(--txt)}
+.cargando{padding:40px;text-align:center;color:var(--dim)}
+@media (max-width:640px){.canVista{padding:12px 16px 32px}}
+
+/* Data Core › Atribución y canales (dc-canales, js/canales.js). Azul = SEO, rojo/naranja = Paid, verde = ventas y margen, morado = referidos. */
+.canVista{flex:1;overflow:auto;padding:14px 16px 32px;display:flex;flex-direction:column;gap:12px;min-width:0;
+  --canSeo:#60a5fa;--canPaid:#f87171;--canPaid2:#fb923c;--canPaid3:#f97316;--canPaid4:#fdba74;--canDir:#9aa1b5;
+  --canRef:#c4b5fd;--canRef2:#a78bfa;--canRef3:#8b5cf6;--canRef4:#d8b4fe;--canMail:#2dd4bf;--canApp:#22d3ee;--canOtro:#4b5268;--canVenta:#34d399;
+  --canM1:#38bdf8;--canM2:#fb923c;--canM3:#a78bfa}
+.canVista .cTit small{font-size:12.5px;font-weight:400;margin-left:6px}
+.canVista>.barra .cTit{flex:1 1 280px}
+.canVista select,.canVista input{min-width:0}
+.canFiltrosCaja{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:8px 12px}
+.canFiltrosCaja summary{cursor:pointer;color:var(--dim);font-size:13px}
+.canFiltros{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;margin-top:10px}
+.canTabsBarra{align-items:flex-start}
+.canAcc{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto}
+.canPanel{display:flex;flex-direction:column;gap:12px}
+.canKpis{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(165px,100%),1fr));gap:10px}
+.canKpi{--c:var(--line);background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--c);border-radius:var(--r);padding:10px 12px;display:flex;flex-direction:column;gap:2px;min-width:0;cursor:help}
+.canKpi>span{color:var(--dim);font-size:12.5px}
+.canKpi>b{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.canKpi small{color:var(--faint);font-size:12px}
+.canKpi small b{font-weight:600}
+.canFuente{color:var(--faint);font-size:11px;font-style:normal;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.canVista .sube{color:var(--ok)}.canVista .baja{color:var(--bad)}
+.canEst{font-style:normal;font-size:11.5px;font-weight:600;border-radius:999px;padding:1px 8px;align-self:flex-start;white-space:nowrap}
+.canEst.pendiente{color:var(--warn);background:#fbbf241f}
+.canEst.sin_datos,.canEst.sin_evento{color:var(--dim);background:#9aa1b51f}
+.canEst.estimado{color:var(--canSeo);background:#60a5fa1f}
+.canCaja{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;min-width:0}
+.canCaja h3{margin:0 0 8px;font-size:13px;font-weight:600;color:var(--txt);text-transform:none;letter-spacing:0}
+.canCaja .barra h3{margin:0}
+.canVista .nota{color:var(--faint);font-size:12px;margin:8px 0 0}
+.canVacio{margin:0;padding:18px 10px;text-align:center;color:var(--dim)}
+.canSvg{display:block;width:100%;height:auto;max-height:260px}
+.canSvg .ax{fill:var(--faint);font-size:11px}.canSvg .gl{stroke:var(--line);stroke-width:1}
+.canLeyenda{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:8px;font-size:12px;color:var(--dim)}
+.canLeyenda i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.canPunto{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px}
+.canApil{display:flex;flex-direction:column;gap:8px}
+.canApilFila{display:grid;grid-template-columns:130px minmax(0,1fr);gap:10px;align-items:center;font-size:12.5px;color:var(--dim)}
+.canApilBarra{display:flex;height:22px;border-radius:6px;overflow:hidden;background:var(--panel2)}
+.canApilBarra i{display:flex;align-items:center;justify-content:center;font-style:normal;font-size:11px;font-weight:600;color:#111;min-width:0}
+.canApilBarra.vacia{align-items:center;padding:0 10px;color:var(--warn);font-size:12px}
+.canScroll{overflow:auto;max-height:560px;border-top:1px solid var(--line)}
+.canTabla{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:13px}
+.canTabla th,.canTabla td{padding:7px 8px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+.canTabla th{position:sticky;top:0;background:var(--panel);color:var(--dim);font-weight:600}
+.canTabla .num{text-align:right}
+.canTabla input,.canTabla select{width:100%}
+.canUrl{display:inline-block;max-width:420px;overflow:hidden;text-overflow:ellipsis;vertical-align:bottom}
+.canAtr{display:flex;flex-direction:column;gap:8px}
+.canAtrFila{display:grid;grid-template-columns:170px minmax(0,1fr);gap:10px;align-items:center;font-size:12.5px}
+.canAtrFila>div{display:flex;flex-direction:column;gap:2px}
+.canAtrFila>div i{height:6px;border-radius:3px;min-width:2px}
+.canPend{display:flex;flex-direction:column;gap:4px;padding:14px;border:1px dashed var(--warn);border-radius:var(--r);background:#fbbf240d}
+.canPend b{color:var(--warn)}.canPend small{color:var(--faint)}
+.canEmbudo{display:flex;flex-direction:column;gap:8px}
+.canPaso{display:flex;flex-direction:column;gap:3px}
+.canPasoTit{display:flex;justify-content:space-between;gap:10px;font-size:13px}
+.canPasoTit span{font-variant-numeric:tabular-nums;font-weight:600}
+.canPasoBarra{height:14px;background:var(--panel2);border-radius:4px;overflow:hidden}
+.canPasoBarra i{display:block;height:100%;background:linear-gradient(90deg,var(--canSeo),var(--canPaid2))}
+.canPaso:nth-last-child(-n+3) .canPasoBarra i{background:var(--canVenta)}
+.canPaso.pendiente .canPasoBarra,.canPaso.sin_evento .canPasoBarra,.canPaso.sin_datos .canPasoBarra{background:repeating-linear-gradient(45deg,var(--panel2) 0 6px,transparent 6px 12px)}
+.canPasoPie{display:flex;justify-content:space-between;gap:10px;color:var(--faint);font-size:11.5px}
+.canRefGrupo+.canRefGrupo{margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+.canRefGrupo h4{margin:0 0 8px;font-size:13px}
+.canRuta{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:6px 0;font-size:12.5px}
+.canNodo{padding:3px 9px;border-radius:999px;background:var(--panel2);border:1px solid var(--line)}
+.canNodo.ref{border-color:var(--canRef2);color:var(--canRef)}
+.canNodo.venta{border-color:var(--canVenta)}
+.canFlecha{color:var(--faint)}
+.canCalidad{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.canCalidad li{display:grid;grid-template-columns:86px minmax(0,1fr);gap:10px;padding:10px;border:1px solid var(--line);border-left:3px solid var(--line);border-radius:8px}
+.canCalidad li p{margin:2px 0;color:var(--dim);font-size:12.5px}
+.canCalidad li small{color:var(--faint)}
+.canCalidad em{font-style:normal;font-weight:600;font-size:12px}
+.canCalidad .error{border-left-color:var(--bad)}.canCalidad .error em{color:var(--bad)}
+.canCalidad .aviso{border-left-color:var(--warn)}.canCalidad .aviso em{color:var(--warn)}
+.canCalidad .pendiente{border-left-color:var(--dim)}.canCalidad .pendiente em{color:var(--dim)}
+.canCalidad .ok{border-left-color:var(--ok)}.canCalidad .ok em{color:var(--ok)}
+.canCfg{display:flex;flex-direction:column;gap:12px}
+.canCfg .fila{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0}
+.canCfg .fila label{min-width:220px;color:var(--dim);font-size:12.5px;align-self:center}
+.canAncho{width:100%;box-sizing:border-box}
+.canRefCfg input:first-child{max-width:220px}.canRefCfg input:last-child{flex:1}
+.canVista code{font-size:12px;color:var(--txt)}
+@media (max-width:640px){.canVista>.barra .cTit{flex-basis:100%}.canVista .cTit small{display:block;margin:2px 0 0}.canAcc{margin-left:0}
+  .canApilFila,.canAtrFila{grid-template-columns:minmax(0,1fr)}.canCalidad li{grid-template-columns:minmax(0,1fr)}.canKpi>b{font-size:19px}}
+@media print{
+  body.canImprimir *{visibility:hidden}
+  body.canImprimir #vCanales,body.canImprimir #vCanales *{visibility:visible}
+  body.canImprimir #vCanales{position:absolute;inset:0;overflow:visible;background:#fff;color:#111}
+  body.canImprimir #vCanales .canAcc,body.canImprimir #vCanales .canFiltrosCaja,body.canImprimir #vCanales #canPresets,body.canImprimir #vCanales select{display:none}
+  body.canImprimir .canCaja,body.canImprimir .canKpi{break-inside:avoid;background:#fff;border-color:#ccc;color:#111}
+  body.canImprimir .canScroll{max-height:none;overflow:visible}
+}
+</style>
+</head>
+<body>
+<!-- Tablero de atribución y canales en un solo archivo. Mismo código que el módulo dc-canales de MKT-SISTEMA:
+     la parte de «nube» corre aquí sobre SQLite (sql.js) y guarda en IndexedDB de este navegador.
+     Los datos entran como CSV exportados de GA4, Search Console, pauta y sistemas propios. Nada se inventa:
+     lo que no se cargó dice «sin datos» o «pendiente de integración». -->
+<p id="canIni" class="cargando">Cargando…</p>
+<main id="vCanales" class="canVista">
+  <div class="barra">
+    <h2 class="cTit">Atribución y canales <small id="canPeriodo" class="dim"></small></h2>
+    <div id="canPresets" class="chips" role="group" aria-label="Período"></div>
+    <span id="canFechas" class="fila" hidden><input type="date" id="canDesde" aria-label="Desde"><input type="date" id="canHasta" aria-label="Hasta"></span>
+    <select id="canGran" aria-label="Agrupar por"><option value="dia">Por día</option><option value="semana">Por semana</option><option value="mes">Por mes</option><option value="trimestre">Por trimestre</option><option value="anio">Por año</option></select>
+    <select id="canComp" aria-label="Comparar con"><option value="prev">vs período anterior</option><option value="anio">vs mismo período año anterior</option><option value="">Sin comparar</option></select>
+  </div>
+  <p id="canEstado" class="seoSub"></p>
+  <p id="canError" class="seoError" hidden></p>
+  <form id="canPin" class="seoPin" hidden>
+    <b>Datos internos</b>
+    <p id="canPinMsg" class="nota"></p>
+    <div class="fila"><input id="canPinIn" type="password" inputmode="numeric" autocomplete="off" placeholder="PIN de administrador" aria-label="PIN de administrador"><button class="btn pri">Entrar</button></div>
+  </form>
+  <div id="canCuerpo" hidden>
+    <details class="canFiltrosCaja">
+      <summary><span id="canMasF">Filtros</span></summary>
+      <div id="canFiltros" class="canFiltros">
+        <select id="canFProp" aria-label="Marca"></select>
+        <select id="canFFam" aria-label="Orgánico o pagado"><option value="">Todas las familias</option><option value="organico">Orgánico (SEO)</option><option value="paid">Paid</option><option value="directo">Direct</option><option value="referidos">Referidos</option><option value="email">Email</option><option value="app">App</option><option value="otros">Otros</option></select>
+        <select id="canFCanal" aria-label="Canal"></select>
+        <select id="canFRef" aria-label="Grupo de referidos"></select>
+        <select id="canFProd" aria-label="Producto"></select>
+        <select id="canFMarca" aria-label="SEO marca o no marca"><option value="">SEO marca y no marca</option><option value="no">Solo no marca</option><option value="si">Solo marca</option></select>
+        <input id="canF_source" placeholder="Fuente (utm_source)" aria-label="Fuente">
+        <input id="canF_medium" placeholder="Medio (utm_medium)" aria-label="Medio">
+        <input id="canF_campaign" placeholder="Campaña" aria-label="Campaña">
+        <input id="canF_landing" placeholder="Página de entrada (contiene)" aria-label="Página de entrada">
+        <input id="canF_country" placeholder="País (ej. Peru)" aria-label="País">
+        <select id="canF_device" aria-label="Dispositivo"><option value="">Todos los dispositivos</option><option value="mobile">Móvil</option><option value="desktop">Escritorio</option><option value="tablet">Tablet</option></select>
+        <button type="button" id="canLimpiar" class="btn">Limpiar filtros</button>
+      </div>
+    </details>
+    <div class="barra canTabsBarra">
+      <div id="canTabs" class="chips" role="tablist" aria-label="Páginas del tablero"></div>
+      <span class="canAcc">
+        <button type="button" id="canExp" class="btn">Exportar CSV</button>
+        <button type="button" id="canPdf" class="btn">PDF</button>
+        <button type="button" id="cargaBtn" class="btn pri">Cargar datos</button>
+        <button type="button" id="canAct" hidden></button><button type="button" id="canHist" hidden></button>
+      </span>
+    </div>
+  <section id="cargaPanel" class="canCaja" hidden>
+    <h3>Cargar datos</h3>
+    <div class="fila">
+      <label>Marca <select id="cargaProp"></select></label>
+      <label>Tipo de archivo <select id="cargaTipo"></select></label>
+      <label title="Para archivos que no traen la columna de fecha (p. ej. Consultas.csv de Search Console): todo se guarda en ese día.">Fecha para archivos sin fecha <input type="date" id="cargaFecha"></label>
+      <label class="btn pri">Subir CSV<input type="file" id="cargaArchivos" accept=".csv,.tsv,.txt" multiple hidden></label>
+    </div>
+    <pre id="cargaLog" class="cargaLog"></pre>
+    <ul id="cargaResumen" class="cargaResumen"></ul>
+    <details class="cargaAyuda"><summary>Qué archivos sirven y cómo exportarlos</summary>
+      <ul>
+        <li><b>GA4 · sesiones</b> (lo principal): Explorar › Exploración libre con dimensiones <i>Fecha, Origen de la sesión, Medio de la sesión, Campaña de la sesión, Contenido del anuncio manual de la sesión, Página de destino, Categoría de dispositivo, País</i> y métricas <i>Sesiones, Usuarios totales, Usuarios nuevos, Eventos clave, Ingresos totales, Transacciones</i> → Exportar datos › CSV. Las columnas que falten quedan vacías.</li>
+        <li><b>GA4 · eventos</b>: Fecha, Nombre del evento, Origen, Medio, Página de destino + Número de eventos (para los pasos del embudo).</li>
+        <li><b>GA4 · primera interacción</b>: Fecha, Origen del primer usuario, Medio del primer usuario, Campaña del primer usuario + Eventos clave, Ingresos totales. Elige el tipo a mano.</li>
+        <li><b>GA4 · basado en datos</b>: Publicidad › Atribución › Atribución de conversiones (modelo basado en datos) con Fecha, Origen / medio y Campaña → CSV. Elige el tipo a mano.</li>
+        <li><b>Search Console</b>: Rendimiento › Exportar › CSV. Sube <i>Fechas.csv</i> (totales por día) y <i>Consultas.csv</i> (marca / no marca; como no trae fecha, se guarda en la «fecha para archivos sin fecha»). <i>Páginas.csv</i> no sirve solo: contaría todo como no marca. Si tienes un export con fecha + consulta + página (Looker Studio o API), mejor.</li>
+        <li><b>Pauta</b>: plataforma, desde, hasta, costo, campaign_id, clics.</li>
+        <li><b>Sistemas propios</b>: tipo, id, fecha, source, medium, campaign, content, landing, producto, cantidad, monto, margen. Tipos: solicitud, aprobacion, desembolso, venta, venta_financiada, app_descarga, app_activacion, app_activo, pago_servicio, apertura_ahorros, uso_tdd, multiproducto, recompra.</li>
+      </ul>
+      <p class="nota">Subir otra vez el mismo período lo reemplaza (no duplica). Se elige la marca antes de subir: cada archivo es de una sola marca.</p>
+    </details>
+    <div class="fila"><button type="button" id="cargaRespaldo" class="btn">Descargar respaldo</button><label class="btn">Restaurar respaldo<input type="file" id="cargaRestaurar" accept=".sqlite,.db" hidden></label><button type="button" id="cargaBorrar" class="btn malo">Borrar datos</button></div>
+  </section>
+    <div id="canPanel" class="canPanel"></div>
+  </div>
+</main>
+<div id="toast" class="toast" role="status"></div>
+<script>
+
+const $ = id => document.getElementById(id);
+const escH = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+let _t; function aviso(msg, mal = false) { const t = $('toast'); t.textContent = msg; t.className = 'toast on' + (mal ? ' mal' : ''); clearTimeout(_t); _t = setTimeout(() => t.className = 'toast', 4200); }
+const cuando = iso => { const d = new Date(iso); return isNaN(d) ? '' : d.toLocaleString('es-PE', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }); };
+const conPin = (h = {}) => h;
+const entrar = async () => {};
+
+const CONFIG_INICIAL = {"propiedades": [{"id": "efe", "nombre": "Tiendas EFE", "ga4": "", "gsc": "https://www.efe.com.pe/", "dominio": "www.efe.com.pe"}, {"id": "lc", "nombre": "La Curacao", "ga4": "", "gsc": "https://www.lacuracao.pe/", "dominio": "www.lacuracao.pe"}, {"id": "efectibank", "nombre": "Efectibank", "ga4": "", "gsc": "https://www.efectibank.pe/", "dominio": "www.efectibank.pe"}]};
+// ===== reglas de canales (nube/canales-reglas.js) =====
+// Atribución y canales (dc-canales): reglas puras, sin red ni base, para que las pruebas las cubran.
+//   - normalizar(): fuente / medio / campaña / contenido de GA4 → un canal del tablero (SEO, Paid…).
+//   - esMarca() y productoDe(): consulta o página → marca / no marca y producto.
+//   - rangos de fechas, comparación (período anterior o año anterior) y cortes por día/semana/mes…
+// La configuración que cambia el dueño (propiedades, reglas propias, referidos, términos de marca,
+// productos, embudos) vive en la base (_meta.canalesConfig, nube/canales-datos.js); aquí solo está la base.
+
+// Canales del tablero. `familia` agrupa para «orgánico vs paid» y los colores del gráfico.
+const CANALES = [
+  { id: 'seo', n: 'SEO orgánico', familia: 'organico' },
+  { id: 'paid_search', n: 'Paid Search', familia: 'paid' },
+  { id: 'paid_social', n: 'Paid Social', familia: 'paid' },
+  { id: 'display', n: 'Display / Performance', familia: 'paid' },
+  { id: 'paid_otros', n: 'Otros pagados', familia: 'paid' },
+  { id: 'direct', n: 'Direct', familia: 'directo' },
+  { id: 'referral', n: 'Referral', familia: 'referidos' },
+  { id: 'ref_a', n: 'Referido grupo A', familia: 'referidos' },
+  { id: 'ref_b', n: 'Malls', familia: 'referidos' },
+  { id: 'ref_c', n: 'Referido grupo C', familia: 'referidos' },
+  { id: 'email', n: 'Email', familia: 'email' },
+  { id: 'app', n: 'App', familia: 'app' },
+  { id: 'otros', n: 'Otros', familia: 'otros' },
+];
+const FAMILIAS = { organico: 'Orgánico', paid: 'Paid', directo: 'Direct', referidos: 'Referidos', email: 'Email', app: 'App', otros: 'Otros' };
+const REFERIDOS = ['ref_a', 'ref_b', 'ref_c'];
+const ES_CANAL = new Set(CANALES.map(c => c.id));
+
+// Datos que llegan de sistemas propios (pendientes de integración): ventas, crédito y app.
+const TIPOS_EXT = {
+  solicitud: { n: 'Solicitud de crédito', fuente: 'CRM / solicitudes' },
+  aprobacion: { n: 'Crédito aprobado', fuente: 'Core financiero' },
+  desembolso: { n: 'Crédito desembolsado', fuente: 'Core financiero' },
+  venta: { n: 'Venta', fuente: 'Magento / marketplace / POS' },
+  venta_financiada: { n: 'Venta financiada', fuente: 'Magento / POS + core financiero' },
+  app_descarga: { n: 'Descarga del app', fuente: 'Analítica del app' },
+  app_activacion: { n: 'Activación del app', fuente: 'Analítica del app' },
+  app_activo: { n: 'Cliente activo en el app', fuente: 'Analítica del app' },
+  pago_servicio: { n: 'Pago de servicios', fuente: 'Core financiero' },
+  apertura_ahorros: { n: 'Apertura de cuenta de ahorros', fuente: 'Core financiero' },
+  uso_tdd: { n: 'Uso de tarjeta de débito', fuente: 'Core financiero' },
+  multiproducto: { n: 'Cliente con más de un producto', fuente: 'Core financiero / CRM' },
+  recompra: { n: 'Recompra', fuente: 'Magento / POS' },
+};
+
+// Configuración de partida. Lo que falte (eventos propios, más marcas) se edita en Configuración.
+const CONFIG_BASE = {
+  // { id, nombre, ga4: 'properties/123', gsc: 'https://www.sitio/ o sc-domain:sitio', dominio: 'sitio' }
+  propiedades: [],
+  // Reglas propias, antes que las de fábrica: { campo: source|medium|campaign|content|landing, op: igual|contiene|empieza, valor, canal }
+  reglas: [],
+  referidos: {
+    ref_a: { nombre: 'Conecta', sources: ['conecta'] },
+    ref_b: { nombre: 'Malls', sources: ['malls'] },
+    ref_c: { nombre: 'MTC', sources: ['mtc'] },
+  },
+  marca: ['efe', 'curacao', 'juntoz', 'motocorp', 'efectiva', 'efectibank'],
+  productos: [
+    { id: 'electro', nombre: 'Crédito Electro', patrones: ['prestamo-electro', 'credito-electro', 'prestamo electro', 'credito electro', 'credito para electro'] },
+    { id: 'efectivo', nombre: 'Préstamo Efectivo', patrones: ['prestamo-efectivo', 'prestamo efectivo', 'prestamo personal', 'prestamo-personal'] },
+    { id: 'motos', nombre: 'Motos', patrones: ['moto'] },
+    { id: 'ahorros', nombre: 'Cuenta de ahorros', patrones: ['cuenta-de-ahorros', 'cuenta de ahorros', 'ahorro', 'deposito-a-plazo', 'deposito a plazo'] },
+  ],
+  contenidos: ['blog', 'pdl', 'pdp', 'footer'],
+  // Eventos de GA4 que se guardan (además de los de conversión). Los propios del crédito se definen aquí.
+  eventos: ['view_item', 'purchase', 'generate_lead', 'begin_checkout'],
+  embudos: {
+    electro: [
+      { n: 'Sesión SEO o Paid', fuente: 'ga4', medida: 'sesiones', familias: ['organico', 'paid'] },
+      { n: 'Producto visto', fuente: 'evento', evento: 'view_item' },
+      { n: 'Simulador usado', fuente: 'evento', evento: '' },
+      { n: 'Solicitud iniciada', fuente: 'evento', evento: '' },
+      { n: 'Solicitud aprobada', fuente: 'externo', tipo: 'aprobacion' },
+      { n: 'Compra', fuente: 'externo', tipo: 'venta_financiada' },
+      { n: 'Crédito desembolsado', fuente: 'externo', tipo: 'desembolso' },
+      { n: 'Margen generado', fuente: 'externo', tipo: 'desembolso', medida: 'margen' },
+    ],
+    efectivo: [
+      { n: 'Visitas', fuente: 'ga4', medida: 'sesiones' },
+      { n: 'Solicitudes', fuente: 'externo', tipo: 'solicitud' },
+      { n: 'Aprobaciones', fuente: 'externo', tipo: 'aprobacion' },
+      { n: 'Desembolsos', fuente: 'externo', tipo: 'desembolso' },
+      { n: 'Monto desembolsado', fuente: 'externo', tipo: 'desembolso', medida: 'monto' },
+    ],
+  },
+};
+
+// Junta la configuración guardada con la de partida (lo guardado manda; lo que falte sale de la base).
+function config(guardada) {
+  const g = guardada && typeof guardada === 'object' ? guardada : {};
+  const ref = {};
+  for (const k of REFERIDOS) ref[k] = { ...CONFIG_BASE.referidos[k], ...(g.referidos && g.referidos[k]) };
+  return {
+    ...CONFIG_BASE, ...g,
+    referidos: ref,
+    embudos: { ...CONFIG_BASE.embudos, ...(g.embudos || {}) },
+    propiedades: Array.isArray(g.propiedades) ? g.propiedades : [],
+    reglas: Array.isArray(g.reglas) ? g.reglas : [],
+  };
+}
+
+// Lo que el dueño guarda pasa por aquí: tipos, largos y canales válidos. Devuelve { ok, error, cfg }.
+function validarConfig(c) {
+  if (!c || typeof c !== 'object' || Array.isArray(c)) return { ok: false, error: 'La configuración tiene que ser un objeto.' };
+  const txt = (v, max = 200) => String(v ?? '').trim().slice(0, max);
+  const lista = (v, max = 60) => (Array.isArray(v) ? v : String(v || '').split(',')).map(x => txt(x, 120).toLowerCase()).filter(Boolean).slice(0, max);
+  const out = {};
+  if (c.propiedades !== undefined) {
+    if (!Array.isArray(c.propiedades) || c.propiedades.length > 20) return { ok: false, error: 'propiedades: hasta 20.' };
+    out.propiedades = [];
+    for (const p of c.propiedades) {
+      const id = txt(p.id, 40).toLowerCase().replace(/[^a-z0-9_-]/g, '');
+      const ga4 = txt(p.ga4, 40).replace(/^properties\//, '');
+      const gsc = txt(p.gsc, 200);
+      if (!id) return { ok: false, error: 'Cada propiedad necesita un id corto (letras y números).' };
+      if (ga4 && !/^\d{4,15}$/.test(ga4)) return { ok: false, error: `GA4 de ${id}: solo el número de la propiedad (Admin › Detalles de la propiedad).` };
+      if (gsc && !/^(https:\/\/[a-z0-9.-]+\/|sc-domain:[a-z0-9.-]+)$/i.test(gsc)) return { ok: false, error: `Search Console de ${id}: «https://www.dominio/» o «sc-domain:dominio».` };
+      out.propiedades.push({ id, nombre: txt(p.nombre, 60) || id, ga4, gsc, dominio: txt(p.dominio, 120).toLowerCase().replace(/^https?:\/\//, '').replace(/\/.*$/, '') });
+    }
+    if (new Set(out.propiedades.map(p => p.id)).size !== out.propiedades.length) return { ok: false, error: 'Hay dos propiedades con el mismo id.' };
+  }
+  if (c.reglas !== undefined) {
+    if (!Array.isArray(c.reglas) || c.reglas.length > 100) return { ok: false, error: 'reglas: hasta 100.' };
+    out.reglas = [];
+    for (const r of c.reglas) {
+      const regla = { campo: txt(r.campo, 20), op: txt(r.op, 20), valor: txt(r.valor, 120).toLowerCase(), canal: txt(r.canal, 20) };
+      if (!['source', 'medium', 'campaign', 'content', 'landing'].includes(regla.campo)) return { ok: false, error: 'Regla: campo no válido (' + regla.campo + ').' };
+      if (!['igual', 'contiene', 'empieza'].includes(regla.op)) return { ok: false, error: 'Regla: operación no válida (' + regla.op + ').' };
+      if (!regla.valor) return { ok: false, error: 'Regla sin valor.' };
+      if (!ES_CANAL.has(regla.canal)) return { ok: false, error: 'Regla: canal desconocido (' + regla.canal + ').' };
+      out.reglas.push(regla);
+    }
+  }
+  if (c.referidos !== undefined) {
+    out.referidos = {};
+    for (const k of REFERIDOS) {
+      const r = c.referidos[k] || {};
+      out.referidos[k] = { nombre: txt(r.nombre, 40) || CONFIG_BASE.referidos[k].nombre, sources: lista(r.sources, 30) };
+    }
+  }
+  if (c.marca !== undefined) out.marca = lista(c.marca, 60);
+  if (c.contenidos !== undefined) out.contenidos = lista(c.contenidos, 30);
+  if (c.eventos !== undefined) {
+    out.eventos = lista(c.eventos, 40).map(e => e.replace(/[^a-z0-9_]/g, '')).filter(Boolean);
+  }
+  if (c.productos !== undefined) {
+    if (!Array.isArray(c.productos) || c.productos.length > 20) return { ok: false, error: 'productos: hasta 20.' };
+    out.productos = c.productos.map(p => ({ id: txt(p.id, 30).toLowerCase().replace(/[^a-z0-9_-]/g, ''), nombre: txt(p.nombre, 60), patrones: lista(p.patrones, 30) }))
+      .filter(p => p.id && p.patrones.length);
+  }
+  if (c.embudos !== undefined) {
+    out.embudos = {};
+    for (const [k, pasos] of Object.entries(c.embudos || {})) {
+      if (!/^[a-z0-9_]{1,30}$/.test(k) || !Array.isArray(pasos) || pasos.length > 12) return { ok: false, error: 'Embudo no válido: ' + k };
+      out.embudos[k] = pasos.map(p => ({
+        n: txt(p.n, 60), fuente: ['ga4', 'evento', 'externo'].includes(p.fuente) ? p.fuente : 'evento',
+        evento: txt(p.evento, 40).replace(/[^a-z0-9_]/g, ''), tipo: Object.hasOwn(TIPOS_EXT, p.tipo) ? p.tipo : '',
+        medida: ['sesiones', 'cantidad', 'monto', 'margen'].includes(p.medida) ? p.medida : '',
+        familias: Array.isArray(p.familias) ? p.familias.filter(f => Object.hasOwn(FAMILIAS, f)) : undefined,
+      }));
+    }
+  }
+  return { ok: true, cfg: out };
+}
+
+// ---------- texto ----------
+const plano = s => String(s ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim();
+const escRe = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+// Marca: la consulta nombra a una marca del grupo como palabra (no como parte de otra palabra).
+function patronMarca(terminos) {
+  const t = (terminos || []).map(plano).filter(Boolean);
+  if (!t.length) return null;
+  return new RegExp(`(^|[^a-z0-9])(${t.map(escRe).join('|')})([^a-z0-9]|$)`);
+}
+const esMarca = (consulta, patron) => !!(patron && patron.test(plano(consulta)));
+
+// Producto: por la URL o la consulta. Los guiones y las barras cuentan como espacios.
+function productoDe(texto, productos) {
+  const t = plano(texto);
+  const t2 = t.replace(/[-_/+]+/g, ' ');
+  for (const p of productos || []) if (p.patrones.some(x => { const q = plano(x); return t.includes(q) || t2.includes(q.replace(/[-_/+]+/g, ' ')); })) return p.id;
+  return 'otros';
+}
+
+// ---------- canal ----------
+const SOCIAL = /(^|\.)(facebook|fb|instagram|ig|meta|tiktok|linkedin|twitter|x|pinterest|youtube|snapchat)(\.|$)|^(m\.)?facebook\.com$|^l\.instagram\.com$/;
+const BUSCADOR = /(^|\.)(google|bing|yahoo|duckduckgo|yandex|baidu|ecosia|search\.brave|perplexity)(\.|$)/;
+const MEDIO_PAID_SEARCH = new Set(['cpc', 'ppc', 'paidsearch', 'paid_search', 'paid-search', 'sem', 'search_ads']);
+const MEDIO_PAID_SOCIAL = new Set(['paid_social', 'paidsocial', 'paid-social', 'social_paid', 'social-paid', 'socialpaid', 'social_ads', 'paid_social_media']);
+const MEDIO_DISPLAY = new Set(['display', 'banner', 'cpm', 'programmatic', 'programatica', 'performance', 'pmax', 'video', 'native']);
+const MEDIO_EMAIL = new Set(['email', 'e-mail', 'e_mail', 'mail', 'newsletter', 'mailing']);
+const APP = /^(app|in_app|in-app|push|android|ios|android-app|ios-app|firebase)$/;
+
+function cumple(r, v) {
+  const x = plano(v[r.campo]);
+  return r.op === 'igual' ? x === r.valor : r.op === 'empieza' ? x.startsWith(r.valor) : x.includes(r.valor);
+}
+
+// GA4 da fuente/medio/campaña/contenido y su propio «Default channel group»; aquí se arma el canal del
+// tablero con las reglas propias primero, luego los referidos, luego las reglas de fábrica.
+function normalizar(v, cfg) {
+  const source = plano(v.source), medium = plano(v.medium), campaign = plano(v.campaign), grupo = plano(v.grupo);
+  for (const r of cfg.reglas || []) if (cumple(r, v)) return r.canal;
+  const host = source.replace(/^www\./, '');
+  for (const k of REFERIDOS) {
+    const ss = (cfg.referidos?.[k]?.sources || []).map(plano);
+    if (ss.some(s => s && (host === s || host === s.replace(/^www\./, '') || host.endsWith('.' + s)))) return k;
+  }
+  if (APP.test(medium) || APP.test(source) || grupo === 'mobile push notifications') return 'app';
+  if ((source === '(direct)' || source === '') && (medium === '(none)' || medium === '(not set)' || medium === '')) return 'direct';
+  if (/pmax|performance[ _-]?max/.test(campaign) || grupo === 'cross-network') return 'display';
+  if (medium === 'organic' || grupo === 'organic search') return BUSCADOR.test(host) || grupo === 'organic search' ? 'seo' : 'otros';
+  if (MEDIO_PAID_SOCIAL.has(medium) || grupo === 'paid social') return 'paid_social';
+  if (MEDIO_PAID_SEARCH.has(medium)) return SOCIAL.test(host) ? 'paid_social' : 'paid_search';
+  if (grupo === 'paid search' || grupo === 'paid shopping') return 'paid_search';
+  if (MEDIO_DISPLAY.has(medium) || grupo === 'display' || grupo === 'paid video' || grupo === 'paid other') return 'display';
+  if (/(^|[_-])paid([_-]|$)|^paid/.test(medium)) return 'paid_otros';
+  if (MEDIO_EMAIL.has(medium) || grupo === 'email') return 'email';
+  if (medium === 'referral' || grupo === 'referral') return 'referral';
+  if (grupo === 'direct') return 'direct';
+  return 'otros';
+}
+
+const familiaDe = canal => (CANALES.find(c => c.id === canal) || CANALES.at(-1)).familia;
+function nombreCanal(canal, cfg) {
+  if (REFERIDOS.includes(canal)) return cfg?.referidos?.[canal]?.nombre || CANALES.find(c => c.id === canal).n;
+  return (CANALES.find(c => c.id === canal) || { n: canal }).n;
+}
+
+// Un enlace interno con UTM parte la sesión y le roba el canal de origen: la fuente es el propio sitio.
+function esUtmInterna(source, dominios) {
+  const h = plano(source).replace(/^www\./, '');
+  return !!h && (dominios || []).some(d => d && (h === d.replace(/^www\./, '') || h.endsWith('.' + d.replace(/^www\./, ''))));
+}
+
+// ---------- fechas ----------
+const fechaOk = s => /^\d{4}-\d{2}-\d{2}$/.test(s) && new Date(s + 'T00:00:00Z').toISOString().slice(0, 10) === s;
+const masDias = (s, n) => new Date(Date.parse(s + 'T00:00:00Z') + n * 864e5).toISOString().slice(0, 10);
+const dias = (a, b) => Math.round((Date.parse(b + 'T00:00:00Z') - Date.parse(a + 'T00:00:00Z')) / 864e5) + 1;
+function menosAnio(s) {
+  const [y, m, d] = s.split('-').map(Number);
+  const ult = new Date(Date.UTC(y - 1, m, 0)).getUTCDate(); // 29 feb → 28 feb
+  return `${y - 1}-${String(m).padStart(2, '0')}-${String(Math.min(d, ult)).padStart(2, '0')}`;
+}
+// prev: el mismo número de días justo antes; anio: las mismas fechas del año anterior.
+function comparacion(desde, hasta, tipo) {
+  if (tipo === 'anio') return { desde: menosAnio(desde), hasta: menosAnio(hasta), tipo };
+  if (tipo === 'prev') { const n = dias(desde, hasta); return { desde: masDias(desde, -n), hasta: masDias(desde, -1), tipo }; }
+  return null;
+}
+// Corte de una fecha: dia | semana (lunes) | mes | trimestre | anio.
+function corte(fecha, gran) {
+  if (gran === 'semana') { const d = new Date(fecha + 'T00:00:00Z'); return masDias(fecha, -((d.getUTCDay() + 6) % 7)); }
+  if (gran === 'mes') return fecha.slice(0, 7);
+  if (gran === 'trimestre') return fecha.slice(0, 4) + '-T' + (Math.floor((+fecha.slice(5, 7) - 1) / 3) + 1);
+  if (gran === 'anio') return fecha.slice(0, 4);
+  return fecha;
+}
+const GRANOS = ['dia', 'semana', 'mes', 'trimestre', 'anio'];
+
+// ---------- números ----------
+const div = (a, b) => (b ? a / b : null);
+const variacion = (act, ant) => (ant ? (act - ant) / ant : null);
+function csv(filas, cols) {
+  // Una celda que empieza con = + - @ se abre como fórmula en Excel: se le antepone un apóstrofo.
+  const celda = v => { let s = v == null ? '' : String(v); if (/^[=+\-@\t\r]/.test(s)) s = "'" + s; return /[",\n;]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
+  return '﻿' + [cols.map(c => celda(c.n)).join(','), ...filas.map(f => cols.map(c => celda(f[c.k])).join(','))].join('\n');
+}
+
+// ===== datos y tablero (nube/canales-datos.js) =====
+// Atribución y canales (dc-canales): lo que corre dentro del Durable Object (nube/datos.js).
+// Guarda las fotos diarias de GA4 y Search Console en tablas internas (fuera de TABLAS: no salen por /api)
+// y arma el tablero con filtros. Las tablas guardan una fila por día y combinación: si GA4 o Search
+// Console cambian lo que muestran, o Search Console borra lo que tiene más de 16 meses, aquí sigue.
+//
+//   POST /_int/canales/guardar   { tabla, filas, reemplazar?: { prop|sitio, desde, hasta } }
+//   GET|POST /_int/canales/config
+//   GET|POST /_int/canales/estado
+//   POST /_int/canales/corrida   { fuente, prop, desde, hasta, filas, ok, error }
+//   POST /_int/canales/tablero   { desde, hasta, comp, gran, filtros }  -> todo lo que pinta la pantalla
+//   POST /_int/canales/exportar  { vista, ...igual que tablero }      -> filas planas para el CSV
+
+const json = (code, d) => new Response(JSON.stringify(d), { status: code, headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' } });
+
+// Columnas de cada foto. Las de texto forman la llave; las numéricas se suman.
+const FOTOS = {
+  _can_ga4_ses: { llave: ['prop', 'fecha', 'source', 'medium', 'campaign', 'content', 'landing', 'device', 'country', 'grupo'], num: ['sesiones', 'usuarios', 'nuevos', 'conversiones', 'ingresos', 'transacciones'], por: 'prop' },
+  _can_ga4_ev: { llave: ['prop', 'fecha', 'evento', 'source', 'medium', 'landing'], num: ['eventos', 'conversiones', 'ingresos'], por: 'prop' },
+  _can_ga4_attr: { llave: ['prop', 'fecha', 'modelo', 'source', 'medium', 'campaign'], num: ['conversiones', 'ingresos', 'usuarios'], por: 'prop' },
+  _can_gsc_dia: { llave: ['sitio', 'fecha', 'device', 'country'], num: ['clics', 'impresiones', 'pos_x_impr'], por: 'sitio' },
+  _can_gsc_qp: { llave: ['sitio', 'fecha', 'query', 'page'], num: ['clics', 'impresiones', 'pos_x_impr'], por: 'sitio' },
+  // Sistemas propios (pendientes de integración): una fila por solicitud, crédito, venta o evento del app.
+  _can_ext: { llave: ['fuente', 'tipo', 'id'], txt: ['fecha', 'prop', 'source', 'medium', 'campaign', 'content', 'landing', 'producto', 'cliente'], num: ['cantidad', 'monto', 'margen'] },
+  // Rutas de conversión (exportación de GA4 a BigQuery, pendiente): «seo > paid_search > direct».
+  _can_rutas: { llave: ['prop', 'fecha', 'ruta'], num: ['conversiones', 'ingresos'], por: 'prop' },
+};
+const q = s => '"' + s + '"';
+
+function prepararCanales(db) {
+  for (const [t, d] of Object.entries(FOTOS)) {
+    const cols = [...d.llave.map(c => `${q(c)} TEXT NOT NULL DEFAULT ''`), ...(d.txt || []).map(c => `${q(c)} TEXT NOT NULL DEFAULT ''`), ...d.num.map(c => `${q(c)} REAL NOT NULL DEFAULT 0`), `"capturado" TEXT NOT NULL DEFAULT ''`];
+    db.sql.exec(`CREATE TABLE IF NOT EXISTS ${t} (${cols.join(', ')}, PRIMARY KEY (${d.llave.map(q).join(', ')}))`);
+  }
+  db.sql.exec('CREATE INDEX IF NOT EXISTS _can_ext_fecha ON _can_ext (fecha, tipo)');
+  db.sql.exec(`CREATE TABLE IF NOT EXISTS _can_corridas (n INTEGER PRIMARY KEY AUTOINCREMENT, inicio TEXT NOT NULL DEFAULT '', fuente TEXT NOT NULL DEFAULT '', prop TEXT NOT NULL DEFAULT '', desde TEXT NOT NULL DEFAULT '', hasta TEXT NOT NULL DEFAULT '', filas INTEGER NOT NULL DEFAULT 0, ok INTEGER NOT NULL DEFAULT 0, error TEXT NOT NULL DEFAULT '')`);
+}
+
+function guardarFilas(db, tabla, filas, reemplazar) {
+  const d = FOTOS[tabla];
+  if (!d) throw new Error('Tabla desconocida: ' + tabla);
+  const cols = [...d.llave, ...(d.txt || []), ...d.num, 'capturado'];
+  const ahora = new Date().toISOString();
+  const sql = `INSERT OR REPLACE INTO ${tabla} (${cols.map(q).join(', ')}) VALUES (${cols.map(() => '?').join(', ')})`;
+  let n = 0;
+  db.ctx.storage.transactionSync(() => {
+    // Una bajada de nuevo de un rango reemplaza todo lo de ese rango: si una combinación ya no viene, no queda.
+    if (reemplazar && d.por) db.sql.exec(`DELETE FROM ${tabla} WHERE ${q(d.por)} = ? AND fecha BETWEEN ? AND ?`, String(reemplazar[d.por] || ''), reemplazar.desde, reemplazar.hasta);
+    for (const f of filas) {
+      const v = cols.map(c => c === 'capturado' ? ahora : d.num.includes(c) ? (Number.isFinite(+f[c]) ? +f[c] : 0) : String(f[c] ?? '').slice(0, 600));
+      db.sql.exec(sql, ...v); n++;
+    }
+  });
+  return n;
+}
+
+const leerJson = (db, k, base) => { try { return JSON.parse(db.meta(k) || '') ?? base; } catch { return base; } };
+
+async function rutasCanales(db, req, u) {
+  const p = u.pathname;
+  const cuerpo = req.method === 'POST' ? await req.json().catch(() => null) : null;
+  if (req.method === 'POST' && cuerpo === null) return json(400, { error: 'JSON no válido' });
+  if (p === '/_int/canales/config') {
+    if (req.method === 'POST') { db.meta('canalesConfig', JSON.stringify(cuerpo)); return json(200, { ok: true }); }
+    return json(200, leerJson(db, 'canalesConfig', {}));
+  }
+  if (p === '/_int/canales/estado') {
+    const viejo = leerJson(db, 'canalesEstado', {});
+    if (req.method !== 'POST') return json(200, viejo);
+    db.meta('canalesEstado', JSON.stringify({ ...viejo, ...cuerpo }));
+    return json(200, { ok: true });
+  }
+  if (p === '/_int/canales/guardar' && req.method === 'POST') {
+    try { return json(200, { ok: true, filas: guardarFilas(db, cuerpo.tabla, cuerpo.filas || [], cuerpo.reemplazar) }); }
+    catch (e) { return json(400, { error: e.message }); }
+  }
+  if (p === '/_int/canales/corrida' && req.method === 'POST') {
+    db.sql.exec('INSERT INTO _can_corridas (inicio, fuente, prop, desde, hasta, filas, ok, error) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+      new Date().toISOString(), String(cuerpo.fuente || ''), String(cuerpo.prop || ''), String(cuerpo.desde || ''), String(cuerpo.hasta || ''), +cuerpo.filas || 0, cuerpo.ok ? 1 : 0, String(cuerpo.error || '').slice(0, 400));
+    db.sql.exec('DELETE FROM _can_corridas WHERE n <= (SELECT MAX(n) FROM _can_corridas) - 500');
+    return json(200, { ok: true });
+  }
+  if (p === '/_int/canales/tablero' && req.method === 'POST') {
+    try { return json(200, tablero(db, cuerpo)); } catch (e) { return json(400, { error: e.message }); }
+  }
+  if (p === '/_int/canales/exportar' && req.method === 'POST') {
+    try { return json(200, exportar(db, cuerpo)); } catch (e) { return json(400, { error: e.message }); }
+  }
+  return json(404, { error: 'Ruta desconocida' });
+}
+
+// ---------- consultas ----------
+const sel = (db, sql, args) => db.sql.exec(sql, ...args).toArray();
+
+// Filtros que van al SQL (los de canal, familia y referido se aplican después de normalizar).
+function filtrosSql(F, cfg, { prop = true, landing = true, disp = true, campos = ['source', 'medium', 'campaign'] } = {}) {
+  const w = [], a = [];
+  if (prop && F.prop) { w.push('prop = ?'); a.push(F.prop); }
+  for (const c of campos) if (F[c]) { w.push(`lower(${c}) = ?`); a.push(String(F[c]).toLowerCase()); }
+  if (landing && F.landing) { w.push('landing LIKE ?'); a.push('%' + F.landing + '%'); }
+  if (landing && F.producto) {
+    const pr = cfg.productos.find(x => x.id === F.producto);
+    if (pr) { w.push('(' + pr.patrones.map(() => 'lower(landing) LIKE ?').join(' OR ') + ')'); a.push(...pr.patrones.map(x => '%' + x + '%')); }
+    else if (F.producto === 'otros') {
+      const todos = cfg.productos.flatMap(x => x.patrones);
+      if (todos.length) { w.push('NOT (' + todos.map(() => 'lower(landing) LIKE ?').join(' OR ') + ')'); a.push(...todos.map(x => '%' + x + '%')); }
+    }
+  }
+  if (disp && F.device) { w.push('lower(device) = ?'); a.push(String(F.device).toLowerCase()); }
+  if (disp && F.country) { w.push('lower(country) = ?'); a.push(String(F.country).toLowerCase()); }
+  return { w, a };
+}
+const donde = (w, extra = []) => { const t = [...extra, ...w]; return t.length ? ' WHERE ' + t.join(' AND ') : ''; };
+
+function pasaCanal(canal, F) {
+  if (F.canal && canal !== F.canal) return false;
+  if (F.familia && familiaDe(canal) !== F.familia) return false;
+  if (F.ref && canal !== F.ref) return false;
+  return true;
+}
+
+const vacioM = () => ({ sesiones: 0, usuarios: 0, nuevos: 0, conversiones: 0, ingresos: 0, transacciones: 0 });
+function sumar(a, f) { for (const k of Object.keys(a)) a[k] += +f[k] || 0; return a; }
+
+function sesiones(db, cfg, F, desde, hasta, memo) {
+  const { w, a } = filtrosSql(F, cfg);
+  const filas = sel(db, `SELECT fecha, source, medium, campaign, content, grupo, SUM(sesiones) sesiones, SUM(usuarios) usuarios, SUM(nuevos) nuevos, SUM(conversiones) conversiones, SUM(ingresos) ingresos, SUM(transacciones) transacciones FROM _can_ga4_ses${donde(w, ['fecha BETWEEN ? AND ?'])} GROUP BY fecha, source, medium, campaign, content, grupo`, [desde, hasta, ...a]);
+  const out = [];
+  for (const f of filas) {
+    const k = f.source + '\u0001' + f.medium + '\u0001' + f.campaign + '\u0001' + f.content + '\u0001' + f.grupo;
+    let canal = memo.get(k);
+    if (!canal) { canal = normalizar(f, cfg); memo.set(k, canal); }
+    if (pasaCanal(canal, F)) out.push({ ...f, canal });
+  }
+  return out;
+}
+
+function externos(db, cfg, F, desde, hasta, memo) {
+  // El producto de un registro propio viene en su columna (o, si falta, de la página): se filtra después.
+  const { w, a } = filtrosSql(F, cfg, { disp: false, landing: false, campos: ['source', 'medium', 'campaign'] });
+  const filas = sel(db, `SELECT tipo, fecha, source, medium, campaign, content, landing, producto, SUM(cantidad) cantidad, SUM(monto) monto, SUM(margen) margen, COUNT(*) filas FROM _can_ext${donde(w, ['fecha BETWEEN ? AND ?'])} GROUP BY tipo, fecha, source, medium, campaign, content, landing, producto`, [desde, hasta, ...a]);
+  const out = [];
+  for (const f of filas) {
+    // Un registro sin fuente ni medio no tiene canal: cuenta en el total, no en un canal.
+    let canal = '';
+    if (f.source || f.medium) {
+      const k = f.source + '\u0001' + f.medium + '\u0001' + f.campaign + '\u0001' + f.content + '\u0001';
+      canal = memo.get(k) || normalizar({ ...f, grupo: '' }, cfg); memo.set(k, canal);
+    }
+    if ((F.canal || F.familia || F.ref) && !(canal && pasaCanal(canal, F))) continue;
+    const producto = f.producto || productoDe(f.landing, cfg.productos);
+    if (F.producto && producto !== F.producto) continue;
+    if (F.landing && !String(f.landing).includes(F.landing)) continue;
+    out.push({ ...f, canal, producto });
+  }
+  return out;
+}
+
+// Costo de pauta cargado a mano en «Pauta» (tabla pauta): se reparte por día y se lleva al canal por plataforma.
+function costos(db, desde, hasta) {
+  const out = {}; let total = 0;
+  const filas = db.sql.exec('SELECT plataforma, desde, hasta, costo FROM "pauta"').toArray();
+  for (const r of filas) {
+    const c = +String(r.costo).replace(/[^0-9.-]/g, '');
+    if (!c || !fechaOk(r.desde) || !fechaOk(r.hasta) || r.hasta < r.desde) continue;
+    const ini = r.desde > desde ? r.desde : desde, fin = r.hasta < hasta ? r.hasta : hasta;
+    if (fin < ini) continue;
+    const parte = c * dias(ini, fin) / dias(r.desde, r.hasta);
+    const pl = String(r.plataforma).toLowerCase();
+    const canal = /meta|facebook|instagram|tiktok|linkedin|pinterest|snap/.test(pl) ? 'paid_social' : /google|youtube|bing|microsoft/.test(pl) ? 'paid_search' : 'paid_otros';
+    out[canal] = (out[canal] || 0) + parte; total += parte;
+  }
+  return { porCanal: out, total };
+}
+
+function sitiosDe(cfg, F) {
+  const ps = cfg.propiedades.filter(p => p.gsc && (!F.prop || p.id === F.prop));
+  return ps.map(p => p.gsc);
+}
+
+function gscDia(db, sitios, F, desde, hasta) {
+  if (!sitios.length) return [];
+  const w = [`sitio IN (${sitios.map(() => '?').join(',')})`, 'fecha BETWEEN ? AND ?'], a = [...sitios, desde, hasta];
+  if (F.device) { w.push('lower(device) = ?'); a.push(F.device.toLowerCase()); }
+  if (F.country) { w.push('lower(country) = ?'); a.push(F.country.toLowerCase()); }
+  return sel(db, `SELECT fecha, SUM(clics) clics, SUM(impresiones) impresiones, SUM(pos_x_impr) pxi FROM _can_gsc_dia WHERE ${w.join(' AND ')} GROUP BY fecha ORDER BY fecha`, a);
+}
+const tot = filas => filas.reduce((t, f) => { t.clics += f.clics; t.impresiones += f.impresiones; t.pxi += f.pxi; return t; }, { clics: 0, impresiones: 0, pxi: 0 });
+const gscFin = t => ({ clics: t.clics, impresiones: t.impresiones, ctr: div(t.clics, t.impresiones), posicion: div(t.pxi, t.impresiones) });
+
+// ---------- el tablero ----------
+function tablero(db, Q) {
+  const cfg = config(leerJson(db, 'canalesConfig', {}));
+  const F = Q.filtros || {};
+  const desde = Q.desde, hasta = Q.hasta;
+  if (!fechaOk(desde) || !fechaOk(hasta) || hasta < desde) throw new Error('Rango de fechas no válido.');
+  if (dias(desde, hasta) > 800) throw new Error('El rango no puede pasar de 800 días.');
+  const gran = GRANOS.includes(Q.gran) ? Q.gran : 'dia';
+  const comp = comparacion(desde, hasta, Q.comp);
+  const memo = new Map(), memoX = new Map();
+  const marcaRe = patronMarca(cfg.marca);
+  const dominios = cfg.propiedades.map(p => p.dominio).filter(Boolean);
+
+  // GA4: sesiones por canal, actual y comparación
+  const S = sesiones(db, cfg, F, desde, hasta, memo);
+  const SC = comp ? sesiones(db, cfg, F, comp.desde, comp.hasta, memo) : [];
+  const X = externos(db, cfg, F, desde, hasta, memoX);
+  const XC = comp ? externos(db, cfg, F, comp.desde, comp.hasta, memoX) : [];
+  const costo = costos(db, desde, hasta), costoC = comp ? costos(db, comp.desde, comp.hasta) : { porCanal: {}, total: 0 };
+  const hayExt = tipo => sel(db, 'SELECT 1 FROM _can_ext WHERE tipo = ? LIMIT 1', [tipo]).length > 0;
+  const hayGa4 = sel(db, 'SELECT 1 FROM _can_ga4_ses LIMIT 1', []).length > 0;
+
+  const porCanal = (filas, xs, cost) => {
+    const m = {};
+    const de = c => (m[c] ||= { ...vacioM(), solicitudes: 0, aprobaciones: 0, desembolsos: 0, ventas: 0, monto: 0, margen: 0, costo: 0 });
+    for (const f of filas) sumar(de(f.canal), f);
+    for (const x of xs) {
+      if (!x.canal) continue;
+      const c = de(x.canal);
+      if (x.tipo === 'solicitud') c.solicitudes += x.cantidad || x.filas;
+      if (x.tipo === 'aprobacion') c.aprobaciones += x.cantidad || x.filas;
+      if (x.tipo === 'desembolso') { c.desembolsos += x.cantidad || x.filas; c.monto += x.monto; c.margen += x.margen; }
+      if (x.tipo === 'venta' || x.tipo === 'venta_financiada') c.ventas += x.monto;
+    }
+    for (const [k, v] of Object.entries(cost.porCanal)) de(k).costo += v;
+    return m;
+  };
+  const mA = porCanal(S, X, costo), mC = porCanal(SC, XC, costoC);
+  const total = m => Object.values(m).reduce((t, c) => { for (const k of Object.keys(c)) t[k] = (t[k] || 0) + c[k]; return t; }, {});
+  const tA = total(mA), tC = total(mC);
+  const extTot = xs => {
+    const t = { solicitudes: 0, aprobaciones: 0, desembolsos: 0, monto: 0, margen: 0, ventas: 0, ventas_fin: 0 };
+    for (const x of xs) {
+      const n = x.cantidad || x.filas;
+      if (x.tipo === 'solicitud') t.solicitudes += n;
+      if (x.tipo === 'aprobacion') t.aprobaciones += n;
+      if (x.tipo === 'desembolso') { t.desembolsos += n; t.monto += x.monto; t.margen += x.margen; }
+      if (x.tipo === 'venta') t.ventas += x.monto;
+      if (x.tipo === 'venta_financiada') { t.ventas += x.monto; t.ventas_fin += x.monto; }
+    }
+    return t;
+  };
+  const eA = extTot(X), eC = extTot(XC);
+
+  // GSC: totales, marca / no marca (por consulta) y tops
+  const sitios = sitiosDe(cfg, F);
+  const gA = gscDia(db, sitios, F, desde, hasta), gC = comp ? gscDia(db, sitios, F, comp.desde, comp.hasta) : [];
+  const seo = armarSeo(db, cfg, F, sitios, desde, hasta, comp, marcaRe, gA, gC, S);
+
+  const fam = (m, f) => Object.entries(m).filter(([c]) => familiaDe(c) === f).reduce((t, [, v]) => t + v.sesiones, 0);
+  const principal = Object.entries(mA).sort((a, b) => b[1].sesiones - a[1].sesiones)[0];
+  const sesSeo = fam(mA, 'organico');
+  const partNoMarca = seo.disponible && seo.actual.clics ? seo.marca.no.clics / Math.max(1, seo.marca.si.clics + seo.marca.no.clics) : null;
+  const k = (val, ant, fuente, extra = {}) => ({ v: val, ant: comp ? ant : null, var: comp ? variacion(val ?? 0, ant ?? 0) : null, fuente, ...extra });
+  const pend = (fuente, tipo) => ({ v: null, estado: hayExt(tipo) ? 'ok' : 'pendiente', fuente });
+  const conExt = (tipo, campo, fuente) => hayExt(tipo) ? k(eA[campo], eC[campo], fuente) : pend(fuente, tipo);
+  const sinGa4 = v => hayGa4 ? v : { v: null, estado: 'sin_datos', fuente: v.fuente };
+
+  const kpis = {
+    trafico: sinGa4(k(tA.sesiones || 0, tC.sesiones || 0, 'GA4 · sesiones')),
+    usuarios: sinGa4(k(tA.usuarios || 0, tC.usuarios || 0, 'GA4 · usuarios')),
+    sesiones_seo: sinGa4(k(sesSeo, fam(mC, 'organico'), 'GA4 · sesiones de búsqueda orgánica')),
+    sesiones_seo_nomarca: hayGa4 && partNoMarca != null
+      ? { v: Math.round(sesSeo * partNoMarca), estado: 'estimado', fuente: 'Estimado: sesiones SEO de GA4 × participación de clics no marca en Search Console (GA4 no trae la consulta)' }
+      : { v: null, estado: 'sin_datos', fuente: 'GA4 + Search Console' },
+    sesiones_paid: sinGa4(k(fam(mA, 'paid'), fam(mC, 'paid'), 'GA4 · sesiones de medios pagados')),
+    conversiones: sinGa4(k(tA.conversiones || 0, tC.conversiones || 0, 'GA4 · eventos clave (último clic no directo)')),
+    conversiones_seo: sinGa4(k(mA.seo?.conversiones || 0, mC.seo?.conversiones || 0, 'GA4 · eventos clave con sesión SEO')),
+    tasa_conv_seo: sinGa4({ v: div(mA.seo?.conversiones || 0, mA.seo?.sesiones || 0), ant: comp ? div(mC.seo?.conversiones || 0, mC.seo?.sesiones || 0) : null, fuente: 'GA4 · eventos clave ÷ sesiones SEO', fmt: 'pct' }),
+    ingresos: sinGa4(k(tA.ingresos || 0, tC.ingresos || 0, 'GA4 · ingresos de comercio electrónico (sin validar contra ventas)', { fmt: 'soles' })),
+    ingresos_seo: sinGa4(k(mA.seo?.ingresos || 0, mC.seo?.ingresos || 0, 'GA4 · ingresos con sesión SEO (atribuidos, sin validar)', { fmt: 'soles' })),
+    ingreso_sesion: sinGa4({ v: div(tA.ingresos || 0, tA.sesiones || 0), ant: comp ? div(tC.ingresos || 0, tC.sesiones || 0) : null, fuente: 'GA4 · ingresos ÷ sesiones', fmt: 'soles2' }),
+    ticket: sinGa4({ v: div(tA.ingresos || 0, tA.transacciones || 0), ant: comp ? div(tC.ingresos || 0, tC.transacciones || 0) : null, fuente: 'GA4 · ingresos ÷ transacciones', fmt: 'soles' }),
+    ventas: hayExt('venta') || hayExt('venta_financiada') ? k(eA.ventas, eC.ventas, 'Ventas validadas (Magento / marketplace / POS)', { fmt: 'soles' }) : { v: null, estado: 'pendiente', fuente: 'Ventas validadas (Magento / marketplace / POS)', fmt: 'soles' },
+    solicitudes: conExt('solicitud', 'solicitudes', 'CRM / solicitudes de crédito'),
+    aprobaciones: conExt('aprobacion', 'aprobaciones', 'Core financiero · créditos aprobados'),
+    desembolsos: conExt('desembolso', 'desembolsos', 'Core financiero · créditos desembolsados'),
+    monto_financiado: { ...conExt('desembolso', 'monto', 'Core financiero · monto desembolsado'), fmt: 'soles' },
+    margen: { ...conExt('desembolso', 'margen', 'Core financiero · margen de los créditos (no es ingreso financiero)'), fmt: 'soles' },
+    costo_paid: costo.total ? { ...k(costo.total, costoC.total, 'Pauta cargada a mano en «Pauta» (Meta, Google, TikTok)'), fmt: 'soles' } : { v: null, estado: 'pendiente', fuente: 'Pauta cargada en «Pauta»', fmt: 'soles' },
+    roas_paid: costo.total && hayGa4 ? { v: div(fam2(mA, 'paid', 'ingresos'), costo.total), fuente: 'GA4 · ingresos paid ÷ costo de pauta (sin validar contra ventas)', fmt: 'x' } : { v: null, estado: 'pendiente', fuente: 'GA4 + Pauta' },
+    usuarios_recurrentes: sinGa4({ v: Math.max(0, (tA.usuarios || 0) - (tA.nuevos || 0)), ant: comp ? Math.max(0, (tC.usuarios || 0) - (tC.nuevos || 0)) : null, fuente: 'GA4 · usuarios − usuarios nuevos (aproximado: un usuario puede contarse en varias filas)' }),
+    activacion_app: hayExt('app_activacion') ? k(sumTipo(X, 'app_activacion'), sumTipo(XC, 'app_activacion'), 'Analítica del app') : pend('Analítica del app', 'app_activacion'),
+    recompra: { v: null, estado: hayExt('recompra') ? 'ok' : 'pendiente', fuente: 'Magento / POS (cliente identificado)' },
+    canal_principal: principal ? { v: nombreCanal(principal[0], cfg), id: principal[0], fuente: 'GA4 · canal con más sesiones', fmt: 'texto' } : { v: null, estado: 'sin_datos', fuente: 'GA4' },
+  };
+
+  // Distribución por canal (con participación) y CAC
+  const canales = CANALES.map(c => c.id).filter(id => mA[id] || mC[id]).map(id => {
+    const a = mA[id] || { ...vacioM(), solicitudes: 0, aprobaciones: 0, desembolsos: 0, ventas: 0, monto: 0, margen: 0, costo: 0 }, b = mC[id] || {};
+    return {
+      canal: id, nombre: nombreCanal(id, cfg), familia: familiaDe(id), ...a,
+      part_sesiones: div(a.sesiones, tA.sesiones), part_conversiones: div(a.conversiones, tA.conversiones), part_ingresos: div(a.ingresos, tA.ingresos),
+      part_ventas: div(a.ventas, tA.ventas), part_margen: div(a.margen, tA.margen),
+      cac: a.costo ? div(a.costo, a.desembolsos || a.conversiones) : null, cac_base: a.desembolsos ? 'desembolsos' : 'conversiones GA4',
+      var_sesiones: comp ? variacion(a.sesiones, b.sesiones || 0) : null, ant_sesiones: comp ? (b.sesiones || 0) : null,
+    };
+  }).sort((x, y) => y.sesiones - x.sesiones);
+
+  // Serie por corte y familia
+  // Todos los cortes del rango, aunque no tengan datos: un día sin sesiones es 0 en el gráfico, no un hueco que se salta.
+  const serie = new Map();
+  for (let d = desde; d <= hasta; d = masDias(d, 1)) { const b = corte(d, gran); if (!serie.has(b)) serie.set(b, { b, sesiones: 0, conversiones: 0, ingresos: 0, fam: {} }); }
+  for (const f of S) {
+    const b = corte(f.fecha, gran);
+    const r = serie.get(b) || serie.set(b, { b, sesiones: 0, conversiones: 0, ingresos: 0, fam: {} }).get(b);
+    r.sesiones += f.sesiones; r.conversiones += f.conversiones; r.ingresos += f.ingresos;
+    const fa = familiaDe(f.canal); r.fam[fa] = (r.fam[fa] || 0) + f.sesiones;
+  }
+  const serieC = new Map();
+  if (comp) {
+    // La comparación se alinea por posición del corte (1.er día con 1.er día, 1.ª semana con 1.ª semana).
+    for (let d = comp.desde; d <= comp.hasta; d = masDias(d, 1)) serieC.set(corte(d, gran), 0);
+    for (const f of SC) { const b = corte(f.fecha, gran); serieC.set(b, (serieC.get(b) || 0) + f.sesiones); }
+  }
+  const sA = [...serie.values()].sort((a, b) => a.b < b.b ? -1 : 1), sC = [...serieC.entries()].sort((a, b) => a[0] < b[0] ? -1 : 1);
+  sA.forEach((r, i) => { r.comp = sC[i] ? sC[i][1] : null; });
+
+  // Atribución: primera interacción, último clic no directo (sesión) y basado en datos (GA4)
+  const atribucion = armarAtribucion(db, cfg, F, desde, hasta, memo, mA);
+  // UTM y referidos
+  const utm = armarUtm(S, X, cfg, db);
+  // Embudos y productos digitales
+  const ev = eventos(db, cfg, F, desde, hasta, memo);
+  const rq = { F, desde, hasta };
+  const embudos = Object.fromEntries(Object.entries(cfg.embudos).map(([id, pasos]) => [id, armarEmbudo(id, pasos, { S, X, ev, cfg, db, hayExt, rq })]));
+  const efectivoCanal = porCanalProducto(X, 'efectivo', cfg, db, rq);
+  const digitales = ['app_descarga', 'app_activacion', 'app_activo', 'pago_servicio', 'apertura_ahorros', 'uso_tdd', 'multiproducto']
+    .map(t => ({ tipo: t, n: TIPOS_EXT[t].n, fuente: TIPOS_EXT[t].fuente, ...(hayExt(t) ? { v: sumTipo(X, t), ant: comp ? sumTipo(XC, t) : null, estado: 'ok' } : { v: null, estado: 'pendiente' }) }));
+  const landings = armarLandings(db, cfg, F, desde, hasta, memo);
+
+  return {
+    rango: { desde, hasta, dias: dias(desde, hasta), comp, gran },
+    canalesDef: CANALES.map(c => ({ id: c.id, n: nombreCanal(c.id, cfg), familia: c.familia })), familias: FAMILIAS,
+    productos: cfg.productos.map(p => ({ id: p.id, nombre: p.nombre })),
+    kpis, canales, serie: sA, atribucion, seo, utm, embudos, efectivoCanal, digitales, landings,
+    calidad: calidad(db, cfg, { S, gA, X, dominios, hayGa4, tA, eA, ev, seo, desde, hasta }),
+    frescura: frescura(db),
+  };
+}
+
+function fam2(m, f, campo) { return Object.entries(m).filter(([c]) => familiaDe(c) === f).reduce((t, [, v]) => t + (v[campo] || 0), 0); }
+const sumTipo = (xs, tipo) => xs.filter(x => x.tipo === tipo).reduce((t, x) => t + (x.cantidad || x.filas), 0);
+
+function armarSeo(db, cfg, F, sitios, desde, hasta, comp, marcaRe, gA, gC, S) {
+  if (!sitios.length) return { disponible: false, motivo: 'No hay una propiedad con Search Console en Configuración.' };
+  const actual = gscFin(tot(gA)), ant = comp ? gscFin(tot(gC)) : null;
+  if (!gA.length) return { disponible: false, motivo: 'Sin datos de Search Console en el rango: aprieta «Actualizar» o «Cargar histórico».', actual, ant };
+  const sw = `sitio IN (${sitios.map(() => '?').join(',')})`;
+  // Consultas por día (para marca / no marca en el tiempo) y consultas × página (para tops y productos).
+  const qd = sel(db, `SELECT fecha, query, SUM(clics) clics, SUM(impresiones) impresiones FROM _can_gsc_qp WHERE ${sw} AND fecha BETWEEN ? AND ? GROUP BY fecha, query`, [...sitios, desde, hasta]);
+  const qp = sel(db, `SELECT query, page, SUM(clics) clics, SUM(impresiones) impresiones, SUM(pos_x_impr) pxi FROM _can_gsc_qp WHERE ${sw} AND fecha BETWEEN ? AND ? GROUP BY query, page`, [...sitios, desde, hasta]);
+  const marca = { si: { clics: 0, impresiones: 0 }, no: { clics: 0, impresiones: 0 } };
+  const serieMarca = new Map();
+  const cache = new Map(), esM = qq => { if (!cache.has(qq)) cache.set(qq, esMarca(qq, marcaRe)); return cache.get(qq); };
+  for (const r of qd) {
+    const m = esM(r.query) ? 'si' : 'no';
+    if (F.marca && F.marca !== m) continue;
+    marca[m].clics += r.clics; marca[m].impresiones += r.impresiones;
+    const s = serieMarca.get(r.fecha) || serieMarca.set(r.fecha, { fecha: r.fecha, si: 0, no: 0 }).get(r.fecha);
+    s[m] += r.clics;
+  }
+  const porQ = new Map(), porP = new Map(), porProd = new Map();
+  const agr = (map, k, r, extra) => { const x = map.get(k) || map.set(k, { clave: k, clics: 0, impresiones: 0, pxi: 0, ...extra }).get(k); x.clics += r.clics; x.impresiones += r.impresiones; x.pxi += r.pxi; return x; };
+  for (const r of qp) {
+    const m = esM(r.query);
+    if (F.marca && F.marca !== (m ? 'si' : 'no')) continue;
+    const prod = productoDe(r.page, cfg.productos) !== 'otros' ? productoDe(r.page, cfg.productos) : productoDe(r.query, cfg.productos);
+    if (F.producto && prod !== F.producto) continue;
+    if (F.landing && !r.page.includes(F.landing)) continue;
+    agr(porQ, r.query, r, { marca: m, producto: prod });
+    agr(porP, r.page, r, { producto: prod });
+    agr(porProd, prod, r);
+  }
+  const fin = x => ({ ...x, ctr: div(x.clics, x.impresiones), posicion: div(x.pxi, x.impresiones) });
+  const top = (map, n) => [...map.values()].sort((a, b) => b.clics - a.clics || b.impresiones - a.impresiones).slice(0, n).map(fin);
+  // Sesiones SEO de GA4 por producto (según la página de entrada) junto a los clics de Search Console.
+  const ses = new Map();
+  for (const f of sel(db, `SELECT landing, source, medium, campaign, content, grupo, SUM(sesiones) s, SUM(conversiones) c, SUM(ingresos) i FROM _can_ga4_ses WHERE fecha BETWEEN ? AND ?${F.prop ? ' AND prop = ?' : ''} AND lower(medium) = 'organic' GROUP BY landing, source, medium, campaign, content, grupo`, F.prop ? [desde, hasta, F.prop] : [desde, hasta])) {
+    if (normalizar(f, cfg) !== 'seo') continue;
+    const p = productoDe(f.landing, cfg.productos), x = ses.get(p) || ses.set(p, { sesiones: 0, conversiones: 0, ingresos: 0 }).get(p);
+    x.sesiones += f.s; x.conversiones += f.c; x.ingresos += f.i;
+  }
+  const nombres = Object.fromEntries([...cfg.productos.map(p => [p.id, p.nombre]), ['otros', 'Otros']]);
+  // Oportunidad: muchas impresiones, CTR bajo o posición entre 4 y 20 (página 1 baja / página 2).
+  const productos = [...new Set([...porProd.keys(), ...ses.keys()])].map(id => {
+    const g = fin(porProd.get(id) || { clics: 0, impresiones: 0, pxi: 0 }), s = ses.get(id) || { sesiones: 0, conversiones: 0, ingresos: 0 };
+    const oportunidad = g.impresiones ? Math.round(g.impresiones * Math.max(0, 0.08 - (g.ctr || 0))) : 0;
+    return { id, nombre: nombres[id] || id, clics: g.clics, impresiones: g.impresiones, ctr: g.ctr, posicion: g.posicion, ...s, oportunidad };
+  }).sort((a, b) => b.oportunidad - a.oportunidad);
+  const disp = sel(db, `SELECT device clave, SUM(clics) clics, SUM(impresiones) impresiones, SUM(pos_x_impr) pxi FROM _can_gsc_dia WHERE ${sw} AND fecha BETWEEN ? AND ? GROUP BY device ORDER BY clics DESC`, [...sitios, desde, hasta]).map(fin);
+  const paises = sel(db, `SELECT country clave, SUM(clics) clics, SUM(impresiones) impresiones, SUM(pos_x_impr) pxi FROM _can_gsc_dia WHERE ${sw} AND fecha BETWEEN ? AND ? GROUP BY country ORDER BY clics DESC LIMIT 15`, [...sitios, desde, hasta]).map(fin);
+  const conQ = marca.si.clics + marca.no.clics;
+  return {
+    disponible: true, actual, ant, marca, anonimas: Math.max(0, actual.clics - conQ),
+    serie: gA.map(r => ({ fecha: r.fecha, clics: r.clics, impresiones: r.impresiones, ...(serieMarca.get(r.fecha) || { si: 0, no: 0 }) })),
+    consultas: top(porQ, 150), paginas: top(porP, 150), productos, dispositivos: disp, paises,
+    sesiones_seo_ga4: S.filter(f => f.canal === 'seo').reduce((t, f) => t + f.sesiones, 0),
+  };
+}
+
+function armarAtribucion(db, cfg, F, desde, hasta, memo, mA) {
+  const w = ['fecha BETWEEN ? AND ?'], a = [desde, hasta];
+  if (F.prop) { w.push('prop = ?'); a.push(F.prop); }
+  for (const c of ['source', 'medium', 'campaign']) if (F[c]) { w.push(`lower(${c}) = ?`); a.push(String(F[c]).toLowerCase()); }
+  const filas = sel(db, `SELECT modelo, source, medium, campaign, SUM(conversiones) conversiones, SUM(ingresos) ingresos FROM _can_ga4_attr WHERE ${w.join(' AND ')} GROUP BY modelo, source, medium, campaign`, a);
+  const modelos = { primera: {}, ultima: {}, ddm: {} };
+  for (const f of filas) {
+    const k = f.source + '\u0001' + f.medium + '\u0001' + f.campaign + '\u0001\u0001';
+    const canal = memo.get(k) || normalizar({ ...f, content: '', grupo: '' }, cfg); memo.set(k, canal);
+    if (!pasaCanal(canal, F) || !modelos[f.modelo]) continue;
+    const m = modelos[f.modelo][canal] ||= { conversiones: 0, ingresos: 0 };
+    m.conversiones += f.conversiones; m.ingresos += f.ingresos;
+  }
+  for (const [c, v] of Object.entries(mA)) modelos.ultima[c] = { conversiones: v.conversiones, ingresos: v.ingresos };
+  const hay = { primera: Object.keys(modelos.primera).length > 0, ddm: Object.keys(modelos.ddm).length > 0, ultima: Object.keys(modelos.ultima).length > 0 };
+  const ids = [...new Set(Object.values(modelos).flatMap(Object.keys))];
+  const filasT = ids.map(c => {
+    const g = m => modelos[m][c] || { conversiones: 0, ingresos: 0 };
+    const p = g('primera'), u = g('ultima'), d = g('ddm');
+    // Asistencia aproximada: lo que el modelo basado en datos le da al canal por encima del último clic.
+    return { canal: c, nombre: nombreCanal(c, cfg), familia: familiaDe(c), primera: p, ultima: u, ddm: d, dif_ddm_ultima: d.ingresos - u.ingresos, asistencia_aprox: hay.ddm ? Math.max(0, d.conversiones - u.conversiones) : null };
+  }).sort((x, y) => (y.ddm.ingresos + y.ultima.ingresos) - (x.ddm.ingresos + x.ultima.ingresos));
+  const rw = ['fecha BETWEEN ? AND ?'], ra = [desde, hasta];
+  if (F.prop) { rw.push('prop = ?'); ra.push(F.prop); }
+  const rutas = sel(db, `SELECT ruta, SUM(conversiones) conversiones, SUM(ingresos) ingresos FROM _can_rutas WHERE ${rw.join(' AND ')} GROUP BY ruta ORDER BY conversiones DESC LIMIT 40`, ra);
+  return { hay, filas: filasT, rutas: rutas.length ? rutas : null };
+}
+
+function armarUtm(S, X, cfg, db) {
+  const m = new Map();
+  const llave = f => [f.source, f.medium, f.campaign, f.content].join('\u0001');
+  for (const f of S) {
+    const r = m.get(llave(f)) || m.set(llave(f), { source: f.source, medium: f.medium, campaign: f.campaign, content: f.content, canal: f.canal, sesiones: 0, conversiones: 0, ingresos: 0, solicitudes: 0, ventas: 0, monto: 0, margen: 0 }).get(llave(f));
+    r.sesiones += f.sesiones; r.conversiones += f.conversiones; r.ingresos += f.ingresos;
+  }
+  for (const x of X) {
+    if (!x.source && !x.medium) continue;
+    const r = m.get(llave(x)) || m.set(llave(x), { source: x.source, medium: x.medium, campaign: x.campaign, content: x.content, canal: x.canal, sesiones: 0, conversiones: 0, ingresos: 0, solicitudes: 0, ventas: 0, monto: 0, margen: 0 }).get(llave(x));
+    if (x.tipo === 'solicitud') r.solicitudes += x.cantidad || x.filas;
+    if (x.tipo === 'venta' || x.tipo === 'venta_financiada') r.ventas += x.monto;
+    if (x.tipo === 'desembolso') { r.monto += x.monto; r.margen += x.margen; }
+  }
+  // Clics: los que trae «Pauta» por campaign_id (las plataformas los miden; GA4 no).
+  const clics = new Map(db.sql.exec('SELECT campaign_id, SUM(CAST(clics AS REAL)) c FROM "pauta" GROUP BY campaign_id').toArray().map(r => [String(r.campaign_id).toLowerCase(), r.c]));
+  const filas = [...m.values()].map(r => ({ ...r, nombre: nombreCanal(r.canal, cfg), clics: clics.has(String(r.campaign).toLowerCase()) ? clics.get(String(r.campaign).toLowerCase()) : null }))
+    .sort((a, b) => b.sesiones - a.sesiones);
+  // Referidos por contenido (blog, pdl, pdp, footer): la ruta Referido → contenido → solicitud → venta.
+  const cont = new Set(cfg.contenidos);
+  const refs = REFERIDOS.map(id => {
+    const fil = filas.filter(r => r.canal === id);
+    const porC = {};
+    for (const r of fil) {
+      const c = cont.has(String(r.content).toLowerCase()) ? String(r.content).toLowerCase() : (r.content ? 'otro contenido' : 'sin contenido');
+      const x = porC[c] ||= { contenido: c, sesiones: 0, conversiones: 0, solicitudes: 0, ventas: 0, monto: 0 };
+      x.sesiones += r.sesiones; x.conversiones += r.conversiones; x.solicitudes += r.solicitudes; x.ventas += r.ventas; x.monto += r.monto;
+    }
+    return { id, nombre: nombreCanal(id, cfg), sources: cfg.referidos[id].sources, contenidos: Object.values(porC).sort((a, b) => b.sesiones - a.sesiones) };
+  });
+  return { filas: filas.slice(0, 400), total: filas.length, referidos: refs };
+}
+
+function eventos(db, cfg, F, desde, hasta, memo) {
+  const { w, a } = filtrosSql(F, cfg, { disp: false, campos: ['source', 'medium'] });
+  const filas = sel(db, `SELECT evento, source, medium, landing, SUM(eventos) eventos, SUM(conversiones) conversiones, SUM(ingresos) ingresos FROM _can_ga4_ev${donde(w, ['fecha BETWEEN ? AND ?'])} GROUP BY evento, source, medium, landing`, [desde, hasta, ...a]);
+  const out = [];
+  for (const f of filas) {
+    const k = f.source + '\u0001' + f.medium + '\u0001\u0001\u0001';
+    const canal = memo.get(k) || normalizar({ ...f, campaign: '', content: '', grupo: '' }, cfg); memo.set(k, canal);
+    if (pasaCanal(canal, F)) out.push({ ...f, canal, producto: productoDe(f.landing, cfg.productos) });
+  }
+  return out;
+}
+
+// Un embudo por producto. Cada paso dice de dónde sale y si falta el evento o la integración.
+function armarEmbudo(id, pasos, { S, X, ev, cfg, db, hayExt, rq }) {
+  const prod = cfg.productos.some(p => p.id === id) ? id : null;
+  const capturados = new Set(sel(db, 'SELECT DISTINCT evento FROM _can_ga4_ev', []).map(r => r.evento));
+  return pasos.map(p => {
+    if (p.fuente === 'ga4') {
+      const fil = S.filter(f => (!p.familias || p.familias.includes(familiaDe(f.canal))));
+      // Sesiones por producto: la página de entrada dice el producto (las sesiones de S no traen la página).
+      const v = prod ? sesProducto(db, cfg, prod, p.familias, rq) : fil.reduce((t, f) => t + f.sesiones, 0);
+      return { n: p.n, v, estado: v == null ? 'sin_datos' : 'ok', fuente: 'GA4 · sesiones' + (p.familias ? ' (' + p.familias.map(f => FAMILIAS[f]).join(' + ') + ')' : '') + (prod ? ' con página de ' + id : '') };
+    }
+    if (p.fuente === 'evento') {
+      if (!p.evento) return { n: p.n, v: null, estado: 'sin_evento', fuente: 'GA4 · evento sin definir (Configuración › Embudos)' };
+      if (!capturados.has(p.evento)) return { n: p.n, v: null, estado: 'sin_datos', fuente: `GA4 · evento «${p.evento}» (no llegó ninguno)` };
+      const v = ev.filter(e => e.evento === p.evento && (!prod || e.producto === prod)).reduce((t, e) => t + e.eventos, 0);
+      return { n: p.n, v, estado: 'ok', fuente: `GA4 · evento «${p.evento}»` };
+    }
+    if (!hayExt(p.tipo)) return { n: p.n, v: null, estado: 'pendiente', fuente: TIPOS_EXT[p.tipo]?.fuente || 'Sistema propio' };
+    const fil = X.filter(x => x.tipo === p.tipo && (!prod || x.producto === prod));
+    const v = fil.reduce((t, x) => t + (p.medida === 'monto' ? x.monto : p.medida === 'margen' ? x.margen : (x.cantidad || x.filas)), 0);
+    return { n: p.n, v, estado: 'ok', fuente: TIPOS_EXT[p.tipo].fuente, fmt: p.medida === 'monto' || p.medida === 'margen' ? 'soles' : '' };
+  });
+}
+
+// Sesiones de un producto: la página de entrada dice el producto (se filtra en el SQL por sus patrones).
+function sesProducto(db, cfg, prod, familias, { F, desde, hasta }) {
+  if (!cfg.productos.some(x => x.id === prod)) return null;
+  const { w, a } = filtrosSql({ ...F, producto: prod }, cfg);
+  const filas = sel(db, `SELECT source, medium, campaign, content, grupo, SUM(sesiones) s FROM _can_ga4_ses${donde(w, ['fecha BETWEEN ? AND ?'])} GROUP BY source, medium, campaign, content, grupo`, [desde, hasta, ...a]);
+  let t = 0;
+  for (const f of filas) { const c = normalizar(f, cfg); if (pasaCanal(c, F) && (!familias || familias.includes(familiaDe(c)))) t += f.s; }
+  return t;
+}
+
+function porCanalProducto(X, prod, cfg, db, { F, desde, hasta }) {
+  if (!cfg.productos.some(x => x.id === prod)) return [];
+  const { w, a } = filtrosSql({ ...F, producto: prod }, cfg);
+  const m = {};
+  const de = c => (m[c] ||= { canal: c, nombre: nombreCanal(c, cfg), visitas: 0, solicitudes: 0, aprobaciones: 0, desembolsos: 0, monto: 0 });
+  for (const f of sel(db, `SELECT source, medium, campaign, content, grupo, SUM(sesiones) s FROM _can_ga4_ses${donde(w, ['fecha BETWEEN ? AND ?'])} GROUP BY source, medium, campaign, content, grupo`, [desde, hasta, ...a])) {
+    const c = normalizar(f, cfg); if (pasaCanal(c, F)) de(c).visitas += f.s;
+  }
+  for (const x of X) {
+    if (x.producto !== prod || !x.canal) continue;
+    const n = x.cantidad || x.filas;
+    if (x.tipo === 'solicitud') de(x.canal).solicitudes += n;
+    if (x.tipo === 'aprobacion') de(x.canal).aprobaciones += n;
+    if (x.tipo === 'desembolso') { de(x.canal).desembolsos += n; de(x.canal).monto += x.monto; }
+  }
+  return Object.values(m).map(r => ({ ...r, conversion: div(r.solicitudes, r.visitas) })).sort((a, b) => b.visitas - a.visitas);
+}
+
+function armarLandings(db, cfg, F, desde, hasta, memo) {
+  const { w, a } = filtrosSql(F, cfg);
+  const filas = sel(db, `SELECT landing, source, medium, campaign, content, grupo, SUM(sesiones) s, SUM(conversiones) c, SUM(ingresos) i FROM _can_ga4_ses${donde(w, ['fecha BETWEEN ? AND ?'])} GROUP BY landing, source, medium, campaign, content, grupo`, [desde, hasta, ...a]);
+  const m = new Map();
+  for (const f of filas) {
+    const k = f.source + '\u0001' + f.medium + '\u0001' + f.campaign + '\u0001' + f.content + '\u0001' + f.grupo;
+    const canal = memo.get(k) || normalizar(f, cfg); memo.set(k, canal);
+    if (!pasaCanal(canal, F)) continue;
+    const r = m.get(f.landing) || m.set(f.landing, { landing: f.landing, producto: productoDe(f.landing, cfg.productos), sesiones: 0, seo: 0, paid: 0, conversiones: 0, ingresos: 0 }).get(f.landing);
+    r.sesiones += f.s; r.conversiones += f.c; r.ingresos += f.i;
+    const fa = familiaDe(canal); if (fa === 'organico') r.seo += f.s; if (fa === 'paid') r.paid += f.s;
+  }
+  return [...m.values()].sort((a, b) => b.sesiones - a.sesiones).slice(0, 150);
+}
+
+// ---------- calidad de datos ----------
+function calidad(db, cfg, c) {
+  const L = [];
+  const add = (nivel, titulo, detalle, fuente) => L.push({ nivel, titulo, detalle, fuente });
+  if (!cfg.propiedades.length) add('error', 'No hay propiedades configuradas', 'Agrega en Configuración cada sitio con su número de propiedad de GA4 y su propiedad de Search Console.', 'Configuración');
+  for (const p of cfg.propiedades) {
+    if (!p.ga4) add('aviso', `${p.nombre}: sin GA4`, 'Sin número de propiedad de GA4 no hay sesiones, conversiones ni atribución para este sitio.', 'Configuración');
+    if (!p.gsc) add('aviso', `${p.nombre}: sin Search Console`, 'Sin la propiedad de Search Console no hay clics, consultas ni marca / no marca.', 'Configuración');
+    if (!p.dominio) add('aviso', `${p.nombre}: sin dominio`, 'Con el dominio se detectan los enlaces internos con UTM.', 'Configuración');
+  }
+  if (!c.hayGa4) add('error', 'Sin datos de GA4 guardados', 'Aprieta «Actualizar» (los últimos días) o «Cargar histórico».', 'GA4');
+  // GA4 google/organic vs clics de Search Console: deberían andar cerca (no iguales).
+  const orgGoogle = c.S.filter(f => f.canal === 'seo' && /google/.test(String(f.source).toLowerCase())).reduce((t, f) => t + f.sesiones, 0);
+  const clics = c.gA.reduce((t, f) => t + f.clics, 0);
+  if (orgGoogle && clics) {
+    const r = orgGoogle / clics;
+    if (r < 0.6 || r > 1.6) add('aviso', 'GA4 y Search Console no cuadran', `Sesiones google/organic ${Math.round(orgGoogle).toLocaleString('es-PE')} vs clics de Search Console ${Math.round(clics).toLocaleString('es-PE')} (relación ${r.toFixed(2)}). Lo normal es 0,7–1,3: revisar consentimiento de cookies, etiqueta de GA4 en todas las páginas y filtros de la propiedad.`, 'GA4 + Search Console');
+    else add('ok', 'GA4 y Search Console cuadran', `Relación sesiones google/organic ÷ clics = ${r.toFixed(2)}.`, 'GA4 + Search Console');
+  }
+  // UTM en enlaces internos
+  const internas = c.S.filter(f => esUtmInterna(f.source, c.dominios));
+  if (internas.length) {
+    const n = internas.reduce((t, f) => t + f.sesiones, 0);
+    add('error', 'Enlaces internos con UTM', `${Math.round(n).toLocaleString('es-PE')} sesiones tienen como fuente el propio sitio (${[...new Set(internas.map(f => f.source))].slice(0, 4).join(', ')}): esas UTM reinician la sesión y le quitan el canal real. Usar eventos de clic de GA4 en vez de UTM.`, 'GA4');
+  }
+  const tot = c.S.reduce((t, f) => t + f.sesiones, 0);
+  const dir = c.S.filter(f => f.canal === 'direct').reduce((t, f) => t + f.sesiones, 0);
+  if (tot && dir / tot > 0.4) add('aviso', 'Mucho tráfico directo', `${Math.round(dir / tot * 100)} % de las sesiones son Direct: suele ser enlaces sin UTM (WhatsApp, correo, app) o redirecciones que pierden la fuente.`, 'GA4');
+  const nset = c.S.filter(f => /not set/.test(f.source) || /not set/.test(f.medium)).reduce((t, f) => t + f.sesiones, 0);
+  if (tot && nset / tot > 0.03) add('aviso', 'Fuente o medio «(not set)»', `${Math.round(nset / tot * 100)} % de las sesiones sin fuente o medio.`, 'GA4');
+  const otros = c.S.filter(f => f.canal === 'otros').reduce((t, f) => t + f.sesiones, 0);
+  if (tot && otros / tot > 0.05) add('aviso', 'Sesiones sin canal claro', `${Math.round(otros / tot * 100)} % cae en «Otros»: revisar fuentes y medios en la pestaña UTM y agregar reglas en Configuración.`, 'GA4');
+  // Eventos de los embudos
+  const capt = new Set(sel(db, 'SELECT DISTINCT evento FROM _can_ga4_ev', []).map(r => r.evento));
+  for (const [id, pasos] of Object.entries(cfg.embudos)) for (const p of pasos) {
+    if (p.fuente === 'evento' && !p.evento) add('aviso', `Embudo ${id}: «${p.n}» sin evento`, 'Falta definir qué evento de GA4 marca este paso (Configuración › Embudos) y que la web lo envíe.', 'GA4');
+    else if (p.fuente === 'evento' && !capt.has(p.evento)) add('aviso', `Embudo ${id}: evento «${p.evento}» sin datos`, 'El evento está definido pero GA4 no registró ninguno: revisar la etiqueta en Tag Manager o agregarlo a la lista de eventos que se bajan.', 'GA4');
+    else if (p.fuente === 'externo' && !sel(db, 'SELECT 1 FROM _can_ext WHERE tipo = ? LIMIT 1', [p.tipo]).length) add('pendiente', `Embudo ${id}: «${p.n}» pendiente de integración`, `Falta la fuente ${TIPOS_EXT[p.tipo]?.fuente || ''}: cargar por /canales/cargar o conectar el sistema.`, TIPOS_EXT[p.tipo]?.fuente || '');
+  }
+  // GA4 ingresos vs ventas validadas
+  if (c.eA.ventas && c.tA.ingresos) {
+    const d = (c.tA.ingresos - c.eA.ventas) / c.eA.ventas;
+    add(Math.abs(d) > 0.15 ? 'aviso' : 'ok', 'Ingresos GA4 vs ventas validadas', `GA4 ${Math.round(c.tA.ingresos).toLocaleString('es-PE')} vs ventas ${Math.round(c.eA.ventas).toLocaleString('es-PE')} (${d > 0 ? '+' : ''}${Math.round(d * 100)} %). GA4 cuenta pedidos web, incluso anulados; la venta validada manda.`, 'GA4 + ventas');
+  } else add('pendiente', 'Ventas validadas pendientes', 'Sin ventas de Magento, marketplace o POS no se puede validar lo que GA4 llama ingresos.', 'Magento / POS');
+  if (c.seo.disponible && c.seo.anonimas && c.seo.actual.clics) add('ok', 'Consultas anónimas de Search Console', `${Math.round(c.seo.anonimas / c.seo.actual.clics * 100)} % de los clics no trae la consulta (Google la oculta): marca / no marca se calcula sobre el resto.`, 'Search Console');
+  // Corridas recientes con error y frescura
+  for (const r of sel(db, 'SELECT inicio, fuente, prop, error FROM _can_corridas WHERE ok = 0 ORDER BY n DESC LIMIT 5', [])) add('error', `Falló la descarga de ${r.fuente} (${r.prop})`, `${r.inicio.slice(0, 16).replace('T', ' ')} UTC: ${r.error}`, r.fuente);
+  const est = leerJson(db, 'canalesEstado', {});
+  if (est.ultimoOk && Date.now() - Date.parse(est.ultimoOk) > 36 * 3600e3) add('aviso', 'Datos con más de 36 horas', 'La actualización diaria no corrió: revisar el cron del Worker o las claves de Google.', 'Worker');
+  add('ok', 'Modelo basado en datos', 'El modelo «basado en datos» es el que tenga la propiedad en GA4 › Admin › Configuración de atribución; si ahí está «último clic», las dos columnas coinciden.', 'GA4');
+  return L;
+}
+
+function frescura(db) {
+  const ult = t => sel(db, `SELECT MAX(fecha) hasta, MAX(capturado) capturado FROM ${t}`, [])[0] || {};
+  return { ga4: ult('_can_ga4_ses'), gsc: ult('_can_gsc_dia'), externos: ult('_can_ext'), estado: leerJson(db, 'canalesEstado', {}) };
+}
+
+// ---------- exportar: la misma consulta, aplanada ----------
+function exportar(db, Q) {
+  const t = tablero(db, Q);
+  const v = Q.vista;
+  if (v === 'canales') return t.canales;
+  if (v === 'utm') return t.utm.filas;
+  if (v === 'consultas') return t.seo.consultas || [];
+  if (v === 'paginas') return t.seo.paginas || [];
+  if (v === 'landings') return t.landings;
+  if (v === 'atribucion') return t.atribucion.filas.map(r => ({ canal: r.nombre, conv_primera: r.primera.conversiones, ing_primera: r.primera.ingresos, conv_ultima: r.ultima.conversiones, ing_ultima: r.ultima.ingresos, conv_ddm: r.ddm.conversiones, ing_ddm: r.ddm.ingresos }));
+  if (v === 'serie') return t.serie.map(r => ({ corte: r.b, sesiones: r.sesiones, conversiones: r.conversiones, ingresos: r.ingresos, comparacion: r.comp, ...r.fam }));
+  throw new Error('Vista desconocida: ' + v);
+}
+
+// ===== carga de sistemas propios y columnas del CSV (nube/canales.js) =====
+function validarCarga(c) {
+  if (!c || typeof c !== 'object') return { error: 'Cuerpo no válido.' };
+  const fuente = String(c.fuente || '').trim().toLowerCase().replace(/[^a-z0-9_-]/g, '').slice(0, 30);
+  if (!fuente) return { error: 'Falta la fuente (ej. crm, core, magento, pos, app).' };
+  if (!Array.isArray(c.filas) || !c.filas.length || c.filas.length > 20000) return { error: 'filas: entre 1 y 20 000 por envío.' };
+  const out = [];
+  for (const [i, f] of c.filas.entries()) {
+    const tipo = String(f.tipo || c.tipo || '');
+    if (!Object.hasOwn(TIPOS_EXT, tipo)) return { error: `Fila ${i + 1}: tipo desconocido «${tipo}» (${Object.keys(TIPOS_EXT).join(', ')}).` };
+    const id = String(f.id ?? '').trim().slice(0, 120);
+    if (!id) return { error: `Fila ${i + 1}: falta el id del registro (sin id no se puede deduplicar).` };
+    if (!fechaOk(String(f.fecha || ''))) return { error: `Fila ${i + 1}: fecha AAAA-MM-DD.` };
+    const n = k => (f[k] === '' || f[k] == null ? 0 : +f[k]);
+    for (const k of ['cantidad', 'monto', 'margen']) if (!Number.isFinite(n(k))) return { error: `Fila ${i + 1}: ${k} no es un número.` };
+    out.push({
+      fuente, tipo, id, fecha: f.fecha, prop: String(f.prop || '').slice(0, 40),
+      source: String(f.source || '').toLowerCase(), medium: String(f.medium || '').toLowerCase(), campaign: String(f.campaign || ''), content: String(f.content || ''),
+      landing: String(f.landing || ''), producto: String(f.producto || '').toLowerCase(), cliente: String(f.cliente || '').slice(0, 80),
+      cantidad: f.cantidad == null || f.cantidad === '' ? 1 : n('cantidad'), monto: n('monto'), margen: n('margen'),
+    });
+  }
+  return { filas: out };
+}
+
+const COLS = {
+  canales: [['nombre', 'Canal'], ['familia', 'Familia'], ['sesiones', 'Sesiones'], ['usuarios', 'Usuarios'], ['conversiones', 'Conversiones GA4'], ['ingresos', 'Ingresos GA4'], ['solicitudes', 'Solicitudes'], ['aprobaciones', 'Aprobaciones'], ['desembolsos', 'Desembolsos'], ['ventas', 'Ventas validadas'], ['monto', 'Monto financiado'], ['margen', 'Margen'], ['costo', 'Costo pauta'], ['cac', 'CAC']],
+  utm: [['source', 'utm_source'], ['medium', 'utm_medium'], ['campaign', 'utm_campaign'], ['content', 'utm_content'], ['nombre', 'Canal'], ['clics', 'Clics (pauta)'], ['sesiones', 'Sesiones'], ['conversiones', 'Conversiones'], ['solicitudes', 'Solicitudes'], ['ventas', 'Ventas'], ['monto', 'Monto financiado'], ['margen', 'Margen']],
+  consultas: [['clave', 'Consulta'], ['marca', 'Marca'], ['producto', 'Producto'], ['clics', 'Clics'], ['impresiones', 'Impresiones'], ['ctr', 'CTR'], ['posicion', 'Posición']],
+  paginas: [['clave', 'Página'], ['producto', 'Producto'], ['clics', 'Clics'], ['impresiones', 'Impresiones'], ['ctr', 'CTR'], ['posicion', 'Posición']],
+  landings: [['landing', 'Página de entrada'], ['producto', 'Producto'], ['sesiones', 'Sesiones'], ['seo', 'Sesiones SEO'], ['paid', 'Sesiones paid'], ['conversiones', 'Conversiones'], ['ingresos', 'Ingresos GA4']],
+  atribucion: [['canal', 'Canal'], ['conv_primera', 'Conv. primera interacción'], ['ing_primera', 'Ingresos primera'], ['conv_ultima', 'Conv. último no directo'], ['ing_ultima', 'Ingresos último'], ['conv_ddm', 'Conv. basado en datos'], ['ing_ddm', 'Ingresos basado en datos']],
+  serie: [['corte', 'Corte'], ['sesiones', 'Sesiones'], ['conversiones', 'Conversiones'], ['ingresos', 'Ingresos'], ['comparacion', 'Sesiones comparación'], ['organico', 'Orgánico'], ['paid', 'Paid'], ['directo', 'Direct'], ['referidos', 'Referidos'], ['email', 'Email'], ['app', 'App'], ['otros', 'Otros']],
+};
+
+// ===== la «nube» local y la carga de archivos =====
+// ---------- versión en un solo archivo: la «nube» corre aquí, sobre SQLite en el navegador ----------
+// Los datos viven en este navegador (IndexedDB). Nada sale a internet salvo la librería sql.js del CDN.
+const hoyLima = () => new Date(Date.now() - 5 * 36e5).toISOString().slice(0, 10);
+let SDB = null, DB = null;
+const IDB = { nombre: 'atribucion-canales', tienda: 'base', llave: 'sqlite' };
+function idb() {
+  return new Promise((ok, mal) => {
+    const r = indexedDB.open(IDB.nombre, 1);
+    r.onupgradeneeded = () => r.result.createObjectStore(IDB.tienda);
+    r.onsuccess = () => ok(r.result); r.onerror = () => mal(r.error);
+  });
+}
+async function leerGuardado() {
+  try { const d = await idb(); return await new Promise(ok => { const t = d.transaction(IDB.tienda).objectStore(IDB.tienda).get(IDB.llave); t.onsuccess = () => ok(t.result || null); t.onerror = () => ok(null); }); }
+  catch { return null; }
+}
+async function persistir() {
+  try { const d = await idb(), bytes = SDB.export(); await new Promise(ok => { const t = d.transaction(IDB.tienda, 'readwrite'); t.objectStore(IDB.tienda).put(bytes, IDB.llave); t.oncomplete = ok; t.onerror = ok; }); }
+  catch { aviso('El navegador no dejó guardar: los datos se pierden al cerrar la pestaña.', true); }
+}
+function adaptar(s) {
+  const exec = (q, ...a) => { const st = s.prepare(q); try { st.bind(a.map(x => x === undefined ? null : x)); const rows = []; while (st.step()) rows.push(st.getAsObject()); return { toArray: () => rows }; } finally { st.free(); } };
+  return {
+    sql: { exec },
+    ctx: { storage: { transactionSync(f) { s.exec('BEGIN'); try { const r = f(); s.exec('COMMIT'); return r; } catch (e) { s.exec('ROLLBACK'); throw e; } } } },
+    meta(k, v) { if (v === undefined) return exec('SELECT v FROM _meta WHERE k = ?', k).toArray()[0]?.v; exec('INSERT OR REPLACE INTO _meta (k, v) VALUES (?, ?)', k, v); },
+  };
+}
+async function iniciarBase() {
+  const SQL = await initSqlJs({ locateFile: f => 'https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/' + f });
+  const g = await leerGuardado();
+  SDB = g ? new SQL.Database(g) : new SQL.Database();
+  DB = adaptar(SDB);
+  DB.sql.exec('CREATE TABLE IF NOT EXISTS _meta (k TEXT PRIMARY KEY, v TEXT)');
+  DB.sql.exec(`CREATE TABLE IF NOT EXISTS "pauta" (plataforma TEXT NOT NULL DEFAULT '', desde TEXT NOT NULL DEFAULT '', hasta TEXT NOT NULL DEFAULT '', costo TEXT NOT NULL DEFAULT '', campaign_id TEXT NOT NULL DEFAULT '', clics TEXT NOT NULL DEFAULT '')`);
+  prepararCanales(DB);
+  if (!DB.meta('canalesConfig')) DB.meta('canalesConfig', JSON.stringify(CONFIG_INICIAL));
+}
+
+// ---------- rutas locales (las mismas que la nube) ----------
+const FILTROS = ['prop', 'canal', 'familia', 'source', 'medium', 'campaign', 'landing', 'device', 'country', 'producto', 'marca', 'ref'];
+function consulta(u) {
+  const g = k => (u.searchParams.get(k) || '').trim().slice(0, 200);
+  const hasta = fechaOk(g('hasta')) ? g('hasta') : masDias(hoyLima(), -1);
+  const desde = fechaOk(g('desde')) ? g('desde') : masDias(hasta, -27);
+  return { desde, hasta, comp: ['prev', 'anio'].includes(g('comp')) ? g('comp') : '', gran: GRANOS.includes(g('gran')) ? g('gran') : 'dia',
+    filtros: Object.fromEntries(FILTROS.map(k => [k, g(k)]).filter(([, v]) => v)), vista: g('vista') };
+}
+const resp = (code, d) => new Response(JSON.stringify(d), { status: code, headers: { 'Content-Type': 'application/json' } });
+const cfgActual = () => leerJson(DB, 'canalesConfig', {});
+async function rutaLocal(url, opt = {}) {
+  const u = new URL(url, 'https://local'), p = u.pathname, metodo = (opt.method || 'GET').toUpperCase();
+  const cuerpo = metodo === 'POST' ? (() => { try { return JSON.parse(opt.body); } catch { return null; } })() : null;
+  try {
+    if (metodo === 'GET' && p === '/canales/datos') {
+      const Q = consulta(u);
+      return resp(200, { acceso: { modo: 'archivo', quien: 'datos en este navegador' }, estado: { ...leerJson(DB, 'canalesEstado', {}), claves: {} }, config: config(cfgActual()), tablero: tablero(DB, Q) });
+    }
+    if (metodo === 'GET' && p === '/canales/exportar') {
+      const Q = consulta(u);
+      if (!COLS[Q.vista]) return resp(400, { error: 'Vista no válida.' });
+      return new Response(csv(exportar(DB, Q), COLS[Q.vista].map(([k, n]) => ({ k, n }))), { headers: { 'Content-Type': 'text/csv; charset=utf-8', 'Content-Disposition': `attachment; filename="canales-${Q.vista}-${Q.desde}-a-${Q.hasta}.csv"` } });
+    }
+    if (metodo === 'POST' && p === '/canales/config') {
+      const v = validarConfig(cuerpo);
+      if (!v.ok) return resp(400, { error: v.error });
+      DB.meta('canalesConfig', JSON.stringify({ ...cfgActual(), ...v.cfg })); await persistir();
+      return resp(200, { ok: true });
+    }
+    if (metodo === 'POST' && p === '/canales/cargar') {
+      const v = validarCarga(cuerpo);
+      if (v.error) return resp(400, { error: v.error });
+      guardarFilas(DB, '_can_ext', v.filas); marcarCarga(); await persistir();
+      return resp(200, { ok: true, filas: v.filas.length });
+    }
+    if (p === '/canales/actualizar') return resp(400, { error: 'En este archivo los datos entran con «Cargar datos» (CSV de GA4 y Search Console).' });
+  } catch (e) { return resp(400, { error: String(e && e.message || e) }); }
+  return resp(404, { error: 'Ruta desconocida' });
+}
+const fetchReal = window.fetch.bind(window);
+window.fetch = (url, opt) => String(url).startsWith('/canales/') ? rutaLocal(String(url), opt) : fetchReal(url, opt);
+const marcarCarga = () => DB.meta('canalesEstado', JSON.stringify({ ...leerJson(DB, 'canalesEstado', {}), ultimoOk: new Date().toISOString(), error: '' }));
+
+// ---------- lectura de CSV exportados (GA4, Search Console, pauta, sistemas propios) ----------
+function partirCsv(texto) {
+  const lineas = texto.replace(/^﻿/, '').split(/\r?\n/);
+  // GA4 abre con líneas «# …» y puede traer varias tablas: se toma la primera.
+  let i = 0; while (i < lineas.length && (/^\s*#/.test(lineas[i]) || !lineas[i].trim())) i++;
+  const cab = lineas[i] || '';
+  const sep = (cab.match(/\t/g) || []).length > 0 ? '\t' : (cab.match(/;/g) || []).length > (cab.match(/,/g) || []).length ? ';' : ',';
+  const partir = l => { const o = []; let c = '', q = false; for (let k = 0; k < l.length; k++) { const ch = l[k]; if (q) { if (ch === '"' && l[k + 1] === '"') { c += '"'; k++; } else if (ch === '"') q = false; else c += ch; } else if (ch === '"') q = true; else if (ch === sep) { o.push(c); c = ''; } else c += ch; } o.push(c); return o.map(x => x.trim()); };
+  const cols = partir(cab);
+  const filas = [];
+  for (let k = i + 1; k < lineas.length; k++) {
+    if (!lineas[k].trim()) { if (filas.length) break; continue; }
+    if (/^\s*#/.test(lineas[k])) { if (filas.length) break; continue; }
+    filas.push(partir(lineas[k]));
+  }
+  return { cols, filas };
+}
+const SIN = {
+  fecha: ['fecha', 'date', 'dia', 'day'],
+  fuente_medio: ['session source / medium', 'origen / medio de la sesion', 'source / medium', 'origen / medio', 'origen/medio', 'first user source / medium', 'origen / medio del primer usuario'],
+  source: ['session source', 'origen de la sesion', 'source', 'origen', 'utm_source', 'first user source', 'origen del primer usuario', 'fuente'],
+  medium: ['session medium', 'medio de la sesion', 'medium', 'medio', 'utm_medium', 'first user medium', 'medio del primer usuario'],
+  campaign: ['session campaign', 'campana de la sesion', 'session campaign name', 'campaign', 'campana', 'utm_campaign', 'first user campaign', 'campana del primer usuario'],
+  content: ['session manual ad content', 'contenido del anuncio manual de la sesion', 'manual ad content', 'contenido del anuncio manual', 'content', 'contenido', 'utm_content'],
+  landing: ['landing page', 'pagina de destino', 'landing page + query string', 'pagina de destino + cadena de consulta', 'landing', 'pagina de entrada'],
+  device: ['device category', 'categoria de dispositivo', 'device', 'dispositivo', 'dispositivos'],
+  country: ['country', 'pais', 'paises', 'countries'],
+  sesiones: ['sessions', 'sesiones'],
+  usuarios: ['total users', 'usuarios totales', 'users', 'usuarios', 'active users', 'usuarios activos'],
+  nuevos: ['new users', 'usuarios nuevos'],
+  conversiones: ['key events', 'eventos clave', 'conversions', 'conversiones'],
+  ingresos: ['total revenue', 'ingresos totales', 'revenue', 'ingresos', 'purchase revenue', 'ingresos por compras'],
+  transacciones: ['transactions', 'transacciones', 'ecommerce purchases', 'compras de comercio electronico', 'purchases', 'compras'],
+  evento: ['event name', 'nombre del evento', 'evento'],
+  eventos: ['event count', 'numero de eventos', 'recuento de eventos', 'eventos'],
+  query: ['top queries', 'consultas principales', 'query', 'consulta', 'consultas'],
+  page: ['top pages', 'paginas principales', 'page', 'pagina', 'paginas', 'url'],
+  clics: ['clicks', 'clics'],
+  impresiones: ['impressions', 'impresiones'],
+  posicion: ['position', 'posicion', 'posicion media', 'average position'],
+  plataforma: ['plataforma', 'platform'],
+  desde: ['desde', 'inicio', 'start'], hasta: ['hasta', 'fin', 'end'],
+  costo: ['costo', 'cost', 'importe gastado', 'amount spent', 'inversion', 'gasto'],
+  campaign_id: ['campaign_id', 'id de campana', 'campaign id'],
+  tipo: ['tipo'], id: ['id'],
+};
+function mapear(cols) {
+  const m = {};
+  cols.forEach((c, i) => { const n = plano(c).replace(/\s+/g, ' '); for (const [k, lista] of Object.entries(SIN)) if (m[k] == null && lista.includes(n)) m[k] = i; });
+  return m;
+}
+const num = v => {
+  let s = String(v ?? '').replace(/[%\sS/$]/g, '');
+  if (!s || s === '-' || s === '(notset)') return 0;
+  if (/^-?\d{1,3}(,\d{3})+(\.\d+)?$/.test(s)) s = s.replace(/,/g, '');
+  else if (/^-?\d{1,3}(\.\d{3})+(,\d+)?$/.test(s)) s = s.replace(/\./g, '').replace(',', '.');
+  else if (/^-?\d+,\d+$/.test(s)) s = s.replace(',', '.');
+  const n = Number(s); return Number.isFinite(n) ? n : 0;
+};
+const MESES_EN = { jan: 1, feb: 2, mar: 3, apr: 4, may: 5, jun: 6, jul: 7, aug: 8, sep: 9, oct: 10, nov: 11, dec: 12, ene: 1, abr: 4, ago: 8, set: 9, dic: 12 };
+function aFecha(v) {
+  const s = String(v || '').trim();
+  let m;
+  if ((m = s.match(/^(\d{4})(\d{2})(\d{2})$/))) return `${m[1]}-${m[2]}-${m[3]}`;
+  if ((m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/))) return `${m[1]}-${m[2].padStart(2, '0')}-${m[3].padStart(2, '0')}`;
+  if ((m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/))) return `${m[3]}-${m[2].padStart(2, '0')}-${m[1].padStart(2, '0')}`;
+  if ((m = s.match(/^([a-z]{3})[a-z]* (\d{1,2}), (\d{4})$/i)) && MESES_EN[m[1].toLowerCase()]) return `${m[3]}-${String(MESES_EN[m[1].toLowerCase()]).padStart(2, '0')}-${m[2].padStart(2, '0')}`;
+  return '';
+}
+function detectar(m) {
+  if (m.tipo != null && m.id != null) return 'ext';
+  if (m.costo != null && m.plataforma != null) return 'pauta';
+  if (m.clics != null && m.impresiones != null) return m.query != null ? 'gsc_qp' : m.page != null ? 'gsc_paginas' : 'gsc_dia';
+  if (m.evento != null) return 'ga4_ev';
+  if (m.sesiones != null) return 'ga4_ses';
+  if (m.conversiones != null && (m.source != null || m.fuente_medio != null)) return 'ga4_ddm';
+  return '';
+}
+const TIPOS_ARCHIVO = {
+  auto: 'Detectar por las columnas',
+  ga4_ses: 'GA4 · sesiones (adquisición de tráfico)', ga4_ev: 'GA4 · eventos', ga4_primera: 'GA4 · primera interacción (primer usuario)', ga4_ddm: 'GA4 · atribución basada en datos',
+  gsc_dia: 'Search Console · por fecha (y dispositivo / país)', gsc_qp: 'Search Console · consultas (y páginas)',
+  pauta: 'Pauta · costo por plataforma y campaña', ext: 'Sistemas propios · solicitudes, créditos, ventas, app',
+};
+
+// Convierte un CSV en filas de la foto correspondiente y las guarda (lo del mismo período se reemplaza).
+function importar(texto, tipoPedido, prop, fechaSin) {
+  const { cols, filas } = partirCsv(texto);
+  if (!filas.length) throw new Error('El archivo no trae filas.');
+  const m = mapear(cols);
+  const tipo = tipoPedido === 'auto' ? detectar(m) : tipoPedido;
+  if (!tipo) throw new Error('No reconozco las columnas (' + cols.join(', ') + '). Elige el tipo de archivo a mano.');
+  if (tipo === 'gsc_paginas') throw new Error('Este archivo trae páginas sin consulta: así se contaría todo como «no marca». Sube el de Consultas (o uno con consulta y página) y el de Fechas.');
+  const val = (f, k) => (m[k] == null ? '' : f[m[k]] ?? '');
+  const fechaDe = f => (m.fecha == null ? fechaSin : aFecha(val(f, 'fecha')));
+  const sm = f => {
+    if (m.fuente_medio != null) { const [a, b = ''] = String(val(f, 'fuente_medio')).split('/').map(x => x.trim()); return { source: a.toLowerCase(), medium: b.toLowerCase() }; }
+    return { source: String(val(f, 'source')).toLowerCase(), medium: String(val(f, 'medium')).toLowerCase() };
+  };
+  if (tipo === 'ext') {
+    const objs = filas.map(f => Object.fromEntries(cols.map((c, i) => [plano(c), f[i]])));
+    const v = validarCarga({ fuente: 'archivo', filas: objs });
+    if (v.error) throw new Error(v.error);
+    return { tipo, filas: guardarFilas(DB, '_can_ext', v.filas) };
+  }
+  if (tipo === 'pauta') {
+    let n = 0;
+    DB.ctx.storage.transactionSync(() => { for (const f of filas) { const d = aFecha(val(f, 'desde')), h = aFecha(val(f, 'hasta')); if (!d || !h) continue; DB.sql.exec('INSERT INTO "pauta" (plataforma, desde, hasta, costo, campaign_id, clics) VALUES (?, ?, ?, ?, ?, ?)', String(val(f, 'plataforma')), d, h, String(num(val(f, 'costo'))), String(val(f, 'campaign_id')), String(num(val(f, 'clics')))); n++; } });
+    if (!n) throw new Error('Pauta: hacen falta las columnas plataforma, desde, hasta y costo (fechas AAAA-MM-DD).');
+    return { tipo, filas: n };
+  }
+  if (!prop) throw new Error('Elige la marca (o créala en Configuración).');
+  if (tipo.startsWith('gsc') && !prop.gsc) throw new Error(`La marca «${prop.nombre}» no tiene Search Console en Configuración.`);
+  const tabla = { ga4_ses: '_can_ga4_ses', ga4_ev: '_can_ga4_ev', ga4_primera: '_can_ga4_attr', ga4_ddm: '_can_ga4_attr', gsc_dia: '_can_gsc_dia', gsc_qp: '_can_gsc_qp' }[tipo];
+  const def = FOTOS[tabla];
+  const acc = new Map();
+  let sinFecha = 0;
+  for (const f of filas) {
+    const fecha = fechaDe(f);
+    if (!fechaOk(fecha)) { sinFecha++; continue; }
+    let r;
+    if (tipo === 'ga4_ses') r = { prop: prop.id, fecha, ...sm(f), campaign: val(f, 'campaign'), content: val(f, 'content'), landing: val(f, 'landing'), device: String(val(f, 'device')).toLowerCase(), country: val(f, 'country'), grupo: '',
+      sesiones: num(val(f, 'sesiones')), usuarios: num(val(f, 'usuarios')), nuevos: num(val(f, 'nuevos')), conversiones: num(val(f, 'conversiones')), ingresos: num(val(f, 'ingresos')), transacciones: num(val(f, 'transacciones')) };
+    else if (tipo === 'ga4_ev') r = { prop: prop.id, fecha, evento: val(f, 'evento'), ...sm(f), landing: val(f, 'landing'), eventos: num(val(f, 'eventos')), conversiones: num(val(f, 'conversiones')), ingresos: num(val(f, 'ingresos')) };
+    else if (tipo === 'ga4_primera' || tipo === 'ga4_ddm') r = { prop: prop.id, fecha, modelo: tipo === 'ga4_primera' ? 'primera' : 'ddm', ...sm(f), campaign: val(f, 'campaign'), conversiones: num(val(f, 'conversiones')), ingresos: num(val(f, 'ingresos')), usuarios: num(val(f, 'usuarios')) };
+    else { const c = num(val(f, 'clics')), im = num(val(f, 'impresiones')), pos = num(val(f, 'posicion'));
+      r = tipo === 'gsc_dia' ? { sitio: prop.gsc, fecha, device: String(val(f, 'device')).toLowerCase(), country: String(val(f, 'country')).toLowerCase(), clics: c, impresiones: im, pos_x_impr: pos * im }
+        : { sitio: prop.gsc, fecha, query: val(f, 'query'), page: val(f, 'page'), clics: c, impresiones: im, pos_x_impr: pos * im }; }
+    const k = def.llave.map(c => r[c]).join('\u0001');
+    const x = acc.get(k); if (x) for (const c of def.num) x[c] += r[c]; else acc.set(k, r);
+  }
+  const lista = [...acc.values()];
+  if (!lista.length) throw new Error(m.fecha == null ? 'Sin columna de fecha: elige la «fecha para archivos sin fecha».' : `Ninguna fila con fecha válida (${sinFecha} descartadas).`);
+  const fechas = lista.map(r => r.fecha).sort(), desde = fechas[0], hasta = fechas.at(-1);
+  // Subir de nuevo el mismo período lo reemplaza (en atribución, solo el mismo modelo).
+  DB.ctx.storage.transactionSync(() => {
+    const por = def.por, extra = tabla === '_can_ga4_attr' ? ' AND modelo = ?' : '';
+    DB.sql.exec(`DELETE FROM ${tabla} WHERE "${por}" = ? AND fecha BETWEEN ? AND ?${extra}`, ...[lista[0][por], desde, hasta, ...(extra ? [lista[0].modelo] : [])]);
+  });
+  return { tipo, filas: guardarFilas(DB, tabla, lista), desde, hasta, sinFecha };
+}
+
+// ---------- panel «Cargar datos» ----------
+function pintarCarga() {
+  const props = config(cfgActual()).propiedades;
+  const elegida = $('cargaProp').value;
+  $('cargaProp').innerHTML = props.length ? props.map(p => `<option value="${escH(p.id)}"${p.id === elegida ? ' selected' : ''}>${escH(p.nombre)}</option>`).join('') : '<option value="">(crea una marca en Configuración)</option>';
+  const tipo = $('cargaTipo').value;
+  $('cargaTipo').innerHTML = Object.entries(TIPOS_ARCHIVO).map(([k, n]) => `<option value="${k}"${k === tipo ? ' selected' : ''}>${n}</option>`).join('');
+  if (!$('cargaFecha').value) $('cargaFecha').value = masDias(hoyLima(), -1);
+  const cuenta = t => DB.sql.exec(`SELECT COUNT(*) n, MIN(fecha) d, MAX(fecha) h FROM ${t}`).toArray()[0];
+  $('cargaResumen').innerHTML = [['_can_ga4_ses', 'GA4 sesiones'], ['_can_ga4_ev', 'GA4 eventos'], ['_can_ga4_attr', 'GA4 atribución'], ['_can_gsc_dia', 'Search Console por fecha'], ['_can_gsc_qp', 'Search Console consultas'], ['_can_ext', 'Sistemas propios']]
+    .map(([t, n]) => { const c = cuenta(t); return `<li><b>${n}</b> ${c.n ? `${c.n.toLocaleString('es-PE')} filas · ${c.d} a ${c.h}` : '<span class="dim">sin datos</span>'}</li>`; }).join('');
+}
+async function subirArchivos(files) {
+  const props = config(cfgActual()).propiedades, prop = props.find(p => p.id === $('cargaProp').value);
+  const out = [];
+  for (const f of files) {
+    try { const r = importar(await f.text(), $('cargaTipo').value, prop, $('cargaFecha').value); out.push(`✔ ${f.name}: ${TIPOS_ARCHIVO[r.tipo]} · ${r.filas.toLocaleString('es-PE')} filas${r.desde ? ` (${r.desde} a ${r.hasta})` : ''}${r.sinFecha ? ` · ${r.sinFecha} sin fecha válida` : ''}`); }
+    catch (e) { out.push(`✘ ${f.name}: ${e.message}`); }
+  }
+  marcarCarga(); await persistir();
+  $('cargaLog').textContent = out.join('\n');
+  pintarCarga();
+  dispatchEvent(new CustomEvent('vista', { detail: 'vCanales' }));
+}
+$('cargaArchivos').onchange = e => { if (e.target.files.length) subirArchivos([...e.target.files]); e.target.value = ''; };
+$('cargaBtn').onclick = () => { $('cargaPanel').hidden = !$('cargaPanel').hidden; if (!$('cargaPanel').hidden) pintarCarga(); };
+$('cargaRespaldo').onclick = () => { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([SDB.export()], { type: 'application/x-sqlite3' })); a.download = `atribucion-canales-${hoyLima()}.sqlite`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000); };
+$('cargaRestaurar').onchange = async e => {
+  const f = e.target.files[0]; if (!f) return;
+  try { const SQL = await initSqlJs({ locateFile: x => 'https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/' + x }); SDB = new SQL.Database(new Uint8Array(await f.arrayBuffer())); DB = adaptar(SDB); prepararCanales(DB); await persistir(); aviso('Respaldo restaurado.'); pintarCarga(); dispatchEvent(new CustomEvent('vista', { detail: 'vCanales' })); }
+  catch (err) { aviso('No es un respaldo válido: ' + err.message, true); }
+  e.target.value = '';
+};
+$('cargaBorrar').onclick = async () => {
+  if (!confirm('¿Borrar todos los datos cargados en este navegador? La configuración se mantiene.')) return;
+  for (const t of [...Object.keys(FOTOS), '_can_corridas', '"pauta"']) DB.sql.exec(`DELETE FROM ${t}`);
+  DB.meta('canalesEstado', '{}'); await persistir(); pintarCarga(); dispatchEvent(new CustomEvent('vista', { detail: 'vCanales' }));
+};
+
+// ===== pantalla (app/js/canales.js) =====
+(() => {
+// Atribución y canales (dc-canales): de dónde vienen las sesiones, las conversiones, las ventas y el crédito.
+// Lee /canales/datos (nube/canales.js): GA4 y Search Console guardados una vez al día, más lo que se cargue
+// de sistemas propios (CRM, core financiero, Magento, POS, app). Abrir la pantalla nunca llama a Google.
+// Regla de la pantalla: lo que la fuente no entrega se muestra «sin datos» o «pendiente de integración»;
+// nada se estima sin decirlo, y una solicitud no es una venta ni una venta es un desembolso.
+
+const nf = new Intl.NumberFormat('es-PE', { maximumFractionDigits: 0 });
+const nf1 = new Intl.NumberFormat('es-PE', { maximumFractionDigits: 1 });
+const nfc = new Intl.NumberFormat('es-PE', { notation: 'compact', maximumFractionDigits: 1 });
+const soles = v => 'S/ ' + nf.format(v);
+const pct = v => (v * 100).toLocaleString('es-PE', { maximumFractionDigits: 1 }) + ' %';
+const fmtV = (v, fmt) => v == null ? '—' : fmt === 'soles' ? soles(v) : fmt === 'soles2' ? 'S/ ' + v.toLocaleString('es-PE', { maximumFractionDigits: 2 }) : fmt === 'pct' ? pct(v) : fmt === 'x' ? v.toLocaleString('es-PE', { maximumFractionDigits: 2 }) + '×' : fmt === 'texto' ? escH(v) : fmt === 'pos' ? nf1.format(v) : nf.format(v);
+const fecha = s => new Date(s + 'T00:00:00Z').toLocaleDateString('es-PE', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+const iso = d => d.toISOString().slice(0, 10);
+const ayer = () => iso(new Date(Date.now() - 5 * 36e5 - 864e5));
+const masDias = (s, n) => iso(new Date(Date.parse(s + 'T00:00:00Z') + n * 864e5));
+
+const COLOR = {
+  seo: 'var(--canSeo)', paid_search: 'var(--canPaid)', paid_social: 'var(--canPaid2)', display: 'var(--canPaid3)', paid_otros: 'var(--canPaid4)',
+  direct: 'var(--canDir)', referral: 'var(--canRef)', ref_a: 'var(--canRef2)', ref_b: 'var(--canRef3)', ref_c: 'var(--canRef4)',
+  email: 'var(--canMail)', app: 'var(--canApp)', otros: 'var(--canOtro)',
+};
+const COLOR_FAM = { organico: 'var(--canSeo)', paid: 'var(--canPaid)', directo: 'var(--canDir)', referidos: 'var(--canRef2)', email: 'var(--canMail)', app: 'var(--canApp)', otros: 'var(--canOtro)' };
+const TABS = [
+  ['resumen', 'Resumen'], ['distribucion', 'Distribución'], ['atribucion', 'Atribución'], ['seo', 'SEO'], ['electro', 'Crédito Electro'],
+  ['efectivo', 'Préstamo Efectivo'], ['digitales', 'Productos digitales'], ['utm', 'UTM y referidos'], ['calidad', 'Calidad de datos'], ['config', 'Configuración'],
+];
+const PRESETS = [['7', '7 días'], ['28', '28 días'], ['90', '90 días'], ['mes', 'Este mes'], ['trim', 'Trimestre'], ['anio', 'Este año'], ['custom', 'Fechas']];
+const EXPORTA = { resumen: 'serie', distribucion: 'canales', atribucion: 'atribucion', seo: 'consultas', utm: 'utm', efectivo: 'canales', electro: 'landings' };
+
+const S = { tab: 'resumen', preset: '28', desde: '', hasta: '', gran: 'dia', comp: 'prev', f: {}, seoTab: 'consultas', utmQ: '' };
+try { const g = JSON.parse(localStorage.getItem('canales_ui') || '{}'); Object.assign(S, g, { f: g.f && typeof g.f === 'object' ? g.f : {} }); } catch {}
+const guardarUi = () => { try { localStorage.setItem('canales_ui', JSON.stringify({ tab: S.tab, preset: S.preset, desde: S.desde, hasta: S.hasta, gran: S.gran, comp: S.comp, f: S.f })); } catch {} };
+
+let R = null, E = {}, CFG = null, cargando = false, pedido = 0;
+
+function rango() {
+  const h = ayer();
+  if (S.preset === 'custom' && S.desde && S.hasta) return { desde: S.desde, hasta: S.hasta };
+  if (S.preset === 'mes') return { desde: h.slice(0, 8) + '01', hasta: h };
+  if (S.preset === 'trim') { const m = Math.floor((+h.slice(5, 7) - 1) / 3) * 3 + 1; return { desde: `${h.slice(0, 4)}-${String(m).padStart(2, '0')}-01`, hasta: h }; }
+  if (S.preset === 'anio') return { desde: h.slice(0, 4) + '-01-01', hasta: h };
+  const n = Number(S.preset) || 28;
+  return { desde: masDias(h, -(n - 1)), hasta: h };
+}
+const consulta = extra => {
+  const { desde, hasta } = rango();
+  const p = new URLSearchParams({ desde, hasta, gran: S.gran, comp: S.comp, ...Object.fromEntries(Object.entries(S.f).filter(([, v]) => v)), ...extra });
+  return p.toString();
+};
+
+// ---------- carga ----------
+async function cargar() {
+  const yo = ++pedido;
+  $('canEstado').textContent = 'Cargando…';
+  try {
+    const r = await fetch('/canales/datos?' + consulta(), { headers: conPin() });
+    const d = await r.json().catch(() => ({}));
+    if (yo !== pedido) return;
+    if (r.status === 401 || r.status === 429) {
+      E = {}; R = null; $('canPin').hidden = false; $('canCuerpo').hidden = true;
+      $('canPinMsg').textContent = d.error || 'Datos internos.';
+      $('canPin').querySelector('.fila').hidden = d.acceso === 'access';
+      $('canEstado').textContent = '';
+      return;
+    }
+    if (!r.ok) throw new Error(d.error || 'No se pudo leer el tablero');
+    $('canPin').hidden = true; $('canCuerpo').hidden = false;
+    E = { ...d.estado, acceso: d.acceso }; CFG = d.config; R = d.tablero;
+    pintar();
+  } catch (e) {
+    if (yo !== pedido) return;
+    $('canEstado').textContent = '';
+    aviso(e instanceof TypeError ? 'No se pudo hablar con la nube.' : e.message, true);
+  }
+}
+
+// ---------- cabecera y filtros ----------
+function pintarCab() {
+  const { desde, hasta } = rango();
+  $('canPeriodo').textContent = `${fecha(desde)} – ${fecha(hasta)}`;
+  const fr = R?.frescura || {};
+  const partes = [];
+  if (fr.ga4?.hasta) partes.push(`GA4 hasta ${fecha(fr.ga4.hasta)}`); else partes.push('GA4 sin datos');
+  if (fr.gsc?.hasta) partes.push(`Search Console hasta ${fecha(fr.gsc.hasta)}`); else partes.push('Search Console sin datos');
+  if (E.ultimoOk) partes.push('última actualización ' + cuando(E.ultimoOk));
+  if (E.acceso?.quien) partes.push(escH(E.acceso.quien));
+  $('canEstado').innerHTML = partes.join(' · ');
+  $('canError').hidden = !E.error;
+  $('canError').innerHTML = E.error ? `<b>La última actualización tuvo errores${E.ultimoError ? ' (' + escH(cuando(E.ultimoError)) + ')' : ''}:</b> ${escH(E.error)}` : '';
+  $('canAct').disabled = $('canHist').disabled = cargando;
+  $('canPresets').innerHTML = PRESETS.map(([k, n]) => `<button type="button" class="chip${S.preset === k ? ' on' : ''}" data-preset="${k}" aria-pressed="${S.preset === k}">${n}</button>`).join('');
+  $('canFechas').hidden = S.preset !== 'custom';
+  $('canDesde').value = S.desde || desde; $('canHasta').value = S.hasta || hasta;
+  $('canGran').value = S.gran; $('canComp').value = S.comp;
+  // Opciones de filtro: propiedades, canales, productos (del tablero); el resto es texto libre.
+  const opt = (sel, lista, val, todos) => { $(sel).innerHTML = `<option value="">${todos}</option>` + lista.map(([v, n]) => `<option value="${escH(v)}"${v === val ? ' selected' : ''}>${escH(n)}</option>`).join(''); };
+  opt('canFProp', (CFG?.propiedades || []).map(p => [p.id, p.nombre]), S.f.prop || '', 'Todas las marcas');
+  opt('canFCanal', (R?.canalesDef || []).map(c => [c.id, c.n]), S.f.canal || '', 'Todos los canales');
+  opt('canFProd', [...(R?.productos || []).map(p => [p.id, p.nombre]), ['otros', 'Otros']], S.f.producto || '', 'Todos los productos');
+  opt('canFRef', (R?.canalesDef || []).filter(c => /^ref_/.test(c.id)).map(c => [c.id, c.n]), S.f.ref || '', 'Todos los referidos');
+  $('canFFam').value = S.f.familia || ''; $('canFMarca').value = S.f.marca || '';
+  for (const k of ['source', 'medium', 'campaign', 'landing', 'country', 'device']) $('canF_' + k).value = S.f[k] || '';
+  const activos = Object.values(S.f).filter(Boolean).length;
+  $('canMasF').textContent = activos ? `Filtros (${activos})` : 'Filtros';
+  $('canTabs').innerHTML = TABS.map(([k, n]) => `<button type="button" role="tab" class="chip${S.tab === k ? ' on' : ''}" aria-selected="${S.tab === k}" data-tab="${k}">${n}</button>`).join('');
+  $('canExp').hidden = !EXPORTA[S.tab];
+}
+
+// ---------- piezas ----------
+const ESTADO_TXT = { pendiente: 'Pendiente de integración', sin_datos: 'Sin datos', sin_evento: 'Evento sin definir', estimado: 'Estimado' };
+function kpi(titulo, k, ayuda, color) {
+  if (!k) return '';
+  const est = k.estado && k.estado !== 'ok' ? `<em class="canEst ${k.estado}">${ESTADO_TXT[k.estado] || k.estado}</em>` : '';
+  let dl = '';
+  if (k.v != null && k.ant != null && R.rango.comp) {
+    const v = k.ant ? (k.v - k.ant) / k.ant : null;
+    dl = v == null ? `<small>vs ${fmtV(k.ant, k.fmt)} (sin base para %)</small>` : `<small><b class="${(v >= 0) !== !!k.menorMejor ? 'sube' : 'baja'}">${v >= 0 ? '▲' : '▼'} ${pct(Math.abs(v))}</b> vs ${fmtV(k.ant, k.fmt)}</small>`;
+  }
+  return `<div class="canKpi"${color ? ` style="--c:${color}"` : ''} title="${escH((ayuda ? ayuda + '\n' : '') + 'Fuente: ' + k.fuente)}">
+    <span>${titulo}</span><b>${k.v == null ? '—' : fmtV(k.v, k.fmt)}</b>${est}${dl}<i class="canFuente">${escH(k.fuente)}</i></div>`;
+}
+const caja = (titulo, cuerpo, nota = '', extra = '') => `<section class="canCaja ${extra}"><h3>${titulo}</h3>${cuerpo}${nota ? `<p class="nota">${nota}</p>` : ''}</section>`;
+const pendiente = (que, fuente) => `<div class="canPend"><b>Pendiente de integración</b><span>${que}</span><small>Fuente: ${escH(fuente)} · se carga con «Cargar datos» (CSV con tipo, id, fecha…).</small></div>`;
+
+// Línea/área por series sobre un eje de cortes. series: [{n, color, vals[], punteada?}]
+function lineas(cortes, series, alto = 220) {
+  if (!cortes.length) return '<p class="canVacio">Sin datos en el período.</p>';
+  const W = 760, H = alto, m = { t: 10, r: 10, b: 24, l: 48 };
+  const iw = W - m.l - m.r, ih = H - m.t - m.b;
+  const max = Math.max(1, ...series.flatMap(s => s.vals.filter(v => v != null)));
+  const x = i => m.l + (cortes.length > 1 ? i / (cortes.length - 1) : 0.5) * iw, y = v => m.t + ih - v / max * ih;
+  const nx = Math.min(cortes.length, 7), xt = []; for (let k = 0; k < nx; k++) xt.push(Math.round(k * (cortes.length - 1) / Math.max(1, nx - 1)));
+  const ticks = [0, 0.25, 0.5, 0.75, 1].map(t => max * t);
+  const etq = c => /^\d{4}-\d{2}-\d{2}$/.test(c) ? new Date(c + 'T00:00:00Z').toLocaleDateString('es-PE', { day: 'numeric', month: 'short', timeZone: 'UTC' }) : c;
+  return `<svg class="canSvg" viewBox="0 0 ${W} ${H}" role="img" aria-label="Tendencia">
+    ${ticks.map(v => `<line class="gl" x1="${m.l}" x2="${W - m.r}" y1="${y(v)}" y2="${y(v)}"/><text class="ax" x="${m.l - 6}" y="${y(v) + 4}" text-anchor="end">${nfc.format(v)}</text>`).join('')}
+    ${xt.map((i, k) => `<text class="ax" x="${x(i)}" y="${H - 6}" text-anchor="${k === 0 ? 'start' : k === xt.length - 1 ? 'end' : 'middle'}">${escH(etq(cortes[i]))}</text>`).join('')}
+    ${series.map(s => { const d = s.vals.map((v, i) => v == null ? '' : `${x(i).toFixed(1)},${y(v).toFixed(1)}`).filter(Boolean); return d.length ? `<polyline fill="none" stroke="${s.color}" stroke-width="2" ${s.punteada ? 'stroke-dasharray="5 4" opacity=".7"' : ''} points="${d.join(' ')}"><title>${escH(s.n)}</title></polyline>` : ''; }).join('')}
+  </svg><div class="canLeyenda">${series.map(s => `<span><i style="background:${s.color}${s.punteada ? ';opacity:.6' : ''}"></i>${escH(s.n)}</span>`).join('')}</div>`;
+}
+
+// Barras horizontales apiladas al 100 %: una fila por métrica, un tramo por familia.
+function apiladas(filas, familias) {
+  return `<div class="canApil">${filas.map(f => {
+    const tot = Object.values(f.vals).reduce((a, b) => a + b, 0);
+    if (!tot) return `<div class="canApilFila"><span>${f.n}</span><div class="canApilBarra vacia">${f.vacio || 'sin datos'}</div></div>`;
+    return `<div class="canApilFila"><span>${f.n}</span><div class="canApilBarra">${Object.entries(f.vals).filter(([, v]) => v > 0).map(([k, v]) => `<i style="width:${v / tot * 100}%;background:${COLOR_FAM[k] || COLOR[k] || 'var(--canOtro)'}" title="${escH(familias[k] || k)}: ${pct(v / tot)}">${v / tot >= 0.08 ? Math.round(v / tot * 100) + '%' : ''}</i>`).join('')}</div></div>`;
+  }).join('')}</div><div class="canLeyenda">${Object.entries(familias).map(([k, n]) => `<span><i style="background:${COLOR_FAM[k]}"></i>${escH(n)}</span>`).join('')}</div>`;
+}
+
+function tabla(cols, filas, { vacio = 'Sin datos en el período.', max = 200 } = {}) {
+  if (!filas.length) return `<p class="canVacio">${vacio}</p>`;
+  return `<div class="canScroll"><table class="canTabla"><thead><tr>${cols.map(c => `<th class="${c.num ? 'num' : ''}" title="${escH(c.ayuda || '')}">${c.n}</th>`).join('')}</tr></thead><tbody>
+    ${filas.slice(0, max).map(f => `<tr>${cols.map(c => { const v = typeof c.v === 'function' ? c.v(f) : f[c.k]; return `<td class="${c.num ? 'num' : ''}">${c.html ? v : v == null || v === '' ? '<span class="dim">—</span>' : c.fmt ? fmtV(v, c.fmt) : c.num ? nf.format(v) : escH(v)}</td>`; }).join('')}</tr>`).join('')}
+  </tbody></table></div>${filas.length > max ? `<p class="nota">Se muestran ${max} de ${nf.format(filas.length)}. Exporta el CSV para verlas todas.</p>` : ''}`;
+}
+const punto = c => `<i class="canPunto" style="background:${COLOR[c] || 'var(--canOtro)'}"></i>`;
+
+function embudo(pasos) {
+  const base = pasos.find(p => p.v != null && p.v > 0)?.v || 0;
+  let previo = null;
+  return `<div class="canEmbudo">${pasos.map(p => {
+    const ok = p.v != null, ancho = ok && base ? Math.max(3, Math.min(100, p.v / base * 100)) : 0;
+    const conv = ok && previo && !p.fmt ? `<small>${pct(p.v / previo)} del paso anterior</small>` : '';
+    const r = `<div class="canPaso ${p.estado}"><div class="canPasoTit"><b>${escH(p.n)}</b><span>${ok ? fmtV(p.v, p.fmt) : `<em class="canEst ${p.estado}">${ESTADO_TXT[p.estado] || p.estado}</em>`}</span></div>
+      <div class="canPasoBarra">${ok ? `<i style="width:${ancho}%"></i>` : ''}</div><div class="canPasoPie"><span>${escH(p.fuente)}</span>${conv}</div></div>`;
+    if (ok && !p.fmt) previo = p.v; else if (!ok) previo = null;
+    return r;
+  }).join('')}</div>`;
+}
+
+// ---------- pestañas ----------
+const VISTAS = {
+  resumen() {
+    const K = R.kpis;
+    const serie = R.serie, cortes = serie.map(s => s.b);
+    const fams = Object.keys(R.familias).filter(f => serie.some(s => s.fam[f]));
+    return `<div class="canKpis">
+      ${kpi('Tráfico total', K.trafico, 'Sesiones de GA4 en el período')}
+      ${kpi('Tráfico SEO', K.sesiones_seo, 'Sesiones de búsqueda orgánica (google / organic y otros buscadores)', 'var(--canSeo)')}
+      ${kpi('SEO no marca', K.sesiones_seo_nomarca, 'GA4 no trae la consulta: se estima con la participación de clics no marca de Search Console', 'var(--canSeo)')}
+      ${kpi('Tráfico Paid', K.sesiones_paid, 'Paid Search + Paid Social + Display / Performance + otros pagados', 'var(--canPaid)')}
+      ${kpi('Conversiones', K.conversiones, 'Eventos clave de GA4: no son ventas ni créditos')}
+      ${kpi('Tasa de conversión SEO', K.tasa_conv_seo, 'Eventos clave SEO ÷ sesiones SEO', 'var(--canSeo)')}
+      ${kpi('Ingresos (GA4)', K.ingresos, 'Ingresos de comercio electrónico que mide GA4; la venta validada va aparte', 'var(--canVenta)')}
+      ${kpi('Ventas validadas', K.ventas, 'Magento, marketplace o POS: el dato que manda', 'var(--canVenta)')}
+      ${kpi('Solicitudes de crédito', K.solicitudes, 'Una solicitud no es venta ni crédito')}
+      ${kpi('Créditos aprobados', K.aprobaciones, '')}
+      ${kpi('Créditos desembolsados', K.desembolsos, 'Solo cuenta lo validado en el core financiero', 'var(--canVenta)')}
+      ${kpi('Monto financiado', K.monto_financiado, '', 'var(--canVenta)')}
+      ${kpi('Margen', K.margen, 'Margen de los créditos: no es ingreso financiero', 'var(--canVenta)')}
+      ${kpi('Costo de pauta', K.costo_paid, 'De la pantalla «Pauta», repartido por día', 'var(--canPaid)')}
+      ${kpi('ROAS Paid', K.roas_paid, 'Ingresos GA4 de canales pagados ÷ costo de pauta', 'var(--canPaid)')}
+      ${kpi('Ingreso por sesión', K.ingreso_sesion, '')}
+      ${kpi('Ticket promedio', K.ticket, '')}
+      ${kpi('Usuarios recurrentes', K.usuarios_recurrentes, '')}
+      ${kpi('Activación del app', K.activacion_app, '')}
+      ${kpi('Recompra', K.recompra, '')}
+      ${kpi('Canal principal', K.canal_principal, 'El canal con más sesiones')}
+    </div>
+    ${caja('Sesiones por familia de canal', lineas(cortes, [
+      ...fams.map(f => ({ n: R.familias[f], color: COLOR_FAM[f], vals: serie.map(s => s.fam[f] || 0) })),
+      ...(R.rango.comp ? [{ n: 'Total · ' + (R.rango.comp.tipo === 'anio' ? 'año anterior' : 'período anterior'), color: 'var(--txt)', punteada: true, vals: serie.map(s => s.comp) }] : []),
+    ]), 'La comparación se alinea por posición del corte (1.er día con 1.er día).')}`;
+  },
+  distribucion() {
+    const fam = campo => { const o = {}; for (const c of R.canales) o[c.familia] = (o[c.familia] || 0) + (c[campo] || 0); return o; };
+    const hayVentas = R.canales.some(c => c.ventas), hayMargen = R.canales.some(c => c.margen);
+    return caja('Participación por familia', apiladas([
+      { n: 'Tráfico', vals: fam('sesiones') }, { n: 'Conversiones', vals: fam('conversiones') }, { n: 'Ingresos GA4', vals: fam('ingresos') },
+      { n: 'Ventas validadas', vals: hayVentas ? fam('ventas') : {}, vacio: 'pendiente de integración (ventas)' },
+      { n: 'Margen', vals: hayMargen ? fam('margen') : {}, vacio: 'pendiente de integración (core financiero)' },
+    ], R.familias), 'Separa SEO, Paid, Direct, Referidos, Email, App y Otros. Pasa el mouse sobre un tramo para ver el %.') +
+    caja('Por canal', tabla([
+      { n: 'Canal', html: true, v: c => punto(c.canal) + escH(c.nombre) },
+      { n: 'Sesiones', k: 'sesiones', num: 1 }, { n: '% tráfico', k: 'part_sesiones', num: 1, fmt: 'pct' },
+      { n: 'Var.', num: 1, html: true, v: c => c.var_sesiones == null ? '<span class="dim">—</span>' : `<b class="${c.var_sesiones >= 0 ? 'sube' : 'baja'}">${c.var_sesiones >= 0 ? '+' : ''}${pct(c.var_sesiones)}</b>` },
+      { n: 'Conversiones', k: 'conversiones', num: 1 }, { n: '% conv.', k: 'part_conversiones', num: 1, fmt: 'pct' },
+      { n: 'Ingresos GA4', k: 'ingresos', num: 1, fmt: 'soles' }, { n: 'Ventas', num: 1, v: c => hayVentas ? c.ventas : null, fmt: 'soles' },
+      { n: 'Solicitudes', num: 1, v: c => R.kpis.solicitudes.estado === 'pendiente' ? null : c.solicitudes },
+      { n: 'Desembolsos', num: 1, v: c => R.kpis.desembolsos.estado === 'pendiente' ? null : c.desembolsos },
+      { n: 'Margen', num: 1, v: c => hayMargen ? c.margen : null, fmt: 'soles' },
+      { n: 'Costo', num: 1, v: c => c.costo || null, fmt: 'soles' },
+      { n: 'CAC', num: 1, html: true, ayuda: 'Costo de pauta ÷ desembolsos (o conversiones GA4 si aún no hay desembolsos)', v: c => c.cac == null ? '<span class="dim">—</span>' : `${soles(c.cac)} <small class="dim">/${c.cac_base === 'desembolsos' ? 'crédito' : 'conv.'}</small>` },
+    ], R.canales), '«—» = la fuente todavía no entrega ese dato.');
+  },
+  atribucion() {
+    const A = R.atribucion, f = A.filas;
+    const max = Math.max(1, ...f.flatMap(r => [r.primera.conversiones, r.ultima.conversiones, r.ddm.conversiones]));
+    const barras = f.slice(0, 12).map(r => `<div class="canAtrFila"><span>${punto(r.canal)}${escH(r.nombre)}</span><div>
+      ${[['primera', 'Primera interacción', 'var(--canM1)'], ['ultima', 'Último clic no directo', 'var(--canM2)'], ['ddm', 'Basado en datos', 'var(--canM3)']].map(([k, n, c]) => `<i style="width:${r[k].conversiones / max * 100}%;background:${c}" title="${n}: ${nf1.format(r[k].conversiones)} conversiones · ${soles(r[k].ingresos)}"></i>`).join('')}
+    </div></div>`).join('');
+    return caja('Conversiones por modelo', f.length ? `<div class="canAtr">${barras}</div><div class="canLeyenda"><span><i style="background:var(--canM1)"></i>Primera interacción</span><span><i style="background:var(--canM2)"></i>Último clic no directo</span><span><i style="background:var(--canM3)"></i>Basado en datos (GA4)</span></div>` : '<p class="canVacio">Sin datos de GA4.</p>',
+      'Primera interacción = canal que trajo al usuario la primera vez (dimensiones «primer usuario» de GA4). Último clic no directo = canal de la sesión que convirtió. Basado en datos = reparto de GA4 con el modelo de la propiedad. Ninguno es «la verdad»: la diferencia muestra qué canal abre y cuál cierra.') +
+    caja('Diferencia entre modelos', tabla([
+      { n: 'Canal', html: true, v: r => punto(r.canal) + escH(r.nombre) },
+      { n: 'Conv. primera', num: 1, v: r => r.primera.conversiones }, { n: 'Conv. último', num: 1, v: r => r.ultima.conversiones }, { n: 'Conv. basado en datos', num: 1, v: r => r.ddm.conversiones },
+      { n: 'Ingresos primera', num: 1, fmt: 'soles', v: r => r.primera.ingresos }, { n: 'Ingresos último', num: 1, fmt: 'soles', v: r => r.ultima.ingresos }, { n: 'Ingresos basado en datos', num: 1, fmt: 'soles', v: r => r.ddm.ingresos },
+      { n: 'Basado en datos − último', num: 1, html: true, v: r => `<b class="${r.dif_ddm_ultima >= 0 ? 'sube' : 'baja'}">${r.dif_ddm_ultima >= 0 ? '+' : '−'}${soles(Math.abs(r.dif_ddm_ultima))}</b>` },
+      { n: 'Asistidas (aprox.)', num: 1, ayuda: 'Conversiones que el modelo basado en datos le da al canal por encima del último clic: el canal participó sin cerrar', v: r => r.asistencia_aprox },
+    ], f)) +
+    caja('Rutas de conversión', A.rutas ? tabla([{ n: 'Ruta', k: 'ruta' }, { n: 'Conversiones', k: 'conversiones', num: 1 }, { n: 'Ingresos', k: 'ingresos', num: 1, fmt: 'soles' }], A.rutas)
+      : pendiente('Las rutas completas (canal 1 → canal 2 → … → conversión) y las conversiones asistidas exactas no salen de la API de GA4: requieren la exportación de GA4 a BigQuery.', 'GA4 → BigQuery'));
+  },
+  seo() {
+    const G = R.seo;
+    if (!G.disponible) return `<p class="canVacio">${escH(G.motivo)}</p>`;
+    const K = R.kpis, a = G.actual, b = G.ant;
+    const k2 = (n, v, ant, fmt, color) => kpi(n, { v, ant: b ? ant : null, fuente: 'Search Console', fmt }, '', color);
+    const totM = G.marca.si.clics + G.marca.no.clics;
+    const tabs = [['consultas', 'Consultas'], ['paginas', 'Páginas'], ['productos', 'Productos'], ['dispositivos', 'Dispositivos'], ['paises', 'Países']];
+    const colsG = (primera, extra = []) => [primera, ...extra, { n: 'Clics', k: 'clics', num: 1 }, { n: 'Impresiones', k: 'impresiones', num: 1 }, { n: 'CTR', k: 'ctr', num: 1, fmt: 'pct' }, { n: 'Posición', num: 1, v: r => r.posicion == null ? null : r.posicion.toLocaleString('es-PE', { maximumFractionDigits: 1 }), html: false }];
+    const T = {
+      consultas: () => tabla(colsG({ n: 'Consulta', k: 'clave' }, [{ n: 'Marca', v: r => r.marca ? 'marca' : 'no marca' }, { n: 'Producto', v: r => nombreProd(r.producto) }]), G.consultas),
+      paginas: () => tabla(colsG({ n: 'Página', html: true, v: r => `<span class="canUrl">${escH(r.clave)}</span>` }, [{ n: 'Producto', v: r => nombreProd(r.producto) }]), G.paginas),
+      productos: () => tabla([{ n: 'Producto', k: 'nombre' }, { n: 'Clics', k: 'clics', num: 1 }, { n: 'Impresiones', k: 'impresiones', num: 1 }, { n: 'CTR', k: 'ctr', num: 1, fmt: 'pct' },
+        { n: 'Posición', num: 1, v: r => r.posicion == null ? null : r.posicion.toLocaleString('es-PE', { maximumFractionDigits: 1 }) }, { n: 'Sesiones SEO (GA4)', k: 'sesiones', num: 1 }, { n: 'Conversiones SEO', k: 'conversiones', num: 1 },
+        { n: 'Ingresos SEO', k: 'ingresos', num: 1, fmt: 'soles' }, { n: 'Clics posibles', k: 'oportunidad', num: 1, ayuda: 'Impresiones × (8 % − CTR actual): cuántos clics más traería llevar el CTR al 8 %. Es un orden de magnitud, no una promesa.' }], G.productos),
+      dispositivos: () => tabla(colsG({ n: 'Dispositivo', k: 'clave' }), G.dispositivos),
+      paises: () => tabla(colsG({ n: 'País', k: 'clave' }), G.paises),
+    };
+    return `<div class="canKpis">
+      ${k2('Clics', a.clics, b?.clics, '', 'var(--canSeo)')}${k2('Impresiones', a.impresiones, b?.impresiones, '', 'var(--canSeo)')}
+      ${kpi('CTR', { v: a.ctr, ant: b ? b.ctr : null, fuente: 'Search Console', fmt: 'pct' })}
+      ${kpi('Posición media', { v: a.posicion == null ? null : Math.round(a.posicion * 10) / 10, ant: b && b.posicion != null ? Math.round(b.posicion * 10) / 10 : null, fuente: 'Search Console (bajar es mejor)', fmt: 'pos', menorMejor: true })}
+      ${kpi('Clics no marca', { v: G.marca.no.clics, fuente: 'Search Console · consultas que no nombran una marca del grupo' }, '', 'var(--canSeo)')}
+      ${kpi('Clics de marca', { v: G.marca.si.clics, fuente: 'Search Console · consultas con una marca del grupo' })}
+      ${kpi('Sesiones SEO (GA4)', K.sesiones_seo, '', 'var(--canSeo)')}${kpi('Conversiones SEO', K.conversiones_seo, '', 'var(--canSeo)')}${kpi('Ingresos SEO (GA4)', K.ingresos_seo, 'Atribuidos con último clic no directo; asistidos: ver Atribución', 'var(--canVenta)')}
+    </div>
+    ${caja('Clics de marca y no marca por día', lineas(G.serie.map(s => s.fecha), [
+      { n: 'No marca', color: 'var(--canSeo)', vals: G.serie.map(s => s.no) }, { n: 'Marca', color: 'var(--canRef2)', vals: G.serie.map(s => s.si) }, { n: 'Total (incluye anónimas)', color: 'var(--txt)', punteada: true, vals: G.serie.map(s => s.clics) },
+    ]), `Marca = la consulta nombra a una marca del grupo (lista en Configuración). ${totM ? pct(G.marca.no.clics / totM) + ' de los clics con consulta conocida son no marca.' : ''} ${G.anonimas ? nf.format(G.anonimas) + ' clics no traen consulta (Google la oculta).' : ''} El SEO incremental es el no marca: el de marca lo traería la marca de todos modos.`)}
+    <section class="canCaja"><div class="barra"><div class="chips" role="tablist" id="canSeoTabs">${tabs.map(([k, n]) => `<button type="button" role="tab" class="chip${S.seoTab === k ? ' on' : ''}" aria-selected="${S.seoTab === k}" data-seotab="${k}">${n}</button>`).join('')}</div></div>${T[S.seoTab]()}
+    <p class="nota">Las consultas anónimas no aparecen en las tablas; los filtros de dispositivo y país solo aplican a los totales.</p></section>`;
+  },
+  electro() {
+    return caja('Embudo Crédito Electro', embudo(R.embudos.electro || []), 'Sesión SEO o Paid → producto visto → simulador → solicitud → aprobación → compra → desembolso → margen. Cada paso dice de dónde sale; los que dicen «pendiente» esperan la integración con el CRM y el core financiero.') +
+      caja('Páginas de entrada de Crédito Electro', tabla([{ n: 'Página', html: true, v: r => `<span class="canUrl">${escH(r.landing)}</span>` }, { n: 'Sesiones', k: 'sesiones', num: 1 }, { n: 'SEO', k: 'seo', num: 1 }, { n: 'Paid', k: 'paid', num: 1 }, { n: 'Conversiones', k: 'conversiones', num: 1 }], R.landings.filter(l => l.producto === 'electro')));
+  },
+  efectivo() {
+    const pasos = R.embudos.efectivo || [];
+    return caja('Préstamo Efectivo digital', embudo(pasos)) +
+      caja('Conversión por canal de origen', tabla([
+        { n: 'Canal', html: true, v: r => punto(r.canal) + escH(r.nombre) }, { n: 'Visitas', k: 'visitas', num: 1 },
+        { n: 'Solicitudes', num: 1, v: r => R.kpis.solicitudes.estado === 'pendiente' ? null : r.solicitudes },
+        { n: 'Aprobaciones', num: 1, v: r => R.kpis.aprobaciones.estado === 'pendiente' ? null : r.aprobaciones },
+        { n: 'Desembolsos', num: 1, v: r => R.kpis.desembolsos.estado === 'pendiente' ? null : r.desembolsos },
+        { n: 'Monto', num: 1, fmt: 'soles', v: r => R.kpis.desembolsos.estado === 'pendiente' ? null : r.monto },
+        { n: 'Solicitud / visita', num: 1, fmt: 'pct', v: r => R.kpis.solicitudes.estado === 'pendiente' ? null : r.conversion },
+      ], R.efectivoCanal, { vacio: 'Sin visitas a páginas de Préstamo Efectivo en el período.' }), 'Visitas = sesiones con página de entrada de Préstamo Efectivo. Solicitudes, aprobaciones y desembolsos llegan del CRM y el core con su fuente / medio de origen.');
+  },
+  digitales() {
+    return `<div class="canKpis">${R.digitales.map(d => kpi(d.n, { v: d.v, ant: d.ant, estado: d.estado, fuente: d.fuente })).join('')}</div>` +
+      (R.digitales.every(d => d.estado === 'pendiente') ? pendiente('Descargas, activaciones, clientes activos, pago de servicios, apertura de cuentas, uso de tarjeta de débito y clientes multiproducto vienen de la analítica del app y del core financiero.', 'Analítica del app + core financiero') : '');
+  },
+  utm() {
+    const U = R.utm;
+    const q = S.utmQ.toLowerCase();
+    const filas = q ? U.filas.filter(r => [r.source, r.medium, r.campaign, r.content].some(x => String(x).toLowerCase().includes(q))) : U.filas;
+    const ref = U.referidos.map(g => `<div class="canRefGrupo"><h4>${punto(g.id)}${escH(g.nombre)} <small class="dim">${g.sources.length ? 'utm_source = ' + g.sources.map(escH).join(', ') : 'sin fuentes: defínelas en Configuración'}</small></h4>
+      ${g.contenidos.length ? g.contenidos.map(c => `<div class="canRuta"><span class="canNodo ref">${escH(g.nombre)}</span><span class="canFlecha">→</span><span class="canNodo">${escH(c.contenido)}</span><span class="canFlecha">→</span>
+        <span class="canNodo">${nf.format(c.sesiones)} sesiones</span><span class="canFlecha">→</span><span class="canNodo">${R.kpis.solicitudes.estado === 'pendiente' ? '<em class="canEst pendiente">solicitudes pendientes</em>' : nf.format(c.solicitudes) + ' solicitudes'}</span><span class="canFlecha">→</span>
+        <span class="canNodo venta">${R.kpis.ventas.estado === 'pendiente' ? '<em class="canEst pendiente">ventas pendientes</em>' : soles(c.ventas) + ' en ventas'}</span></div>`).join('') : '<p class="canVacio">Sin sesiones de este grupo en el período.</p>'}</div>`).join('');
+    return caja('Referidos por contenido', ref, 'Contenidos reconocidos: ' + (CFG?.contenidos || []).map(escH).join(', ') + '. Los enlaces internos del mismo dominio no llevan UTM: se miden con eventos de clic de GA4 (ver Calidad de datos).') +
+      `<section class="canCaja"><div class="barra"><h3>Fuente · medio · campaña · contenido</h3><input type="search" id="canUtmQ" placeholder="Buscar…" value="${escH(S.utmQ)}" aria-label="Buscar en la tabla UTM"><small class="dim">${nf.format(filas.length)} combinaciones</small></div>
+      ${tabla([
+        { n: 'utm_source', k: 'source' }, { n: 'utm_medium', k: 'medium' }, { n: 'utm_campaign', k: 'campaign' }, { n: 'utm_content', k: 'content' },
+        { n: 'Canal', html: true, v: r => punto(r.canal) + escH(r.nombre) },
+        { n: 'Clics', num: 1, ayuda: 'Clics de la plataforma cargados en «Pauta» por campaign_id; GA4 no mide clics', v: r => r.clics },
+        { n: 'Sesiones', k: 'sesiones', num: 1 }, { n: 'Conversiones', k: 'conversiones', num: 1 },
+        { n: 'Solicitudes', num: 1, v: r => R.kpis.solicitudes.estado === 'pendiente' ? null : r.solicitudes },
+        { n: 'Ventas', num: 1, fmt: 'soles', v: r => R.kpis.ventas.estado === 'pendiente' ? null : r.ventas },
+        { n: 'Monto financiado', num: 1, fmt: 'soles', v: r => R.kpis.monto_financiado.estado === 'pendiente' ? null : r.monto },
+        { n: 'Margen', num: 1, fmt: 'soles', v: r => R.kpis.margen.estado === 'pendiente' ? null : r.margen },
+      ], filas)}</section>`;
+  },
+  calidad() {
+    const orden = { error: 0, aviso: 1, pendiente: 2, ok: 3 };
+    const L = [...R.calidad].sort((a, b) => orden[a.nivel] - orden[b.nivel]);
+    const NIV = { error: 'Error', aviso: 'Revisar', pendiente: 'Pendiente', ok: 'Bien' };
+    return caja('Calidad de datos', `<ul class="canCalidad">${L.map(x => `<li class="${x.nivel}"><em>${NIV[x.nivel]}</em><div><b>${escH(x.titulo)}</b><p>${escH(x.detalle)}</p><small>Fuente: ${escH(x.fuente)}</small></div></li>`).join('')}</ul>`) +
+      caja('Frescura', tabla([{ n: 'Fuente', k: 'f' }, { n: 'Datos hasta', k: 'h' }, { n: 'Guardado', k: 'c' }], [
+        { f: 'GA4', h: R.frescura.ga4?.hasta ? fecha(R.frescura.ga4.hasta) : 'sin datos', c: R.frescura.ga4?.capturado ? cuando(R.frescura.ga4.capturado) : '—' },
+        { f: 'Search Console', h: R.frescura.gsc?.hasta ? fecha(R.frescura.gsc.hasta) : 'sin datos', c: R.frescura.gsc?.capturado ? cuando(R.frescura.gsc.capturado) : '—' },
+        { f: 'Sistemas propios', h: R.frescura.externos?.hasta ? fecha(R.frescura.externos.hasta) : 'pendiente de integración', c: R.frescura.externos?.capturado ? cuando(R.frescura.externos.capturado) : '—' },
+      ]));
+  },
+  config() { return configHtml(); },
+};
+const nombreProd = id => (R.productos.find(p => p.id === id) || { nombre: id === 'otros' ? 'Otros' : id }).nombre;
+
+// ---------- configuración ----------
+function configHtml() {
+  const c = CFG || {};
+  const props = (c.propiedades || []).concat([{ id: '', nombre: '', ga4: '', gsc: '', dominio: '' }]);
+  const embEv = Object.entries(c.embudos || {}).flatMap(([id, pasos]) => pasos.map((p, i) => ({ id, i, p }))).filter(x => x.p.fuente === 'evento');
+  return `<p class="nota">Todo se guarda en este navegador (no se envía a ningún servidor). Los datos de GA4 y Search Console entran con «Cargar datos» (CSV exportados). Para pasarlos a otra computadora: «Descargar respaldo» y «Restaurar respaldo».</p>
+  <form id="canCfg" class="canCfg">
+    ${caja('Marcas y propiedades', `<div class="canScroll"><table class="canTabla"><thead><tr><th>id</th><th>Nombre</th><th>GA4 (n.º de propiedad)</th><th>Search Console</th><th>Dominio</th></tr></thead><tbody>
+      ${props.map((p, i) => `<tr data-prop="${i}"><td><input name="id" value="${escH(p.id)}" placeholder="fin" size="6"></td><td><input name="nombre" value="${escH(p.nombre)}" placeholder="Nombre"></td><td><input name="ga4" value="${escH(p.ga4)}" placeholder="123456789" inputmode="numeric"></td><td><input name="gsc" value="${escH(p.gsc)}" placeholder="sc-domain:dominio.pe"></td><td><input name="dominio" value="${escH(p.dominio)}" placeholder="www.dominio.pe"></td></tr>`).join('')}
+    </tbody></table></div>`, 'Una fila por sitio. La última fila vacía agrega uno nuevo; borrar el id quita la fila. La cuenta de servicio tiene que ser Lector en GA4 y usuaria en Search Console.')}
+    ${caja('Referidos', ['ref_a', 'ref_b', 'ref_c'].map(k => `<div class="fila canRefCfg"><input name="ref_${k}_n" value="${escH(c.referidos?.[k]?.nombre || '')}" aria-label="Nombre del grupo"><input name="ref_${k}_s" value="${escH((c.referidos?.[k]?.sources || []).join(', '))}" placeholder="utm_source separados por coma" aria-label="Fuentes"></div>`).join(''),
+      'Cada grupo junta los utm_source que digas (y sus subdominios). Ej.: el grupo del retail con su utm_source, «malls», etc. Se guardan en la base, no en el código.')}
+    ${caja('Términos de marca (Search Console)', `<input name="marca" value="${escH((c.marca || []).join(', '))}" class="canAncho">`, 'Una consulta es «de marca» si contiene uno de estos términos como palabra.')}
+    ${caja('Contenidos (utm_content)', `<input name="contenidos" value="${escH((c.contenidos || []).join(', '))}" class="canAncho">`)}
+    ${caja('Productos (por URL o consulta)', (c.productos || []).map((p, i) => `<div class="fila"><input name="prod_${i}_id" value="${escH(p.id)}" size="8"><input name="prod_${i}_n" value="${escH(p.nombre)}"><input name="prod_${i}_p" value="${escH(p.patrones.join(', '))}" class="canAncho"></div>`).join(''))}
+    ${caja('Eventos de GA4', `<input name="eventos" value="${escH((c.eventos || []).join(', '))}" class="canAncho">` +
+      embEv.map(x => `<div class="fila"><label>${escH(x.id)} · ${escH(x.p.n)}</label><input name="emb_${x.id}_${x.i}" value="${escH(x.p.evento)}" placeholder="nombre del evento en GA4"></div>`).join(''),
+      'Los pasos del embudo que dependen de un evento propio (simulador, solicitud) quedan «sin definir» hasta que pongas el nombre exacto que envía la web.')}
+    ${caja('Reglas propias de canal', `<textarea name="reglas" rows="4" class="canAncho" placeholder="campo;op;valor;canal  — ej.: campaign;contiene;pmax;display">${escH((c.reglas || []).map(r => [r.campo, r.op, r.valor, r.canal].join(';')).join('\n'))}</textarea>`,
+      'Una por línea, antes que las reglas de fábrica. campo: source, medium, campaign, content, landing · op: igual, contiene, empieza · canal: ' + (R?.canalesDef || []).map(x => x.id).join(', '))}
+    <div class="barra"><button class="btn pri">Guardar configuración</button></div>
+  </form>
+  ${caja('Datos de sistemas propios', `<p class="nota">Pega un CSV con encabezado: <code>tipo,id,fecha,source,medium,campaign,content,landing,producto,cantidad,monto,margen</code>. Tipos: ${Object.keys({ solicitud: 1, aprobacion: 1, desembolso: 1, venta: 1, venta_financiada: 1, app_descarga: 1, app_activacion: 1, app_activo: 1, pago_servicio: 1, apertura_ahorros: 1, uso_tdd: 1, multiproducto: 1, recompra: 1 }).join(', ')}. El mismo id vuelve a cargarse sin duplicar. También se puede subir como archivo en «Cargar datos».</p>
+    <div class="fila"><input id="canCargaFuente" placeholder="fuente (crm, core, magento, pos, app)"><button type="button" id="canCargar" class="btn">Cargar</button></div>
+    <textarea id="canCargaCsv" rows="5" class="canAncho" placeholder="tipo,id,fecha,source,medium,…"></textarea>`)}`;
+}
+
+function leerCfg(form) {
+  const v = n => (form.elements[n]?.value || '').trim();
+  const propiedades = [...form.querySelectorAll('tr[data-prop]')].map(tr => Object.fromEntries(['id', 'nombre', 'ga4', 'gsc', 'dominio'].map(k => [k, tr.querySelector(`[name=${k}]`).value.trim()]))).filter(p => p.id);
+  const referidos = Object.fromEntries(['ref_a', 'ref_b', 'ref_c'].map(k => [k, { nombre: v(`ref_${k}_n`), sources: v(`ref_${k}_s`) }]));
+  const productos = (CFG.productos || []).map((p, i) => ({ id: v(`prod_${i}_id`), nombre: v(`prod_${i}_n`), patrones: v(`prod_${i}_p`) }));
+  const embudos = JSON.parse(JSON.stringify(CFG.embudos || {}));
+  for (const [id, pasos] of Object.entries(embudos)) pasos.forEach((p, i) => { if (p.fuente === 'evento') p.evento = v(`emb_${id}_${i}`); });
+  const reglas = v('reglas').split('\n').map(l => l.split(';').map(x => x.trim())).filter(x => x.length === 4 && x[2]).map(([campo, op, valor, canal]) => ({ campo, op, valor, canal }));
+  return { propiedades, referidos, marca: v('marca'), contenidos: v('contenidos'), eventos: v('eventos'), productos, embudos, reglas };
+}
+
+function csvAFilas(texto) {
+  const lineas = texto.replace(/^﻿/, '').split(/\r?\n/).filter(l => l.trim());
+  if (lineas.length < 2) return [];
+  const sep = lineas[0].includes(';') && !lineas[0].includes(',') ? ';' : ',';
+  const partir = l => { const o = []; let c = '', q = false; for (let i = 0; i < l.length; i++) { const ch = l[i]; if (q) { if (ch === '"' && l[i + 1] === '"') { c += '"'; i++; } else if (ch === '"') q = false; else c += ch; } else if (ch === '"') q = true; else if (ch === sep) { o.push(c); c = ''; } else c += ch; } o.push(c); return o; };
+  const cab = partir(lineas[0]).map(x => x.trim().toLowerCase());
+  return lineas.slice(1).map(l => Object.fromEntries(partir(l).map((x, i) => [cab[i], x.trim()])));
+}
+
+// ---------- pintar ----------
+function pintar() {
+  if (!R) return;
+  pintarCab();
+  $('canPanel').innerHTML = (VISTAS[S.tab] || VISTAS.resumen)();
+  if (S.tab === 'config') enlazarCfg();
+}
+function enlazarCfg() {
+  $('canCfg').onsubmit = async e => {
+    e.preventDefault();
+    try {
+      const r = await fetch('/canales/config', { method: 'POST', headers: conPin({ 'Content-Type': 'application/json' }), body: JSON.stringify(leerCfg(e.target)) });
+      const d = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(d.error || 'No se pudo guardar');
+      aviso('Configuración guardada.'); await cargar();
+    } catch (err) { aviso(err.message, true); }
+  };
+  $('canCargar').onclick = async () => {
+    const filas = csvAFilas($('canCargaCsv').value);
+    if (!filas.length) return aviso('Pega un CSV con encabezado y al menos una fila.', true);
+    try {
+      const r = await fetch('/canales/cargar', { method: 'POST', headers: conPin({ 'Content-Type': 'application/json' }), body: JSON.stringify({ fuente: $('canCargaFuente').value.trim(), filas }) });
+      const d = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(d.error || 'No se pudo cargar');
+      aviso(`Cargadas ${nf.format(d.filas)} filas.`); $('canCargaCsv').value = ''; await cargar();
+    } catch (err) { aviso(err.message, true); }
+  };
+}
+
+// ---------- acciones ----------
+async function actualizar(cuerpo = {}) {
+  const r = await fetch('/canales/actualizar', { method: 'POST', headers: conPin({ 'Content-Type': 'application/json' }), body: JSON.stringify(cuerpo) });
+  const d = await r.json().catch(() => ({}));
+  if (!r.ok && !d.resultados) throw new Error(d.error || 'No se pudo actualizar');
+  return d;
+}
+$('canAct').onclick = async () => {
+  cargando = true; pintarCab();
+  try {
+    const d = await actualizar();
+    const malos = (d.resultados || []).filter(x => !x.ok);
+    aviso(malos.length ? `Con errores: ${malos.map(m => m.fuente + ' ' + m.prop).join(', ')} (ver Calidad de datos).` : `Listo: ${d.desde} a ${d.hasta}.`, !!malos.length);
+  } catch (e) { aviso(e.message, true); }
+  cargando = false; await cargar();
+};
+// Histórico: 16 meses en tramos de 30 días (el Worker baja hasta 31 días por vez).
+$('canHist').onclick = async () => {
+  if (!confirm('Se bajan los últimos 16 meses de GA4 y Search Console, de a 30 días. Puede tardar varios minutos; no cierres la pestaña.')) return;
+  cargando = true; pintarCab();
+  let hasta = ayer(), n = 0;
+  const tope = masDias(hasta, -486);
+  try {
+    while (hasta > tope) {
+      const desde = masDias(hasta, -29) < tope ? tope : masDias(hasta, -29);
+      $('canEstado').textContent = `Cargando histórico: ${fecha(desde)} – ${fecha(hasta)}…`;
+      const d = await actualizar({ desde, hasta });
+      if ((d.resultados || []).every(x => !x.ok)) throw new Error('Se detuvo: ' + (d.resultados || []).map(x => x.error).join(' · '));
+      hasta = masDias(desde, -1); n++;
+    }
+    aviso(`Histórico cargado (${n} tramos).`);
+  } catch (e) { aviso(e.message, true); }
+  cargando = false; await cargar();
+};
+$('canExp').onclick = async () => {
+  const vista = S.tab === 'seo' && S.seoTab === 'paginas' ? 'paginas' : EXPORTA[S.tab];
+  try {
+    const r = await fetch('/canales/exportar?' + consulta({ vista }), { headers: conPin() });
+    if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || 'No se pudo exportar');
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(await r.blob());
+    a.download = (r.headers.get('content-disposition') || '').match(/filename="([^"]+)"/)?.[1] || 'canales.csv';
+    document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  } catch (e) { aviso(e.message, true); }
+};
+$('canPdf').onclick = () => { document.body.classList.add('canImprimir'); window.print(); };
+addEventListener('afterprint', () => document.body.classList.remove('canImprimir'));
+$('canPin').onsubmit = async e => {
+  e.preventDefault();
+  try { await entrar($('canPinIn').value.trim()); $('canPinIn').value = ''; await cargar(); }
+  catch (err) { $('canPinMsg').textContent = err.message; }
+};
+$('canPresets').onclick = e => { const b = e.target.closest('[data-preset]'); if (!b) return; S.preset = b.dataset.preset; guardarUi(); if (S.preset !== 'custom') cargar(); else pintarCab(); };
+$('canFechas').onchange = () => { S.desde = $('canDesde').value; S.hasta = $('canHasta').value; if (S.desde && S.hasta && S.desde <= S.hasta) { guardarUi(); cargar(); } };
+$('canGran').onchange = e => { S.gran = e.target.value; guardarUi(); cargar(); };
+$('canComp').onchange = e => { S.comp = e.target.value; guardarUi(); cargar(); };
+$('canFiltros').onchange = () => {
+  S.f = { prop: $('canFProp').value, canal: $('canFCanal').value, familia: $('canFFam').value, ref: $('canFRef').value, producto: $('canFProd').value, marca: $('canFMarca').value };
+  for (const k of ['source', 'medium', 'campaign', 'landing', 'country', 'device']) S.f[k] = $('canF_' + k).value.trim();
+  guardarUi(); cargar();
+};
+$('canLimpiar').onclick = () => { S.f = {}; guardarUi(); cargar(); };
+$('canTabs').onclick = e => { const b = e.target.closest('[data-tab]'); if (!b) return; S.tab = b.dataset.tab; guardarUi(); pintar(); };
+$('canPanel').addEventListener('click', e => { const b = e.target.closest('[data-seotab]'); if (b) { S.seoTab = b.dataset.seotab; pintar(); } });
+$('canPanel').addEventListener('input', e => { if (e.target.id === 'canUtmQ') { S.utmQ = e.target.value; const pos = e.target.selectionStart; pintar(); const i = $('canUtmQ'); i.focus(); i.setSelectionRange(pos, pos); } });
+addEventListener('vista', e => e.detail === 'vCanales' && cargar());
+
+})();
+iniciarBase().then(() => { $('canIni').remove(); dispatchEvent(new CustomEvent('vista', { detail: 'vCanales' })); })
+  .catch(e => { $('canIni').textContent = 'No se pudo iniciar la base (¿sin internet para bajar sql.js?): ' + e.message; });
+</script>
+</body>
+</html>

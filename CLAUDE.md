@@ -32,6 +32,7 @@ Equipo SEO: **Josh Kevin Seminario** (SEO Senior: estrategia multimarca, auditor
 | `docs/09-capacidad-herramientas-y-riesgos.md` | Capacidad real del equipo (horas), herramientas disponibles y su impacto operativo, ventanas de riesgo Cyber, plazos de rastreo e indexación. |
 | `auditoria-seo-efectibank.html` | Dashboard de auditoría SEO de Efectibank (19-oct-2026): hallazgos con evidencia, 274 URLs, Core Web Vitals de laboratorio, keywords, benchmark, SEO vs pauta, priorización, roadmap 30-60-90 y dependencias. Abrir en el navegador. |
 | `dashboard-seo-cyber.html` | Panel de tareas SEO principales (estado editable, se guarda en el navegador) y cruce con exports de GSC para comparar clics de Cyber vs el año pasado (con lift vs 4 semanas previas). Sin datos inventados: GSC se sube como CSV. |
+| `dashboard-atribucion-canales.html` | Tablero de atribución y distribución de canales en un solo archivo (mismo código que el módulo `dc-canales` de MKT-SISTEMA). Los datos entran como CSV de GA4, Search Console, pauta y sistemas propios y se guardan en el navegador (IndexedDB). Sin datos inventados: lo no cargado dice «sin datos» o «pendiente de integración». |
 | `landings/` | Landings del sorteo Cyberweek (LC y EFE) y sección de ruleta de ganadores. |
 | `grafo/ecosistema-seo.html` | Grafo visual del ecosistema: negocios, activos, datos, sistemas, acciones. Abrir en el navegador. |
 
