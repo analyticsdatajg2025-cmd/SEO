@@ -1,0 +1,307 @@
+<!--
+  Landing "Beneficios con BCP" · Juntoz · HTML plano para Magento (sin JS, CSS encapsulado en #bcp-landing).
+  ANTES DE PUBLICAR reemplaza los datos de la campaña (no se inventaron condiciones del banco):
+    [XX]          % de descuento
+    [MONTO_MAX]   tope de descuento en soles por transacción
+    [MONTO_MIN]   compra mínima en soles
+    [CÓDIGO]      código del cupón
+    [FECHAS]      vigencia (ej. "del 21 al 28 de octubre de 2026")
+    [TARJETAS]    tarjetas BCP que aplican (crédito / débito)
+  Reemplaza también: href="#" de cada producto por su URL y el src de cada imagen por la foto del producto (400x400).
+-->
+<style>
+#bcp-landing{--bcp-blue:#0030B2;--bcp-blue-dark:#00227F;--bcp-orange:#FF7800;--bcp-text:#171717;--bcp-muted:#5B6272;--bcp-soft:#F5F7FB;--bcp-line:#E3E8F2;color:var(--bcp-text);font-family:"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;font-size:14px;line-height:1.55;background:#FFFFFF;-webkit-font-smoothing:antialiased;overflow-wrap:anywhere}
+#bcp-landing *,#bcp-landing *::before,#bcp-landing *::after{box-sizing:border-box}
+#bcp-landing h1,#bcp-landing h2,#bcp-landing h3,#bcp-landing p,#bcp-landing ul,#bcp-landing ol,#bcp-landing dl,#bcp-landing dd,#bcp-landing figure{margin:0;padding:0}
+#bcp-landing ul,#bcp-landing ol{list-style:none}
+#bcp-landing img{display:block;max-width:100%;height:auto}
+#bcp-landing a{color:inherit;text-decoration:none}
+#bcp-landing .bcp-wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+#bcp-landing .bcp-section{padding:48px 0}
+#bcp-landing .bcp-section--soft{background:var(--bcp-soft)}
+#bcp-landing .bcp-eyebrow{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--bcp-blue)}
+#bcp-landing .bcp-h1{font-size:30px;line-height:1.15;font-weight:800;letter-spacing:-.01em}
+#bcp-landing .bcp-h1 span{color:var(--bcp-blue)}
+#bcp-landing .bcp-h2{font-size:22px;line-height:1.25;font-weight:800;margin-top:6px}
+#bcp-landing .bcp-h3{font-size:18px;line-height:1.3;font-weight:700}
+#bcp-landing .bcp-lead{color:var(--bcp-muted);margin-top:8px;max-width:560px}
+#bcp-landing .bcp-head{text-align:center;margin-bottom:28px}
+#bcp-landing .bcp-head .bcp-lead{margin-left:auto;margin-right:auto}
+
+/* Botones */
+#bcp-landing .bcp-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 24px;border-radius:999px;font-size:14px;font-weight:600;line-height:1;transition:background-color .2s,box-shadow .2s,transform .2s;cursor:pointer}
+#bcp-landing .bcp-btn--primary{background:var(--bcp-blue);color:#FFFFFF;box-shadow:0 6px 16px rgba(0,48,178,.22)}
+#bcp-landing .bcp-btn--primary:hover{background:var(--bcp-blue-dark);transform:translateY(-1px)}
+#bcp-landing .bcp-btn--ghost{background:#FFFFFF;color:var(--bcp-blue);border:1.5px solid var(--bcp-blue)}
+#bcp-landing .bcp-btn--ghost:hover{background:#EEF2FC}
+#bcp-landing .bcp-btn--white{background:#FFFFFF;color:var(--bcp-blue)}
+#bcp-landing .bcp-btn--white:hover{background:#EEF2FC}
+#bcp-landing a:focus-visible,#bcp-landing summary:focus-visible,#bcp-landing .bcp-code:focus-visible{outline:3px solid var(--bcp-orange);outline-offset:3px}
+
+/* Hero */
+#bcp-landing .bcp-hero{background:var(--bcp-soft);padding:32px 0 40px;overflow:hidden}
+#bcp-landing .bcp-hero__grid{display:grid;gap:32px;align-items:center}
+#bcp-landing .bcp-badge{display:inline-flex;align-items:center;gap:8px;background:#FFFFFF;border:1px solid var(--bcp-line);border-radius:999px;padding:6px 14px 6px 6px;font-size:12px;font-weight:600;color:var(--bcp-text);margin-bottom:16px}
+#bcp-landing .bcp-badge b{background:var(--bcp-blue);color:#FFFFFF;border-radius:999px;padding:3px 10px;font-weight:800;letter-spacing:.04em}
+#bcp-landing .bcp-hero .bcp-lead{font-size:15px;margin-top:12px}
+#bcp-landing .bcp-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:20px 0 24px}
+#bcp-landing .bcp-fact{background:#FFFFFF;border:1px solid var(--bcp-line);border-radius:12px;padding:10px 12px}
+#bcp-landing .bcp-fact dt{font-size:11px;color:var(--bcp-muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+#bcp-landing .bcp-fact dd{font-size:15px;font-weight:800;color:var(--bcp-blue);margin-top:2px}
+#bcp-landing .bcp-ctas{display:flex;flex-wrap:wrap;gap:12px}
+#bcp-landing .bcp-ctas .bcp-btn{flex:1 1 180px}
+#bcp-landing .bcp-date{font-size:12px;color:var(--bcp-muted);margin-top:14px}
+
+/* Visual hero: tarjeta + cupón en CSS */
+#bcp-landing .bcp-visual{position:relative;max-width:340px;margin:0 auto;width:100%;padding:0 12px 40px}
+#bcp-landing .bcp-card{position:relative;aspect-ratio:1.586/1;border-radius:20px;background:var(--bcp-blue);color:#FFFFFF;padding:22px;box-shadow:0 24px 48px rgba(0,48,178,.28);overflow:hidden;transform:rotate(-4deg)}
+#bcp-landing .bcp-card::after{content:"";position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.08)}
+#bcp-landing .bcp-card__chip{width:42px;height:32px;border-radius:7px;background:#E9C46A;margin-top:34px}
+#bcp-landing .bcp-card__num{font-size:15px;letter-spacing:.18em;margin-top:18px;opacity:.9}
+#bcp-landing .bcp-card__brand{position:absolute;left:22px;top:20px;font-size:20px;font-weight:800;letter-spacing:.02em}
+#bcp-landing .bcp-card__brand i{color:var(--bcp-orange);font-style:normal}
+#bcp-landing .bcp-ticket{position:absolute;right:0;bottom:0;background:#FFFFFF;border-radius:16px;padding:14px 18px;box-shadow:0 16px 32px rgba(23,23,23,.12);border:1px solid var(--bcp-line);min-width:190px}
+#bcp-landing .bcp-ticket small{display:block;font-size:11px;font-weight:600;color:var(--bcp-muted);text-transform:uppercase;letter-spacing:.06em}
+#bcp-landing .bcp-ticket strong{display:block;font-size:24px;font-weight:800;color:var(--bcp-blue);line-height:1.15;margin-top:2px}
+#bcp-landing .bcp-ticket span{display:block;font-size:12px;color:var(--bcp-muted);margin-top:2px}
+
+/* Beneficios */
+#bcp-landing .bcp-benefits{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+#bcp-landing .bcp-benefit{background:#FFFFFF;border:1px solid var(--bcp-line);border-radius:16px;padding:18px}
+#bcp-landing .bcp-benefit__icon{display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:12px;background:#EEF2FC;color:var(--bcp-blue);font-weight:800;font-size:15px;margin-bottom:12px}
+#bcp-landing .bcp-benefit p{color:var(--bcp-muted);margin-top:4px;font-size:13px}
+
+/* Productos */
+#bcp-landing .bcp-products{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+#bcp-landing .bcp-product{display:flex;flex-direction:column;background:#FFFFFF;border:1px solid var(--bcp-line);border-radius:16px;padding:12px;transition:box-shadow .2s,border-color .2s}
+#bcp-landing .bcp-product:hover{border-color:#C9D3EA;box-shadow:0 12px 28px rgba(23,23,23,.08)}
+#bcp-landing .bcp-product__img{position:relative;border-radius:12px;background:var(--bcp-soft);overflow:hidden}
+#bcp-landing .bcp-product__img img{width:100%;aspect-ratio:1/1;object-fit:contain}
+#bcp-landing .bcp-product__tag{position:absolute;left:8px;top:8px;background:var(--bcp-blue);color:#FFFFFF;font-size:11px;font-weight:700;border-radius:999px;padding:3px 9px}
+#bcp-landing .bcp-product__brand{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--bcp-blue);margin-top:12px}
+#bcp-landing .bcp-product h3{font-size:14px;line-height:1.35;font-weight:600;margin-top:4px;flex:1}
+#bcp-landing .bcp-product__deal{font-size:12px;color:var(--bcp-muted);margin:8px 0 12px}
+#bcp-landing .bcp-product__deal b{color:var(--bcp-text)}
+#bcp-landing .bcp-product .bcp-btn{width:100%;min-height:42px}
+
+/* Pasos */
+#bcp-landing .bcp-steps{display:grid;gap:12px;counter-reset:bcpstep}
+#bcp-landing .bcp-step{display:flex;gap:14px;align-items:flex-start;background:#FFFFFF;border:1px solid var(--bcp-line);border-radius:16px;padding:18px}
+#bcp-landing .bcp-step::before{counter-increment:bcpstep;content:counter(bcpstep);flex:0 0 36px;display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:var(--bcp-blue);color:#FFFFFF;font-weight:800}
+#bcp-landing .bcp-step p{color:var(--bcp-muted);margin-top:2px;font-size:13px}
+
+/* Banda código */
+#bcp-landing .bcp-band{background:var(--bcp-blue);color:#FFFFFF;border-radius:24px;padding:36px 20px;text-align:center}
+#bcp-landing .bcp-band .bcp-h2{color:#FFFFFF}
+#bcp-landing .bcp-band .bcp-lead{color:#D6DEF5;margin-left:auto;margin-right:auto}
+#bcp-landing .bcp-code{display:inline-block;margin:20px 0 6px;background:#FFFFFF;color:var(--bcp-blue);font-size:22px;font-weight:800;letter-spacing:.12em;border:2px dashed #9DB0E6;border-radius:14px;padding:12px 28px;-webkit-user-select:all;user-select:all;cursor:text}
+#bcp-landing .bcp-band small{display:block;font-size:12px;color:#D6DEF5;margin-bottom:20px}
+
+/* FAQ */
+#bcp-landing .bcp-faq{max-width:760px;margin:0 auto;display:grid;gap:10px}
+#bcp-landing .bcp-faq details{background:#FFFFFF;border:1px solid var(--bcp-line);border-radius:14px}
+#bcp-landing .bcp-faq summary{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 18px;font-weight:600;cursor:pointer;list-style:none}
+#bcp-landing .bcp-faq summary::-webkit-details-marker{display:none}
+#bcp-landing .bcp-faq summary::after{content:"+";flex:0 0 28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:#EEF2FC;color:var(--bcp-blue);font-size:18px;font-weight:700;transition:transform .2s}
+#bcp-landing .bcp-faq details[open] summary::after{transform:rotate(45deg)}
+#bcp-landing .bcp-faq details p{padding:0 18px 16px;color:var(--bcp-muted)}
+
+/* Legales */
+#bcp-landing .bcp-legal{border-top:1px solid var(--bcp-line);padding:24px 0 40px}
+#bcp-landing .bcp-legal h2{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--bcp-muted);margin-bottom:8px}
+#bcp-landing .bcp-legal p{font-size:12px;line-height:1.6;color:var(--bcp-muted)}
+
+@media (min-width:640px){
+  #bcp-landing .bcp-benefits{grid-template-columns:repeat(4,minmax(0,1fr))}
+  #bcp-landing .bcp-products{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+  #bcp-landing .bcp-steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #bcp-landing .bcp-ctas .bcp-btn{flex:0 0 auto}
+}
+@media (min-width:1024px){
+  #bcp-landing .bcp-visual{max-width:420px;padding:0 0 40px}
+  #bcp-landing .bcp-section{padding:64px 0}
+  #bcp-landing .bcp-hero{padding:56px 0}
+  #bcp-landing .bcp-hero__grid{grid-template-columns:1.1fr .9fr;gap:48px}
+  #bcp-landing .bcp-h1{font-size:30px}
+  #bcp-landing .bcp-products{grid-template-columns:repeat(4,minmax(0,1fr))}
+  #bcp-landing .bcp-steps{grid-template-columns:repeat(4,minmax(0,1fr))}
+  #bcp-landing .bcp-step{flex-direction:column}
+  #bcp-landing .bcp-band{padding:48px 32px}
+}
+@media (prefers-reduced-motion:reduce){
+  #bcp-landing *{transition:none!important}
+}
+</style>
+
+<section id="bcp-landing" aria-labelledby="bcp-titulo">
+
+  <!-- HERO -->
+  <div class="bcp-hero">
+    <div class="bcp-wrap bcp-hero__grid">
+      <div>
+        <p class="bcp-badge"><b>BCP</b> Beneficio exclusivo en Juntoz</p>
+        <h1 id="bcp-titulo" class="bcp-h1">Ahorra hasta <span>[XX]%</span> pagando con tus tarjetas BCP</h1>
+        <p class="bcp-lead">Usa el código <strong>[CÓDIGO]</strong> y obtén hasta S/[MONTO_MAX] de descuento en compras desde S/[MONTO_MIN].</p>
+        <dl class="bcp-facts">
+          <div class="bcp-fact"><dt>Descuento</dt><dd>[XX]%</dd></div>
+          <div class="bcp-fact"><dt>Tope</dt><dd>S/[MONTO_MAX]</dd></div>
+          <div class="bcp-fact"><dt>Desde</dt><dd>S/[MONTO_MIN]</dd></div>
+        </dl>
+        <div class="bcp-ctas">
+          <a class="bcp-btn bcp-btn--primary" href="#bcp-productos">Ver productos</a>
+          <a class="bcp-btn bcp-btn--ghost" href="#bcp-como-usar">¿Cómo uso mi cupón?</a>
+        </div>
+        <p class="bcp-date">Vigencia: [FECHAS]</p>
+      </div>
+      <div class="bcp-visual" aria-hidden="true">
+        <div class="bcp-card">
+          <span class="bcp-card__brand"><i>›</i>BCP<i>›</i></span>
+          <div class="bcp-card__chip"></div>
+          <p class="bcp-card__num">•••• •••• •••• 2026</p>
+        </div>
+        <div class="bcp-ticket">
+          <small>Tu código</small>
+          <strong>[CÓDIGO]</strong>
+          <span>Hasta S/[MONTO_MAX] de dscto.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BENEFICIOS -->
+  <div class="bcp-section">
+    <div class="bcp-wrap">
+      <header class="bcp-head">
+        <span class="bcp-eyebrow">Tu beneficio</span>
+        <h2 class="bcp-h2">Así funciona el descuento BCP</h2>
+      </header>
+      <ul class="bcp-benefits">
+        <li class="bcp-benefit"><span class="bcp-benefit__icon">%</span><h3 class="bcp-h3">[XX]% de dscto.</h3><p>Hasta S/[MONTO_MAX] por compra.</p></li>
+        <li class="bcp-benefit"><span class="bcp-benefit__icon">S/</span><h3 class="bcp-h3">Desde S/[MONTO_MIN]</h3><p>Monto mínimo en el carrito.</p></li>
+        <li class="bcp-benefit"><span class="bcp-benefit__icon">▭</span><h3 class="bcp-h3">Tarjetas BCP</h3><p>[TARJETAS].</p></li>
+        <li class="bcp-benefit"><span class="bcp-benefit__icon">◷</span><h3 class="bcp-h3">Por tiempo limitado</h3><p>[FECHAS].</p></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- PRODUCTOS -->
+  <div id="bcp-productos" class="bcp-section bcp-section--soft">
+    <div class="bcp-wrap">
+      <header class="bcp-head">
+        <span class="bcp-eyebrow">Selección exclusiva</span>
+        <h2 class="bcp-h2">Productos para aprovechar tu cupón</h2>
+        <p class="bcp-lead">Aplica [CÓDIGO] en compras desde S/[MONTO_MIN] y llévate hasta [XX]% de descuento.</p>
+      </header>
+      <ul class="bcp-products">
+        <li class="bcp-product">
+          <div class="bcp-product__img"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Crect width='400' height='400' fill='%23F5F7FB'/%3E%3C/svg%3E" alt="iPhone 18 Pro Silver 512GB en preventa" width="400" height="400" loading="lazy" decoding="async"><span class="bcp-product__tag">Preventa</span></div>
+          <p class="bcp-product__brand">Apple</p>
+          <h3>iPhone 18 Pro Silver 512GB</h3>
+          <p class="bcp-product__deal">Con BCP: <b>[XX]% hasta S/[MONTO_MAX]</b></p>
+          <a class="bcp-btn bcp-btn--primary" href="#" aria-label="Comprar iPhone 18 Pro Silver 512GB">Comprar</a>
+        </li>
+        <li class="bcp-product">
+          <div class="bcp-product__img"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Crect width='400' height='400' fill='%23F5F7FB'/%3E%3C/svg%3E" alt="Samsung Galaxy S26 Ultra 12GB 512GB Sky Blue" width="400" height="400" loading="lazy" decoding="async"></div>
+          <p class="bcp-product__brand">Samsung</p>
+          <h3>Galaxy S26 Ultra 12GB 512GB Sky Blue</h3>
+          <p class="bcp-product__deal">Con BCP: <b>[XX]% hasta S/[MONTO_MAX]</b></p>
+          <a class="bcp-btn bcp-btn--primary" href="#" aria-label="Comprar Samsung Galaxy S26 Ultra">Comprar</a>
+        </li>
+        <li class="bcp-product">
+          <div class="bcp-product__img"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Crect width='400' height='400' fill='%23F5F7FB'/%3E%3C/svg%3E" alt="Lavadora LG WT13DBVTB 13 kg carga superior negro onyx" width="400" height="400" loading="lazy" decoding="async"></div>
+          <p class="bcp-product__brand">LG</p>
+          <h3>Lavadora WT13DBVTB 13 kg Carga Superior Negro Onyx</h3>
+          <p class="bcp-product__deal">Con BCP: <b>[XX]% hasta S/[MONTO_MAX]</b></p>
+          <a class="bcp-btn bcp-btn--primary" href="#" aria-label="Comprar lavadora LG WT13DBVTB">Comprar</a>
+        </li>
+        <li class="bcp-product">
+          <div class="bcp-product__img"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Crect width='400' height='400' fill='%23F5F7FB'/%3E%3C/svg%3E" alt="Laptop HP 255R G10 15.6 pulgadas AMD Ryzen 5 16GB 512GB" width="400" height="400" loading="lazy" decoding="async"></div>
+          <p class="bcp-product__brand">HP</p>
+          <h3>Laptop 255R G10 15.6" AMD Ryzen 5 16GB 512GB</h3>
+          <p class="bcp-product__deal">Con BCP: <b>[XX]% hasta S/[MONTO_MAX]</b></p>
+          <a class="bcp-btn bcp-btn--primary" href="#" aria-label="Comprar laptop HP 255R G10">Comprar</a>
+        </li>
+        <li class="bcp-product">
+          <div class="bcp-product__img"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Crect width='400' height='400' fill='%23F5F7FB'/%3E%3C/svg%3E" alt="Televisor TCL 75 pulgadas QLED 4K 75P7K Google TV" width="400" height="400" loading="lazy" decoding="async"></div>
+          <p class="bcp-product__brand">TCL</p>
+          <h3>Televisor 75" QLED 4K 75P7K Google TV</h3>
+          <p class="bcp-product__deal">Con BCP: <b>[XX]% hasta S/[MONTO_MAX]</b></p>
+          <a class="bcp-btn bcp-btn--primary" href="#" aria-label="Comprar televisor TCL 75P7K">Comprar</a>
+        </li>
+        <li class="bcp-product">
+          <div class="bcp-product__img"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Crect width='400' height='400' fill='%23F5F7FB'/%3E%3C/svg%3E" alt="Impresora Epson multifunción 3 en 1" width="400" height="400" loading="lazy" decoding="async"></div>
+          <p class="bcp-product__brand">Epson</p>
+          <h3>Impresora Multifunción 3 en 1</h3>
+          <p class="bcp-product__deal">Con BCP: <b>[XX]% hasta S/[MONTO_MAX]</b></p>
+          <a class="bcp-btn bcp-btn--primary" href="#" aria-label="Comprar impresora Epson multifunción">Comprar</a>
+        </li>
+        <li class="bcp-product">
+          <div class="bcp-product__img"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Crect width='400' height='400' fill='%23F5F7FB'/%3E%3C/svg%3E" alt="Consola PlayStation 5 Slim con lectora de discos" width="400" height="400" loading="lazy" decoding="async"></div>
+          <p class="bcp-product__brand">Sony</p>
+          <h3>PlayStation 5 Slim con Lectora de Discos</h3>
+          <p class="bcp-product__deal">Con BCP: <b>[XX]% hasta S/[MONTO_MAX]</b></p>
+          <a class="bcp-btn bcp-btn--primary" href="#" aria-label="Comprar PlayStation 5 Slim">Comprar</a>
+        </li>
+        <li class="bcp-product">
+          <div class="bcp-product__img"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Crect width='400' height='400' fill='%23F5F7FB'/%3E%3C/svg%3E" alt="Perfume Hugo Boss Bottled Eau de Toilette 100 ml" width="400" height="400" loading="lazy" decoding="async"></div>
+          <p class="bcp-product__brand">Hugo Boss</p>
+          <h3>Boss Bottled Eau de Toilette 100 ml</h3>
+          <p class="bcp-product__deal">Con BCP: <b>[XX]% hasta S/[MONTO_MAX]</b></p>
+          <a class="bcp-btn bcp-btn--primary" href="#" aria-label="Comprar Hugo Boss Bottled 100 ml">Comprar</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- CÓMO USAR -->
+  <div id="bcp-como-usar" class="bcp-section">
+    <div class="bcp-wrap">
+      <header class="bcp-head">
+        <span class="bcp-eyebrow">Compra fácil</span>
+        <h2 class="bcp-h2">Usa tu cupón en 4 pasos</h2>
+      </header>
+      <ol class="bcp-steps">
+        <li class="bcp-step"><div><h3 class="bcp-h3">Elige tus productos</h3><p>Agrega al carrito desde S/[MONTO_MIN].</p></div></li>
+        <li class="bcp-step"><div><h3 class="bcp-h3">Ingresa el código</h3><p>Escribe <b>[CÓDIGO]</b> en el campo de cupones del checkout.</p></div></li>
+        <li class="bcp-step"><div><h3 class="bcp-h3">Verifica tu descuento</h3><p>Revisa el [XX]% aplicado antes de pagar.</p></div></li>
+        <li class="bcp-step"><div><h3 class="bcp-h3">Paga con BCP</h3><p>Finaliza con tu tarjeta BCP participante.</p></div></li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- CÓDIGO -->
+  <div class="bcp-wrap">
+    <div class="bcp-band">
+      <h2 class="bcp-h2">Tu código BCP</h2>
+      <p class="bcp-lead">Aplícalo en compras desde S/[MONTO_MIN] y paga con tu tarjeta BCP.</p>
+      <p class="bcp-code" tabindex="0">[CÓDIGO]</p>
+      <small>Selecciona el código para copiarlo</small>
+      <a class="bcp-btn bcp-btn--white" href="#bcp-productos">Comprar ahora</a>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="bcp-section">
+    <div class="bcp-wrap">
+      <header class="bcp-head">
+        <span class="bcp-eyebrow">Ayuda</span>
+        <h2 class="bcp-h2">Preguntas frecuentes</h2>
+      </header>
+      <div class="bcp-faq">
+        <details><summary>¿Cuál es el código de descuento?</summary><p>El código es [CÓDIGO]. Ingrésalo en el campo de cupones del checkout.</p></details>
+        <details><summary>¿Cuál es el descuento y el monto mínimo?</summary><p>[XX]% de descuento hasta S/[MONTO_MAX] por compra, desde S/[MONTO_MIN].</p></details>
+        <details><summary>¿Qué tarjetas aplican?</summary><p>[TARJETAS].</p></details>
+        <details><summary>¿Cuál es la vigencia?</summary><p>[FECHAS].</p></details>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEGALES -->
+  <div class="bcp-wrap">
+    <div class="bcp-legal">
+      <h2>BCP · Términos y condiciones</h2>
+      <p>[Pegar aquí los términos y condiciones aprobados por el BCP y Juntoz: vigencia, tarjetas participantes, tope por transacción, monto mínimo, exclusiones y stock.]</p>
+    </div>
+  </div>
+
+</section>

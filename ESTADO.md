@@ -12,6 +12,8 @@ Un solo repo con todo el conocimiento SEO del grupo, orientado a **más ganancia
 
 - 2026-10-16 (v3): corregidas las bases de la tabla de plata neta (solo web vs empresa completa; Motocorp por debajo de LC y EFE en total), Efectibank marcado como negocio que sí vende en digital (cuentas y créditos vía pauta), y nuevos pedidos B13 (venta de piso por marca) y B14 (pauta digital de Efectibank por objetivo).
 
+- 2026-10-20: landing "Beneficios con BCP" para Juntoz en `landings/bcp-juntoz-landing.html` (HTML plano sin JS, CSS encapsulado en `#bcp-landing`). Condiciones de la campaña como marcadores `[XX]`, `[CÓDIGO]`, etc.: faltan los datos aprobados por BCP, URLs e imágenes de producto.
+
 ## Pendiente (orden)
 1. **Elias**: responder las preguntas de `docs/06`, dar los accesos A1-A8 y pedir a Efectibank los datos EF1-EF9 (`docs/08 §5`). Sin GSC y Ads por término no se confirma ni se mide nada.
 1b. **Elias**: entregar las cifras verificadas de agosto 2026 vs PY y el registro de cambios SEO (B11) para la referencia histórica; decidir el presupuesto de herramientas (`docs/09 §2b`).
