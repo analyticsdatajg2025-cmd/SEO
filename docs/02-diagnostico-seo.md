@@ -91,4 +91,4 @@ Detalle completo página por página en `docs/08 §3`. Resumen:
 | **Google Business Profile**: sin acceso; sin maestro oficial de tiendas/oficinas/talleres | SIN DATO |
 | **Herramientas**: sin Keyword Planner (lo da la cuenta de Google Ads), sin rastreador (Screaming Frog) | SIN DATO |
 | **Apps Conecta** (EFE, LC, Juntoz) con instalador y CR ~1%: sin datos de instalaciones, retención ni venta por app | SIN DATO |
-| Fecha oficial del Cyber Wow de noviembre | SIN DATO (prensa: 2–5 nov) |
+| Fecha oficial del Cyber Wow de noviembre | 2–5 nov 2026 (prensa; confirmado en las landings de Hiraoka, Falabella y Sodimac el 20-oct, `docs/10`) |
