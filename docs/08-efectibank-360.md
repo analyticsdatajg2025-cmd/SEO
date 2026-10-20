@@ -204,3 +204,49 @@ Fuente: planificador de Google Ads, exportado el 20-oct-2026. Algunas keywords s
 2. Tarjeta digital es demanda de otros bancos (3 de cada 4 búsquedas nombran a Interbank, BCP o BBVA) y va en caída: segunda prioridad.
 3. Siguiente paso: exportar de Search Console de efectibank.pe los últimos 3 meses (Fechas y Consultas) para ver en qué posición está para estas keywords y cuántos clics de marca y no marca tiene.
 
+## 10. GA4 de efectibank.pe, septiembre 2026 (archivo del 20-oct-2026)
+
+**Qué es el archivo:** `ga4_efectibank_setiembre_2026.csv` (subido por Elias, no está en el repo): 29,865 filas de **URL de página completa × sesiones** de septiembre 2026. **No trae fuente / medio, eventos clave ni ingresos.** Dos límites:
+- La suma por página (338,454) **no es el total de sesiones**: una sesión que ve 3 páginas cuenta 3 veces. `SIN DATO` el total real.
+- El canal solo se puede deducir de los parámetros de la URL (`cod_canal`, `cod_campana`, `fbclid`, `gclid`, `_hsenc`…). El 78% de las vistas no trae parámetros: ahí están juntos orgánico, directo y referidos no marcados, y **no se pueden separar** con este archivo.
+
+### Canal deducido por parámetros de URL (vistas de página con sesión, sep-2026)
+| Canal (por parámetro) | Sesiones | % | Qué es |
+|---|---|---|---|
+| Sin parámetro (orgánico + directo + referido sin marcar) | 265,457 | 78.4% | No separable sin la dimensión fuente / medio |
+| Interno web (`cod_canal` 300/307: banner de producto, home, menú, asistente María) | 25,551 | 7.5% | Tráfico que ya estaba en el sitio y pasa a la landing simplificada: **no es captación** |
+| Meta (`fbclid`) | 21,850 | 6.5% | Sobre todo a la home (7,561) y a remesas (6,533) |
+| Email (HubSpot `_hsenc`, `Mailing2026`) | 8,727 | 2.6% | Lleva la mayoría de las solicitudes de motos y electro (abajo) |
+| App (`APPbannerpromo`) | 5,912 | 1.7% | |
+| Comparabien (comparador) | 3,328 | 1.0% | |
+| Google Ads (`gclid`, `gad_source`, campaña "Brain") | 2,784 | 0.8% | Cuenta de ahorros 446 |
+| Referido Grupo EFE (`cod_canal` 309, `GRUPOEFE092026a-d`) | 2,003 | 0.6% | Botones o enlaces desde el retail del grupo |
+| Referido Juntoz (`BotonWebJuntoz`) | 771 | 0.2% | |
+| Otros (call center, QR, volantes, tienda, posts orgánicos) | 2,071 | 0.6% | |
+
+### Embudos (vistas de la página "gracias", proxy de solicitud enviada; no es desembolso)
+| Flujo | Formulario | Gracias | Gracias / formulario | Canal visible del formulario |
+|---|---|---|---|---|
+| Landing simplificada (préstamo efectivo) | 55,876 | 23,691 (+ 2,109 en `/aprobado/`) | 42% (aprobado: 3.8% del formulario) | Interno web 46%, sin parámetro 27%, app 11%, Comparabien 6% |
+| Solicitar préstamo efectivo | 7,863 | 3,991 | 51% | Sin parámetro |
+| Solicitar préstamo motos | 6,782 | 1,310 | 19% | **Email 81%** |
+| Solicitar préstamo electro | 2,277 | 730 | 32% | **Email 62%** |
+| Captación de datos Rimac | 25,876 | 15,147 | 59% | Sin parámetro (es captación para un aliado, no préstamo) |
+
+Las páginas "gracias" pierden los parámetros: la conversión **no se puede atribuir por URL**. Se necesita el informe con fuente / medio y eventos clave.
+
+### Lo que dice para el SEO (`HIPÓTESIS`, validar con fuente / medio y Search Console)
+- **Motos:** la demanda genérica es ~4 K búsquedas/mes (`§9`), pero la página de producto `/prestamos/prestamo/prestamo-motos/` tuvo solo 1,053 sesiones en el mes y las solicitudes de motos llegan en un 81% por email. El orgánico y la pauta casi no captan esa demanda: la landing de motos por intención (acción A14) es la oportunidad más clara.
+- **Préstamo efectivo:** página de producto con 11,511 sesiones casi sin parámetros: es la que más puede venir de búsqueda (marca o no marca, `SIN DATO` sin GSC).
+- **Ahorros:** cuenta de ahorros (13,858) y depósito a plazo (6,054) casi sin pauta: candidatas fuertes a tráfico orgánico; confirmar con GSC.
+- **Agencias** (13,870) y **simulador** (5,446) tienen tráfico alto sin parámetros: demanda local y de cálculo que respalda las páginas por oficina y el simulador indexable.
+
+### Problemas de calidad de datos (para BI y TI de Efectibank)
+1. **Datos personales en GA4:** 123 URLs (327 sesiones) llevan número de documento, tipo de documento o celular en la URL. Va contra las políticas de Google Analytics y la ley de protección de datos personales: hay que sacarlos de la URL (enviar por POST) y pedir a Google el borrado de esos datos. **Urgente.**
+2. **Hosts ajenos en la propiedad de producción:** QA (`qa2.efectiva.com.pe`), un servidor de pruebas en DigitalOcean, un dominio de terceros y `127.0.0.1`. Filtrar por host en GA4.
+3. **Doble sistema de marcado:** `cod_canal`/`cod_campana` propios conviven con UTM casi sin usar y con `cod_campania` (otra grafía). Unificar con UTM + el código interno.
+4. **Tráfico interno marcado como campaña:** banners y menú del propio sitio usan `cod_campana`; si eso pisa la fuente en GA4, la captación real queda subestimada.
+
+### Qué pedir para cerrar "de qué canal vienen las ventas"
+GA4 › Explorar › Exploración libre de septiembre (y del año anterior): **Fuente / medio de la sesión, Campaña de la sesión, Página de destino** + **Sesiones, Eventos clave** (y el evento de solicitud enviada). Más Search Console (Fechas + Consultas) y desembolsos del core con el canal de origen. Todo entra en `dashboard-atribucion-canales.html`.
+
