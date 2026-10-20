@@ -127,6 +127,7 @@ Claves (F2, A2): Juntoz fue una startup comprada con pérdida (feb-2022) y **no 
 | Margen de mercado usado en el modelo | S/ 25-35 netos por S/ 1,000 prestados (motos S/ 50-70); real Efectibank S/ 45-55 | `docs/08 §2` (`ESTIMACIÓN`) |
 | Tasas pasivas vs. banca (SBS) | Ahorro **4.50%** (promedio bancos 0.13%); plazo > 360 d **5.52%**, la más alta de la banca (promedio 4.10%). Moneda nacional, 30 días útiles al 16-oct-2026; validar columnas en el portal | SBS, consultado 19-oct-2026 |
 | Tasas publicadas en su web | Cuenta de ahorros digital TREA 4.50%; depósito a plazo TREA máx. 5.75% (1,080 d), con dos tablas contradictorias en la página | efectibank.pe, 19-oct-2026 |
+| Tráfico de campañas `EFECTIVA_…` a las webs de las tiendas | 1,951 sesiones y 0 compras web en 60 días (EFE 1,901; LC 50) | `cyber-dashboard/historico.json`, Yandex Metrica, 20-ago a 18-oct-2026 |
 
 ## 7. Calendario comercial relevante
 - **Cyber Wow noviembre 2026**: prensa estima 2–5 nov (confirmar con IAB Perú). Días Cyber venden ~4x un día normal.

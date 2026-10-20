@@ -123,3 +123,53 @@ Dashboard completo: `auditoria-seo-efectibank.html` (raíz del repo). Rastreo pr
 - **Corregido desde el 16-oct**: el enlace a staging `qa2.efectiva.com.pe` del formulario ya no aparece.
 - `HIPÓTESIS`: `http://` respondió 503 desde el entorno de auditoría (proxy); verificar desde fuera.
 - Benchmark: SBS al 16-oct-2026 ubica a Efectiva con la tasa de ahorro (4.50%) y de plazo > 360 d (5.52%) más altas de la banca; en la muestra de búsquedas observada (buscador genérico, no Google Perú) efectibank.pe no apareció en ninguna de las 10 consultas.
+
+## 8. De qué canal vienen las ventas de Efectibank (cruce del 20-oct-2026)
+
+### Dónde está cada dato (revisión de los repos, 20-oct-2026)
+| Dato | Dónde está | Herramienta | Marcas | ¿Efectibank? |
+|---|---|---|---|---|
+| Sesiones, ingresos gross, compras y campañas por día | `cyber-dashboard` (`historico.json`, 60 días; `data.json`, hoy) | **Yandex Metrica**, no GA4 (atribución `lastsign`) | La Curacao, Tiendas EFE; Juntoz solo en Cyber | No: solo campañas `EFECTIVA_…` que llegan a las tiendas |
+| Venta neta diaria, CR y ticket neto | `cyber-dashboard` (`neto.json`, desde el Sheet del reporte diario) | Google Sheet | Tiendas EFE, La Curacao | No |
+| GA4 por canal y embudo | `dashboard-martech-efe`: el código del hub está en el repo; **los datos viven en Google Sheets / Drive**, no en el repo | GA4 Data API (una propiedad por script) | Juntoz (LC/EFE en homologación, sin código) | No |
+| Venta gross / neta oficial | `dashboard-martech-efe`: Excel Daily y Pedidos, cargados en el navegador (no en el repo) | Excel manual | Juntoz | No |
+| Conector GA4 | `ga4-mcp-powerbi` (servidor, sin datos) | GA4 Data API | Una propiedad (no se sabe cuál) | SIN DATO |
+| Search Console | En ningún repo. El panel SEO de MKT-SISTEMA guarda GSC de la tienda en la nube (Cloudflare), aún sin clave | GSC API | Tiendas EFE | No |
+| Solicitudes, desembolsos, cartera por canal | En ningún repo (core financiero / CRM de Efectibank) | — | — | **SIN DATO** |
+
+**Conclusión:** hoy no existe GA4, Search Console ni venta (desembolsos) de efectibank.pe en ningún repo. El cruce GA4 × ventas × GSC para Efectibank **no se puede hacer** hasta tener esos tres accesos.
+
+### Lo único medible: la pauta de Efectiva que aterriza en las tiendas (COMPROBADO, Yandex, 20-ago a 18-oct-2026)
+| Sitio | Campaña (utm_campaign) | Sesiones | Compras | Ingresos |
+|---|---|---|---|---|
+| Tiendas EFE | `EFECTIVA_social-media_facebook_prestamo_aon_2026_7_alcance_prestamos-electro-julio` (y la `_6_`) | 1,869 | 0 | S/ 0 |
+| Tiendas EFE | `41216298-EFECTIVA_JUNTOZ` | 32 | 0 | S/ 0 |
+| La Curacao | `41216298-EFECTIVA_JUNTOZ` y `efectiva_captacion_2025q3` | 50 | 0 | S/ 0 |
+
+Fuente: `cyber-dashboard/historico.json` (Yandex Metrica, último clic significativo), generado 19-oct-2026. Para comparar: en esos 60 días Tiendas EFE tuvo 1.71 M sesiones y S/ 5.53 M de ingresos gross; La Curacao, 1.70 M sesiones y S/ 8.40 M.
+
+Lectura:
+- Una campaña de Meta de Efectiva **de alcance**, nombrada "julio", sigue trayendo tráfico en octubre (58 de 60 días). Revisar con pauta si está activa a propósito. `HIPÓTESIS`: la campaña lleva a la página de préstamo electro dentro de la tienda.
+- 0 compras no prueba que no venda: el crédito se cierra en tienda o en el core, y el CRM no está cruzado con estas visitas. Solo dice que **la web de la tienda no registra venta online atribuida a esa campaña**.
+
+### Canales de Efectibank × keywords principales (estado al 20-oct-2026)
+Volumen de búsqueda, clics y ventas por canal: `SIN DATO` mientras no haya GSC, GA4 y CRM de Efectibank. Las keywords salen de la auditoría del 19-oct (`auditoria-seo-efectibank.html`, pestaña Keywords).
+
+| Canal | Keywords principales | Dato de tráfico | Dato de venta (desembolso) | Estado |
+|---|---|---|---|---|
+| SEO marca | efectibank, efectibank app, financiera efectiva, banco efectiva | SIN DATO (falta GSC) | SIN DATO | No suma como SEO incremental: es demanda de marca |
+| SEO no marca · préstamos | préstamo efectivo, préstamo personal, préstamo con DNI, préstamo sin aval, préstamo para moto, crédito moto 0% inicial, crédito para electrodomésticos | SIN DATO | SIN DATO | Prioridad de captación (`docs/08 §4`) |
+| SEO no marca · ahorro | cuenta de ahorros mejor tasa, depósito a plazo fijo mejor tasa, plazo fijo 1 año | SIN DATO | SIN DATO | Diferencial de tasa (SBS) sin usar en titles |
+| SEO local | efectibank Piura, agencias efectibank, préstamo en Trujillo | SIN DATO (sin GBP) | SIN DATO | Cierra en oficina: necesita GBP + páginas por oficina |
+| Paid Social (Meta) | — | 1,951 sesiones a tiendas (arriba) | 0 compras web; desembolsos SIN DATO | Único canal con dato, y solo hacia las tiendas |
+| Paid Search | — | SIN DATO | SIN DATO | Falta inversión, CPA y términos de búsqueda |
+| Referido retail (Conecta: LC + EFE, Motocorp) | — | SIN DATO | 30-40% de la venta de Conecta y Motocorp se financia con Efectibank (Elias) | Es el canal grande conocido, pero no se mide por web |
+| App | efectibank app | SIN DATO | SIN DATO | Ficha Android 2.6★ (§3) |
+
+### Qué hace falta para responder con datos (y dónde cargarlo)
+1. **GA4 de efectibank.pe**: dar Lector a la cuenta de servicio o exportar CSV de adquisición de tráfico (fuente / medio / campaña / página de destino + eventos clave).
+2. **Search Console de efectibank.pe**: export Fechas + Consultas (o la API) para separar marca de no marca.
+3. **CRM / core**: solicitudes y desembolsos con id, fecha, monto, margen y `utm_source` / `utm_medium` / `utm_campaign` de origen (o "tienda / oficina" cuando es presencial).
+4. **Pauta de Efectiva**: inversión y conversiones por campaña.
+Con esos cuatro, `dashboard-atribucion-canales.html` arma el cruce (canal × keyword × desembolso) sin código nuevo.
+

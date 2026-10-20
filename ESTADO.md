@@ -28,6 +28,8 @@ Un solo repo con todo el conocimiento SEO del grupo, orientado a **más ganancia
 
 - 2026-10-20: `dashboard-atribucion-canales.html`: el tablero de atribución y canales (construido como módulo `dc-canales` en MKT-SISTEMA, PR #39) empaquetado en un solo HTML descargable. Funciona sin servidor: se suben los CSV exportados de GA4 (sesiones, eventos, primera interacción, basado en datos), Search Console (Fechas y Consultas), pauta y sistemas propios; todo queda en el navegador, con respaldo descargable. Marcas precargadas: Tiendas EFE, La Curacao y Efectibank (editables); referidos Conecta, Malls y MTC por `utm_source`. Probado en Chrome con CSV de prueba (no datos reales). Pendiente: cargar los exports reales de GA4 y GSC.
 
+- 2026-10-20 (v2): inventario de dónde están GA4, venta gross y GSC, y cruce para Efectibank (`docs/08 §8`, `docs/07`, `docs/01 §6b`). Resultado: no hay GA4, GSC ni desembolsos de Efectibank en ningún repo; `cyber-dashboard` trae ingresos gross de LC/EFE desde **Yandex** (no GA4) y venta neta desde un Sheet; `dashboard-martech-efe` trae GA4 de Juntoz en Google Sheets. Único dato de Efectibank: sus campañas de Meta llevaron 1,951 sesiones a las tiendas con 0 compras web (60 días). Canales × keywords quedan en SIN DATO hasta tener GA4, GSC y CRM de efectibank.pe. **Alerta:** `SEO`, `cyber-dashboard` y `ga4-mcp-powerbi` figuran como públicos.
+
 ## Pendiente (orden)
 0. **Elias**: revisar `auditoria-seo-efectibank.html` y decidir si se presentan A01-A06 a Marketing y Legal de Efectibank esta semana (higiene + tasas; no dependen de Cyber).
 1. **Elias**: responder las preguntas de `docs/06`, dar los accesos A1-A8 y pedir a Efectibank los datos EF1-EF9 (`docs/08 §5`). Sin GSC y Ads por término no se confirma ni se mide nada.
