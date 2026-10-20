@@ -34,6 +34,8 @@ Un solo repo con todo el conocimiento SEO del grupo, orientado a **más ganancia
 
 - 2026-10-20 (v4): análisis de GA4 de efectibank.pe de septiembre (`docs/08 §10`): el archivo es URL × sesiones, sin fuente / medio ni conversiones, así que el canal se deduce por parámetros de URL (78% sin parámetro, no separable entre orgánico y directo). Hallazgos: las solicitudes de motos (81%) y electro (62%) llegan por email, no por búsqueda; la página de motos tiene ~1 K sesiones frente a ~4 K búsquedas/mes; **datos personales (documento, celular) en 123 URLs de GA4** y hosts de QA en la propiedad de producción. Pendiente: exploración de GA4 con fuente / medio + eventos clave, Search Console y desembolsos.
 
+- 2026-10-20 (v5): PDL «Crédito en electrodomésticos» para La Curacao (`landings/pdl-credito-electrodomesticos-lc.html`, `docs/12`): 60 electrodomésticos en stock elegidos por ingresos de los últimos 60 días (Yandex, no GA4: no hay GA4 de LC en los repos) cruzados con el feed; filtros más vendidos / desde S/ 1,500 / categoría; enlace al Préstamo Electro de Efectibank con UTM. Pendiente: crear la categoría en Magento, validar textos de crédito con Comercial y Legal, y repetir la selección con GA4 cuando haya acceso.
+
 ## Pendiente (orden)
 0. **Elias**: revisar `auditoria-seo-efectibank.html` y decidir si se presentan A01-A06 a Marketing y Legal de Efectibank esta semana (higiene + tasas; no dependen de Cyber).
 1. **Elias**: responder las preguntas de `docs/06`, dar los accesos A1-A8 y pedir a Efectibank los datos EF1-EF9 (`docs/08 §5`). Sin GSC y Ads por término no se confirma ni se mide nada.

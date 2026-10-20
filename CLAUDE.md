@@ -33,7 +33,8 @@ Equipo SEO: **Josh Kevin Seminario** (SEO Senior: estrategia multimarca, auditor
 | `auditoria-seo-efectibank.html` | Dashboard de auditoría SEO de Efectibank (19-oct-2026): hallazgos con evidencia, 274 URLs, Core Web Vitals de laboratorio, keywords, benchmark, SEO vs pauta, priorización, roadmap 30-60-90 y dependencias. Abrir en el navegador. |
 | `dashboard-seo-cyber.html` | Panel de tareas SEO principales (estado editable, se guarda en el navegador) y cruce con exports de GSC para comparar clics de Cyber vs el año pasado (con lift vs 4 semanas previas). Sin datos inventados: GSC se sube como CSV. |
 | `dashboard-atribucion-canales.html` | Tablero de atribución y distribución de canales en un solo archivo (mismo código que el módulo `dc-canales` de MKT-SISTEMA). Los datos entran como CSV de GA4, Search Console, pauta y sistemas propios y se guardan en el navegador (IndexedDB). Sin datos inventados: lo no cargado dice «sin datos» o «pendiente de integración». |
-| `landings/` | Landings del sorteo Cyberweek (LC y EFE) y sección de ruleta de ganadores. |
+| `landings/` | Landings del sorteo Cyberweek (LC y EFE), sección de ruleta de ganadores y PDL «Crédito en electrodomésticos» de La Curacao (`docs/12`). |
+| `docs/12-pdl-credito-electrodomesticos-lc.md` | Cómo se eligieron los productos de la PDL de crédito en electrodomésticos (ventas Yandex 60 días + feed) y pasos para publicarla. |
 | `grafo/ecosistema-seo.html` | Grafo visual del ecosistema: negocios, activos, datos, sistemas, acciones. Abrir en el navegador. |
 
 ## Reglas de negocio que no se tocan sin preguntar
