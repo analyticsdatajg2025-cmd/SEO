@@ -30,6 +30,8 @@ Equipo SEO: **Josh Kevin Seminario** (SEO Senior: estrategia multimarca, auditor
 | `docs/07-inventario-repos-y-sistemas.md` | Huella de los otros repos y sistemas (qué son, dónde viven, qué los rompe). |
 | `docs/08-efectibank-360.md` | Efectibank: cifras públicas, margen de mercado, auditoría de su web, palancas SEO en plata neta, datos que faltan por responsable, tiempos. |
 | `docs/09-capacidad-herramientas-y-riesgos.md` | Capacidad real del equipo (horas), herramientas disponibles y su impacto operativo, ventanas de riesgo Cyber, plazos de rastreo e indexación. |
+| `docs/10-competencia-cyber-wow.md` | Competencia Cyber Wow 2026 (Hiraoka, Falabella, Sodimac; Ripley bloqueado): URLs, enlazado, on-page, schema, Shopping, urgencia y stock; qué copiar y qué no. |
+| `docs/11-benchmark-cyber-y-3-acciones.md` | Matriz de benchmarking Cyber (Hiraoka, Carsa, Tottus, Falabella, Ripley + EFE/LC) y plan de 3 acciones (metadatos, blog, landings top) para la jefatura. |
 | `grafo/ecosistema-seo.html` | Grafo visual del ecosistema: negocios, activos, datos, sistemas, acciones. Abrir en el navegador. |
 
 ## Reglas de negocio que no se tocan sin preguntar
