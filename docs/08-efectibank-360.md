@@ -173,3 +173,34 @@ Volumen de búsqueda, clics y ventas por canal: `SIN DATO` mientras no haya GSC,
 4. **Pauta de Efectiva**: inversión y conversiones por campaña.
 Con esos cuatro, `dashboard-atribucion-canales.html` arma el cruce (canal × keyword × desembolso) sin código nuevo.
 
+## 9. Demanda de búsqueda: planificador de palabras clave (archivo del 20-oct-2026)
+
+**Qué es el archivo:** `Keyword_Stats_2026-10-20_at_11_26_28.csv` (subido por Elias, no está en el repo). Es una exportación del **Planificador de palabras clave de Google Ads**, no de Search Console: trae búsquedas mensuales promedio, competencia y CPC de **oct-2025 a sep-2026** (12 meses). No trae clics, impresiones ni posición de efectibank.pe. Las columnas de cuota de impresiones orgánica y posición orgánica vienen **vacías** (la cuenta de Ads no está vinculada a Search Console), así que **la posición orgánica de Efectibank sigue en `SIN DATO`**.
+
+785 keywords en dos temas. El planificador repite el volumen en variantes cercanas ("motos a credito" y "motocicletas a credito", 880 cada una), así que se suma sin duplicar series idénticas (`HIPÓTESIS`: puede juntar dos keywords distintas con la misma serie).
+
+| Tema | Keywords | Búsquedas/mes sin duplicar | Tendencia (oct-25 → sep-26) | CPC parte alta de la página (USD) |
+|---|---|---|---|---|
+| Motos a crédito, genéricas | 320 | ~3,990 | Estable a creciente; pico mar–may (~4,100–4,280/mes) | 0.02–0.63 (muy barato) |
+| Motos a crédito con marca de moto (Honda, Bajaj, Yamaha…) | 86 | ~490 | — | bajo |
+| Tarjeta de débito / tarjeta digital, genéricas | 140 | ~1,830 | En caída: el tema total pasa de 7,750 a 5,640 (−27%) | 0.3–6.7 |
+| Tarjeta digital de otro banco (Interbank, BCP, BBVA…) | 136 | ~5,790 | En caída | 0.3–28 |
+| Otros (financiamiento por marca de moto, CMR, bancos de otros países) | 103 | ~590 | — | — |
+| **Marca Efectibank / Efectiva** | 0 | — | — | No está en el plan |
+
+Fuente: planificador de Google Ads, exportado el 20-oct-2026. Algunas keywords son de otros países ("banco de bogota", "brubank", "uala"): revisar la ubicación del plan.
+
+**Keywords principales (genéricas)**
+- Motos: *motos a credito* / *motocicletas a credito* (880/mes, +22% interanual), *financiamiento de motos* (390, +22%), *motos en cuotas* (210), *moto a credito sin cuota inicial* (170, −35%), *financiamiento moto* / *credito para moto* (110–140), *moto en cuotas solo con dni* (110, **+125%**), *motos en cuotas sin interes* (110, **+100%**).
+- Tarjeta: *tarjeta digital* (880, −18%), *tarjeta de débito digital* (110, −36%), *tarjeta de crédito digital* (110).
+
+**Cómo estamos (lo que el archivo sí dice)**
+- **Pauta:** Efectibank aparece con cuota de impresiones de anuncios **< 1%** en *motos a credito* y *motocicletas a credito* (las de más volumen) y 3–10% en tres de cola larga (*moto electrica a credito*, *motos a credito sin inicial*, *quiero sacar una moto a credito*). En el resto, nada. Casi no compite en pago por la demanda de motos, y el clic es de centavos.
+- **Orgánico:** `SIN DATO`. Para saberlo hace falta Search Console de efectibank.pe (Fechas + Consultas) o vincular Search Console con la cuenta de Ads, que llena las dos columnas orgánicas de este mismo archivo.
+- **Lo que no está en el plan:** préstamo efectivo / personal, préstamo con DNI, cuenta de ahorros, depósito a plazo, simulador y la marca. Son los grupos de la auditoría (`auditoria-seo-efectibank.html`, Keywords): para medir su demanda hay que repetir el planificador con esas semillas.
+
+**Lectura para el plan (`HIPÓTESIS`, validar con Search Console)**
+1. Motos a crédito es la demanda genérica más grande y estable del archivo (~4 K búsquedas/mes), crece en lo que dice "solo con DNI" y "sin interés", y conecta con Motocorp (30–40% de su venta se financia con Efectibank). Es el primer candidato para la landing por intención de la acción A14 de la auditoría.
+2. Tarjeta digital es demanda de otros bancos (3 de cada 4 búsquedas nombran a Interbank, BCP o BBVA) y va en caída: segunda prioridad.
+3. Siguiente paso: exportar de Search Console de efectibank.pe los últimos 3 meses (Fechas y Consultas) para ver en qué posición está para estas keywords y cuántos clics de marca y no marca tiene.
+

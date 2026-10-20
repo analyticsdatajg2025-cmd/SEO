@@ -30,6 +30,8 @@ Un solo repo con todo el conocimiento SEO del grupo, orientado a **más ganancia
 
 - 2026-10-20 (v2): inventario de dónde están GA4, venta gross y GSC, y cruce para Efectibank (`docs/08 §8`, `docs/07`, `docs/01 §6b`). Resultado: no hay GA4, GSC ni desembolsos de Efectibank en ningún repo; `cyber-dashboard` trae ingresos gross de LC/EFE desde **Yandex** (no GA4) y venta neta desde un Sheet; `dashboard-martech-efe` trae GA4 de Juntoz en Google Sheets. Único dato de Efectibank: sus campañas de Meta llevaron 1,951 sesiones a las tiendas con 0 compras web (60 días). Canales × keywords quedan en SIN DATO hasta tener GA4, GSC y CRM de efectibank.pe. **Alerta:** `SEO`, `cyber-dashboard` y `ga4-mcp-powerbi` figuran como públicos.
 
+- 2026-10-20 (v3): análisis del archivo de keywords de Efectibank (`docs/08 §9`). Es del **planificador de Google Ads, no de Search Console**: da demanda (motos a crédito ~4 K/mes genérica y estable; tarjeta digital ~1.8 K genérica + ~5.8 K de otros bancos, en caída) y muestra que Efectibank tiene < 1% de cuota de impresiones de anuncios en "motos a credito". Posición orgánica sigue SIN DATO. Pendiente: export de Search Console de efectibank.pe (Fechas + Consultas) y planificador con las semillas de préstamo efectivo, ahorro y marca.
+
 ## Pendiente (orden)
 0. **Elias**: revisar `auditoria-seo-efectibank.html` y decidir si se presentan A01-A06 a Marketing y Legal de Efectibank esta semana (higiene + tasas; no dependen de Cyber).
 1. **Elias**: responder las preguntas de `docs/06`, dar los accesos A1-A8 y pedir a Efectibank los datos EF1-EF9 (`docs/08 §5`). Sin GSC y Ads por término no se confirma ni se mide nada.
