@@ -1,0 +1,318 @@
+{#-
+  Plantilla de la landing BCP en Juntoz. NO se publica tal cual: la procesa generador.py.
+  - El diseño y la estructura son los de la landing original; solo cambian los campos marcados con data-field.
+  - data-field indica de qué pestaña/columna del Sheet sale cada dato. En la versión final se elimina.
+  - Los campos opcionales vacíos ocultan su elemento; los obligatorios vacíos bloquean la publicación.
+-#}
+<!-- {{ meta.comentario }} -->
+<style>
+#bcp-landing{--bcp-blue:{{ c.color_principal }};--bcp-blue-dark:{{ c.color_principal_hover }};--bcp-orange:{{ c.color_acento }};--bcp-text:{{ c.color_texto }};--bcp-muted:{{ c.color_texto_suave }};--bcp-soft:{{ c.color_fondo_secundario }};--bcp-line:{{ c.color_borde }};color:var(--bcp-text);font-family:"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;font-size:14px;line-height:1.55;background:#FFFFFF;-webkit-font-smoothing:antialiased;overflow-wrap:anywhere}
+#bcp-landing *,#bcp-landing *::before,#bcp-landing *::after{box-sizing:border-box}
+#bcp-landing h1,#bcp-landing h2,#bcp-landing h3,#bcp-landing p,#bcp-landing ul,#bcp-landing ol,#bcp-landing dl,#bcp-landing dd,#bcp-landing figure{margin:0;padding:0}
+#bcp-landing ul,#bcp-landing ol{list-style:none}
+#bcp-landing img{display:block;max-width:100%;height:auto}
+#bcp-landing a{color:inherit;text-decoration:none}
+#bcp-landing .bcp-wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+#bcp-landing .bcp-section{padding:48px 0}
+#bcp-landing .bcp-section--soft{background:var(--bcp-soft)}
+#bcp-landing .bcp-eyebrow{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--bcp-blue)}
+#bcp-landing .bcp-h1{font-size:30px;line-height:1.15;font-weight:800;letter-spacing:-.01em}
+#bcp-landing .bcp-h1 span{color:var(--bcp-blue)}
+#bcp-landing .bcp-h2{font-size:22px;line-height:1.25;font-weight:800;margin-top:6px}
+#bcp-landing .bcp-h3{font-size:18px;line-height:1.3;font-weight:700}
+#bcp-landing .bcp-lead{color:var(--bcp-muted);margin-top:8px;max-width:560px}
+#bcp-landing .bcp-head{text-align:center;margin-bottom:28px}
+#bcp-landing .bcp-head .bcp-lead{margin-left:auto;margin-right:auto}
+
+/* Botones */
+#bcp-landing .bcp-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 24px;border-radius:999px;font-size:14px;font-weight:600;line-height:1;transition:background-color .2s,box-shadow .2s,transform .2s;cursor:pointer}
+#bcp-landing .bcp-btn--primary{background:var(--bcp-blue);color:#FFFFFF;box-shadow:0 6px 16px rgba(0,48,178,.22)}
+#bcp-landing .bcp-btn--primary:hover{background:var(--bcp-blue-dark);transform:translateY(-1px)}
+#bcp-landing .bcp-btn--ghost{background:#FFFFFF;color:var(--bcp-blue);border:1.5px solid var(--bcp-blue)}
+#bcp-landing .bcp-btn--ghost:hover{background:#EEF2FC}
+#bcp-landing .bcp-btn--white{background:#FFFFFF;color:var(--bcp-blue)}
+#bcp-landing .bcp-btn--white:hover{background:#EEF2FC}
+#bcp-landing a:focus-visible,#bcp-landing summary:focus-visible,#bcp-landing .bcp-code:focus-visible{outline:3px solid var(--bcp-orange);outline-offset:3px}
+
+/* Hero */
+#bcp-landing .bcp-hero{background:var(--bcp-soft);padding:32px 0 40px;overflow:hidden}
+#bcp-landing .bcp-hero__grid{display:grid;gap:32px;align-items:center}
+#bcp-landing .bcp-badge{display:inline-flex;align-items:center;gap:8px;background:#FFFFFF;border:1px solid var(--bcp-line);border-radius:999px;padding:6px 14px 6px 6px;font-size:12px;font-weight:600;color:var(--bcp-text);margin-bottom:16px}
+#bcp-landing .bcp-badge b{background:var(--bcp-blue);color:#FFFFFF;border-radius:999px;padding:3px 10px;font-weight:800;letter-spacing:.04em}
+#bcp-landing .bcp-hero .bcp-lead{font-size:15px;margin-top:12px}
+#bcp-landing .bcp-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:20px 0 24px}
+#bcp-landing .bcp-fact{background:#FFFFFF;border:1px solid var(--bcp-line);border-radius:12px;padding:10px 12px}
+#bcp-landing .bcp-fact dt{font-size:11px;color:var(--bcp-muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+#bcp-landing .bcp-fact dd{font-size:15px;font-weight:800;color:var(--bcp-blue);margin-top:2px}
+#bcp-landing .bcp-ctas{display:flex;flex-wrap:wrap;gap:12px}
+#bcp-landing .bcp-ctas .bcp-btn{flex:1 1 180px}
+#bcp-landing .bcp-date{font-size:12px;color:var(--bcp-muted);margin-top:14px}
+{%- if slides|length > 1 %}
+#bcp-landing .bcp-slides{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none}
+#bcp-landing .bcp-slides::-webkit-scrollbar{display:none}
+#bcp-landing .bcp-slide{flex:0 0 100%;scroll-snap-align:start}
+#bcp-landing .bcp-dots{display:flex;justify-content:center;gap:10px;margin-top:8px}
+#bcp-landing .bcp-dots a{width:10px;height:10px;border-radius:50%;background:#C9D3EA}
+#bcp-landing .bcp-dots a:hover{background:var(--bcp-blue)}
+{%- endif %}
+
+/* Visual hero: tarjeta + cupón en CSS, o imagen del slide */
+#bcp-landing .bcp-visual{position:relative;max-width:340px;margin:0 auto;width:100%;padding:0 12px 40px}
+#bcp-landing .bcp-visual--img{padding:0}
+#bcp-landing .bcp-visual--img img{width:100%;aspect-ratio:1/1;object-fit:contain;border-radius:20px}
+#bcp-landing .bcp-card{position:relative;aspect-ratio:1.586/1;border-radius:20px;background:var(--bcp-blue);color:#FFFFFF;padding:22px;box-shadow:0 24px 48px rgba(0,48,178,.28);overflow:hidden;transform:rotate(-4deg)}
+#bcp-landing .bcp-card::after{content:"";position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.08)}
+#bcp-landing .bcp-card__chip{width:42px;height:32px;border-radius:7px;background:#E9C46A;margin-top:34px}
+#bcp-landing .bcp-card__num{font-size:15px;letter-spacing:.18em;margin-top:18px;opacity:.9}
+#bcp-landing .bcp-card__brand{position:absolute;left:22px;top:20px;font-size:20px;font-weight:800;letter-spacing:.02em}
+#bcp-landing .bcp-card__brand i{color:var(--bcp-orange);font-style:normal}
+#bcp-landing .bcp-ticket{position:absolute;right:0;bottom:0;background:#FFFFFF;border-radius:16px;padding:14px 18px;box-shadow:0 16px 32px rgba(23,23,23,.12);border:1px solid var(--bcp-line);min-width:190px}
+#bcp-landing .bcp-ticket small{display:block;font-size:11px;font-weight:600;color:var(--bcp-muted);text-transform:uppercase;letter-spacing:.06em}
+#bcp-landing .bcp-ticket strong{display:block;font-size:24px;font-weight:800;color:var(--bcp-blue);line-height:1.15;margin-top:2px}
+#bcp-landing .bcp-ticket span{display:block;font-size:12px;color:var(--bcp-muted);margin-top:2px}
+
+/* Beneficios */
+#bcp-landing .bcp-benefits{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+#bcp-landing .bcp-benefit{background:#FFFFFF;border:1px solid var(--bcp-line);border-radius:16px;padding:18px}
+#bcp-landing .bcp-benefit__icon{display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:12px;background:#EEF2FC;color:var(--bcp-blue);font-weight:800;font-size:15px;margin-bottom:12px}
+#bcp-landing .bcp-benefit p{color:var(--bcp-muted);margin-top:4px;font-size:13px}
+
+/* Productos */
+#bcp-landing .bcp-products{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+#bcp-landing .bcp-product{display:flex;flex-direction:column;background:#FFFFFF;border:1px solid var(--bcp-line);border-radius:16px;padding:12px;transition:box-shadow .2s,border-color .2s}
+#bcp-landing .bcp-product:hover{border-color:#C9D3EA;box-shadow:0 12px 28px rgba(23,23,23,.08)}
+#bcp-landing .bcp-product__img{position:relative;border-radius:12px;background:var(--bcp-soft);overflow:hidden}
+#bcp-landing .bcp-product__img img{width:100%;aspect-ratio:1/1;object-fit:contain}
+#bcp-landing .bcp-product__tag{position:absolute;left:8px;top:8px;background:var(--bcp-blue);color:#FFFFFF;font-size:11px;font-weight:700;border-radius:999px;padding:3px 9px}
+#bcp-landing .bcp-product__brand{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--bcp-blue);margin-top:12px}
+#bcp-landing .bcp-product h3{font-size:14px;line-height:1.35;font-weight:600;margin-top:4px;flex:1}
+#bcp-landing .bcp-product__deal{font-size:12px;color:var(--bcp-muted);margin:8px 0 12px}
+#bcp-landing .bcp-product__deal b{color:var(--bcp-text)}
+#bcp-landing .bcp-product .bcp-btn{width:100%;min-height:42px}
+
+/* Pasos */
+#bcp-landing .bcp-steps{display:grid;gap:12px;counter-reset:bcpstep}
+#bcp-landing .bcp-step{display:flex;gap:14px;align-items:flex-start;background:#FFFFFF;border:1px solid var(--bcp-line);border-radius:16px;padding:18px}
+#bcp-landing .bcp-step::before{counter-increment:bcpstep;content:counter(bcpstep);flex:0 0 36px;display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:var(--bcp-blue);color:#FFFFFF;font-weight:800}
+#bcp-landing .bcp-step p{color:var(--bcp-muted);margin-top:2px;font-size:13px}
+
+/* Banda código */
+#bcp-landing .bcp-band{background:var(--bcp-blue);color:#FFFFFF;border-radius:24px;padding:36px 20px;text-align:center}
+#bcp-landing .bcp-band .bcp-h2{color:#FFFFFF}
+#bcp-landing .bcp-band .bcp-lead{color:#D6DEF5;margin-left:auto;margin-right:auto}
+#bcp-landing .bcp-code{display:inline-block;margin:20px 0 6px;background:#FFFFFF;color:var(--bcp-blue);font-size:22px;font-weight:800;letter-spacing:.12em;border:2px dashed #9DB0E6;border-radius:14px;padding:12px 28px;-webkit-user-select:all;user-select:all;cursor:text}
+#bcp-landing .bcp-band small{display:block;font-size:12px;color:#D6DEF5;margin-bottom:20px}
+
+/* FAQ */
+#bcp-landing .bcp-faq{max-width:760px;margin:0 auto;display:grid;gap:10px}
+#bcp-landing .bcp-faq details{background:#FFFFFF;border:1px solid var(--bcp-line);border-radius:14px}
+#bcp-landing .bcp-faq summary{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 18px;font-weight:600;cursor:pointer;list-style:none}
+#bcp-landing .bcp-faq summary::-webkit-details-marker{display:none}
+#bcp-landing .bcp-faq summary::after{content:"+";flex:0 0 28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:#EEF2FC;color:var(--bcp-blue);font-size:18px;font-weight:700;transition:transform .2s}
+#bcp-landing .bcp-faq details[open] summary::after{transform:rotate(45deg)}
+#bcp-landing .bcp-faq details p{padding:0 18px 16px;color:var(--bcp-muted)}
+
+/* Legales */
+#bcp-landing .bcp-legal{border-top:1px solid var(--bcp-line);padding:24px 0 40px}
+#bcp-landing .bcp-legal h2{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--bcp-muted);margin-bottom:8px}
+#bcp-landing .bcp-legal p{font-size:12px;line-height:1.6;color:var(--bcp-muted)}
+#bcp-landing .bcp-legal p + p{margin-top:8px}
+
+@media (min-width:640px){
+  #bcp-landing .bcp-benefits{grid-template-columns:repeat(4,minmax(0,1fr))}
+  #bcp-landing .bcp-products{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+  #bcp-landing .bcp-steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #bcp-landing .bcp-ctas .bcp-btn{flex:0 0 auto}
+}
+@media (min-width:1024px){
+  #bcp-landing .bcp-visual{max-width:420px;padding:0 0 40px}
+  #bcp-landing .bcp-visual--img{padding:0}
+  #bcp-landing .bcp-section{padding:64px 0}
+  #bcp-landing .bcp-hero{padding:56px 0}
+  #bcp-landing .bcp-hero__grid{grid-template-columns:1.1fr .9fr;gap:48px}
+  #bcp-landing .bcp-h1{font-size:30px}
+  #bcp-landing .bcp-products{grid-template-columns:repeat(4,minmax(0,1fr))}
+  #bcp-landing .bcp-steps{grid-template-columns:repeat(4,minmax(0,1fr))}
+  #bcp-landing .bcp-step{flex-direction:column}
+  #bcp-landing .bcp-band{padding:48px 32px}
+}
+@media (prefers-reduced-motion:reduce){
+  #bcp-landing *{transition:none!important}
+}
+</style>
+
+{%- macro hero(s, loop_index) %}
+    <div class="bcp-wrap bcp-hero__grid">
+      <div>
+        <p class="bcp-badge"><b{{ df('textos.hero_insignia_marca') }}>{{ t.hero_insignia_marca }}</b> <span{{ df('textos.hero_insignia_texto') }}>{{ t.hero_insignia_texto }}</span></p>
+        {%- if loop_index == 1 %}
+        <h1 id="bcp-titulo" class="bcp-h1"{{ df(s.ref ~ '.titulo') }}>{{ s.titulo }}</h1>
+        {%- else %}
+        <h2 class="bcp-h1"{{ df(s.ref ~ '.titulo') }}>{{ s.titulo }}</h2>
+        {%- endif %}
+        {%- if s.descripcion %}
+        <p class="bcp-lead"{{ df(s.ref ~ '.descripcion') }}>{{ s.descripcion }}</p>
+        {%- endif %}
+        <dl class="bcp-facts">
+          {%- for d in datos_hero %}
+          <div class="bcp-fact"><dt{{ df('textos.' ~ d.clave ~ '_etiqueta') }}>{{ d.etiqueta }}</dt><dd{{ df('textos.' ~ d.clave ~ '_valor') }}>{{ d.valor }}</dd></div>
+          {%- endfor %}
+        </dl>
+        {%- if s.cta_texto or s.cta2_texto %}
+        <div class="bcp-ctas">
+          {%- if s.cta_texto %}
+          <a class="bcp-btn bcp-btn--primary" href="{{ s.cta_enlace }}"{{ df(s.ref ~ '.cta_texto') }}>{{ s.cta_texto }}</a>
+          {%- endif %}
+          {%- if s.cta2_texto %}
+          <a class="bcp-btn bcp-btn--ghost" href="{{ s.cta2_enlace }}"{{ df(s.ref ~ '.cta2_texto') }}>{{ s.cta2_texto }}</a>
+          {%- endif %}
+        </div>
+        {%- endif %}
+        <p class="bcp-date"{{ df('textos.hero_vigencia') }}>{{ t.hero_vigencia }}</p>
+      </div>
+      {%- if s.imagen %}
+      <div class="bcp-visual bcp-visual--img">
+        <img src="{{ s.imagen }}" alt="{{ s.imagen_alt }}" width="600" height="600"{% if loop_index == 1 %} fetchpriority="high"{% else %} loading="lazy"{% endif %} decoding="async"{{ df(s.ref ~ '.imagen') }}>
+      </div>
+      {%- else %}
+      <div class="bcp-visual" aria-hidden="true">
+        <div class="bcp-card">
+          <span class="bcp-card__brand"{{ df('config.banco') }}><i>›</i>{{ c.banco }}<i>›</i></span>
+          <div class="bcp-card__chip"></div>
+          <p class="bcp-card__num">•••• •••• •••• 2026</p>
+        </div>
+        <div class="bcp-ticket">
+          <small{{ df('textos.ticket_etiqueta') }}>{{ t.ticket_etiqueta }}</small>
+          <strong{{ df('config.codigo') }}>{{ c.codigo }}</strong>
+          <span{{ df('textos.ticket_texto') }}>{{ t.ticket_texto }}</span>
+        </div>
+      </div>
+      {%- endif %}
+    </div>
+{%- endmacro %}
+
+<section id="bcp-landing" aria-labelledby="bcp-titulo">
+
+  <!-- HERO -->
+  <div class="bcp-hero">
+  {%- if slides|length > 1 %}
+    <div class="bcp-slides">
+    {%- for s in slides %}
+      <div class="bcp-slide" id="bcp-slide-{{ loop.index }}">
+{{ hero(s, loop.index) }}
+      </div>
+    {%- endfor %}
+    </div>
+    <nav class="bcp-dots" aria-label="Promociones">
+    {%- for s in slides %}
+      <a href="#bcp-slide-{{ loop.index }}" aria-label="Ver promoción {{ loop.index }}"></a>
+    {%- endfor %}
+    </nav>
+  {%- else %}
+{{ hero(slides[0], 1) }}
+  {%- endif %}
+  </div>
+
+  <!-- BENEFICIOS -->
+  {%- if beneficios %}
+  <div class="bcp-section">
+    <div class="bcp-wrap">
+      <header class="bcp-head">
+        <span class="bcp-eyebrow"{{ df('textos.beneficios_etiqueta') }}>{{ t.beneficios_etiqueta }}</span>
+        <h2 class="bcp-h2"{{ df('textos.beneficios_titulo') }}>{{ t.beneficios_titulo }}</h2>
+      </header>
+      <ul class="bcp-benefits">
+        {%- for b in beneficios %}
+        <li class="bcp-benefit"><span class="bcp-benefit__icon"{{ df(b.ref ~ '.icono') }}>{{ b.icono }}</span><h3 class="bcp-h3"{{ df(b.ref ~ '.titulo') }}>{{ b.titulo }}</h3>{% if b.texto %}<p{{ df(b.ref ~ '.texto') }}>{{ b.texto }}</p>{% endif %}</li>
+        {%- endfor %}
+      </ul>
+    </div>
+  </div>
+  {%- endif %}
+
+  <!-- PRODUCTOS -->
+  <div id="bcp-productos" class="bcp-section bcp-section--soft">
+    <div class="bcp-wrap">
+      <header class="bcp-head">
+        <span class="bcp-eyebrow"{{ df('textos.productos_etiqueta') }}>{{ t.productos_etiqueta }}</span>
+        <h2 class="bcp-h2"{{ df('textos.productos_titulo') }}>{{ t.productos_titulo }}</h2>
+        {%- if t.productos_bajada %}
+        <p class="bcp-lead"{{ df('textos.productos_bajada') }}>{{ t.productos_bajada }}</p>
+        {%- endif %}
+      </header>
+      <ul class="bcp-products">
+        {%- for p in productos %}
+        <li class="bcp-product">
+          <div class="bcp-product__img"><img src="{{ p.imagen }}" alt="{{ p.imagen_alt }}" width="400" height="400" loading="lazy" decoding="async"{{ df(p.ref ~ '.imagen') }}>{% if p.etiqueta %}<span class="bcp-product__tag"{{ df(p.ref ~ '.etiqueta') }}>{{ p.etiqueta }}</span>{% endif %}</div>
+          <p class="bcp-product__brand"{{ df(p.ref ~ '.marca') }}>{{ p.marca }}</p>
+          <h3{{ df(p.ref ~ '.nombre') }}>{{ p.nombre }}</h3>
+          <p class="bcp-product__deal"><span{{ df('textos.producto_beneficio_etiqueta') }}>{{ t.producto_beneficio_etiqueta }}</span> <b{{ df(p.ref ~ '.beneficio') }}>{{ p.beneficio }}</b></p>
+          <a class="bcp-btn bcp-btn--primary" href="{{ p.enlace }}" aria-label="{{ t.producto_cta_plano }} {{ p.nombre_plano }}"{{ df(p.ref ~ '.enlace') }}>{{ t.producto_cta }}</a>
+        </li>
+        {%- endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <!-- CÓMO USAR -->
+  {%- if pasos %}
+  <div id="bcp-como-usar" class="bcp-section">
+    <div class="bcp-wrap">
+      <header class="bcp-head">
+        <span class="bcp-eyebrow"{{ df('textos.pasos_etiqueta') }}>{{ t.pasos_etiqueta }}</span>
+        <h2 class="bcp-h2"{{ df('textos.pasos_titulo') }}>{{ t.pasos_titulo }}</h2>
+      </header>
+      <ol class="bcp-steps">
+        {%- for p in pasos %}
+        <li class="bcp-step"><div><h3 class="bcp-h3"{{ df(p.ref ~ '.titulo') }}>{{ p.titulo }}</h3>{% if p.texto %}<p{{ df(p.ref ~ '.texto') }}>{{ p.texto }}</p>{% endif %}</div></li>
+        {%- endfor %}
+      </ol>
+    </div>
+  </div>
+  {%- endif %}
+
+  <!-- CÓDIGO -->
+  <div class="bcp-wrap">
+    <div class="bcp-band">
+      <h2 class="bcp-h2"{{ df('textos.codigo_titulo') }}>{{ t.codigo_titulo }}</h2>
+      {%- if t.codigo_bajada %}
+      <p class="bcp-lead"{{ df('textos.codigo_bajada') }}>{{ t.codigo_bajada }}</p>
+      {%- endif %}
+      <p class="bcp-code" tabindex="0"{{ df('config.codigo') }}>{{ c.codigo }}</p>
+      {%- if t.codigo_ayuda %}
+      <small{{ df('textos.codigo_ayuda') }}>{{ t.codigo_ayuda }}</small>
+      {%- endif %}
+      {%- if t.codigo_cta_texto %}
+      <a class="bcp-btn bcp-btn--white" href="{{ t.codigo_cta_enlace }}"{{ df('textos.codigo_cta_texto') }}>{{ t.codigo_cta_texto }}</a>
+      {%- endif %}
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  {%- if faq %}
+  <div class="bcp-section">
+    <div class="bcp-wrap">
+      <header class="bcp-head">
+        <span class="bcp-eyebrow"{{ df('textos.faq_etiqueta') }}>{{ t.faq_etiqueta }}</span>
+        <h2 class="bcp-h2"{{ df('textos.faq_titulo') }}>{{ t.faq_titulo }}</h2>
+      </header>
+      <div class="bcp-faq">
+        {%- for q in faq %}
+        <details><summary{{ df(q.ref ~ '.pregunta') }}>{{ q.pregunta }}</summary><p{{ df(q.ref ~ '.respuesta') }}>{{ q.respuesta }}</p></details>
+        {%- endfor %}
+      </div>
+    </div>
+  </div>
+  {%- endif %}
+
+  <!-- LEGALES -->
+  <div class="bcp-wrap">
+    <div class="bcp-legal">
+      <h2{{ df('textos.legales_titulo') }}>{{ t.legales_titulo }}</h2>
+      {%- for l in legales %}
+      <p{{ df(l.ref ~ '.texto') }}>{{ l.texto }}</p>
+      {%- endfor %}
+    </div>
+  </div>
+
+</section>

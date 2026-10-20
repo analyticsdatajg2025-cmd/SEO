@@ -7,3 +7,11 @@ datos/
 *.json.bak
 node_modules/
 .DS_Store
+
+# Generador de landings: salidas locales, respaldos y credenciales
+landings/*/salida/
+landings/*/respaldos/
+__pycache__/
+.env
+*credenciales*.json
+*service-account*.json
