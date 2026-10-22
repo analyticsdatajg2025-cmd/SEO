@@ -1,0 +1,440 @@
+<!--
+  Landing CMS · Guía Cyber Wow 2026 · Tiendas EFE (efe.com.pe/cyber-wow)
+  Actualizado: 2026-10-22. Pegar completo en el bloque CMS de Magento (store view EFE únicamente,
+  NO "todas las tiendas": ver docs/02, duplicado en skullcandy.com.pe y motocorp.pe).
+  Sin JavaScript: el acordeón de preguntas usa <details>. Todo el CSS va encapsulado en .cw26.
+-->
+<style>
+.cw26{
+  --cw-blue:#068cfa;
+  --cw-blue-dark:#0057b8;
+  --cw-navy:#002849;
+  --cw-ink:#1a1f2b;
+  --cw-text:#3d4452;
+  --cw-muted:#6b7280;
+  --cw-line:#e5e8ee;
+  --cw-soft:#f4f7fb;
+  --cw-radius:16px;
+  --cw-shadow:0 1px 2px rgba(16,24,40,.06),0 8px 24px rgba(16,24,40,.06);
+  font-family:inherit;
+  color:var(--cw-text);
+  line-height:1.65;
+  background:#fff;
+  width:100%;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+.cw26 *,.cw26 *::before,.cw26 *::after{box-sizing:border-box;margin:0;padding:0}
+.cw26 a{color:var(--cw-blue-dark);text-decoration:none}
+.cw26 a:hover{text-decoration:underline}
+.cw26 a:focus-visible,.cw26 summary:focus-visible{outline:3px solid var(--cw-blue);outline-offset:3px;border-radius:6px}
+.cw26 .cw-wrap{max-width:1200px;margin:0 auto;padding:0 16px}
+.cw26 .cw-narrow{max-width:860px;margin:0 auto}
+
+/* Hero */
+.cw26 .cw-hero{
+  position:relative;isolation:isolate;overflow:hidden;
+  background:radial-gradient(120% 140% at 85% -10%,#0a6fd6 0%,var(--cw-navy) 55%,#00162a 100%);
+  color:#fff;text-align:center;padding:clamp(48px,8vw,96px) 0;
+}
+.cw26 .cw-hero::after{
+  content:"";position:absolute;inset:auto -10% -60% -10%;height:80%;z-index:-1;
+  background:radial-gradient(closest-side,rgba(6,140,250,.45),transparent);
+}
+.cw26 .cw-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  padding:6px 14px;border-radius:999px;
+  background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);
+  backdrop-filter:blur(6px);
+}
+.cw26 .cw-badge::before{content:"";width:8px;height:8px;border-radius:50%;background:#3ee07f;box-shadow:0 0 0 4px rgba(62,224,127,.25)}
+.cw26 .cw-hero h1{
+  color:#fff;font-size:clamp(32px,5.5vw,60px);font-weight:900;line-height:1.08;
+  letter-spacing:-.02em;margin:18px 0 14px;text-wrap:balance;
+}
+.cw26 .cw-hero h1 span{
+  background:linear-gradient(90deg,#5cc0ff,#ffffff);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.cw26 .cw-hero p{max-width:640px;margin:0 auto;font-size:clamp(16px,2vw,19px);color:rgba(255,255,255,.85)}
+.cw26 .cw-date{
+  display:inline-block;margin-top:24px;padding:12px 20px;border-radius:12px;
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);
+  font-weight:700;font-size:clamp(15px,2vw,18px);
+}
+.cw26 .cw-actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:28px}
+.cw26 .cw-btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  min-height:48px;padding:12px 28px;border-radius:999px;font-weight:800;font-size:16px;
+  transition:transform .15s ease,box-shadow .15s ease,background .15s ease;
+}
+.cw26 .cw-btn:hover{text-decoration:none;transform:translateY(-1px)}
+.cw26 .cw-btn--primary{background:var(--cw-blue);color:#fff;box-shadow:0 8px 20px rgba(6,140,250,.35)}
+.cw26 .cw-btn--primary:hover{background:#2a9dff;color:#fff}
+.cw26 .cw-btn--ghost{color:#fff;border:1px solid rgba(255,255,255,.4)}
+.cw26 .cw-btn--ghost:hover{background:rgba(255,255,255,.1);color:#fff}
+
+/* Índice */
+.cw26 .cw-toc{
+  margin:-32px auto 0;position:relative;z-index:1;
+  background:#fff;border:1px solid var(--cw-line);border-radius:var(--cw-radius);
+  box-shadow:var(--cw-shadow);padding:24px;
+}
+.cw26 .cw-toc-title{font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--cw-muted);margin-bottom:12px}
+.cw26 .cw-toc ol{
+  list-style:none;counter-reset:toc;
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:4px 20px;
+}
+.cw26 .cw-toc li{counter-increment:toc}
+.cw26 .cw-toc a{
+  display:flex;gap:10px;align-items:baseline;padding:8px 0;color:var(--cw-ink);font-weight:600;
+  border-bottom:1px solid var(--cw-line);
+}
+.cw26 .cw-toc a::before{content:counter(toc,decimal-leading-zero);color:var(--cw-blue);font-weight:800;font-size:13px}
+.cw26 .cw-toc a:hover{color:var(--cw-blue-dark);text-decoration:none}
+
+/* Texto */
+.cw26 .cw-article{padding:48px 0 24px}
+.cw26 .cw-article section{scroll-margin-top:96px;padding:8px 0 24px}
+.cw26 .cw-article h2{
+  font-size:clamp(24px,3vw,30px);font-weight:800;line-height:1.2;letter-spacing:-.01em;
+  color:var(--cw-ink);margin:32px 0 16px;text-wrap:balance;
+}
+.cw26 .cw-article h2::before{
+  content:"";display:block;width:48px;height:4px;border-radius:4px;margin-bottom:14px;
+  background:linear-gradient(90deg,var(--cw-blue),#5cc0ff);
+}
+.cw26 .cw-article h3{font-size:20px;font-weight:700;color:var(--cw-ink);margin:28px 0 10px}
+.cw26 .cw-article p{margin-bottom:16px;font-size:17px}
+.cw26 .cw-article ul,.cw26 .cw-article ol{margin:0 0 16px 22px}
+.cw26 .cw-article li{margin-bottom:8px;font-size:17px}
+.cw26 .cw-article strong{color:var(--cw-ink)}
+
+/* Calendario */
+.cw26 .cw-cal{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin:24px 0}
+.cw26 .cw-cal-item{
+  border:1px solid var(--cw-line);border-radius:var(--cw-radius);padding:22px;background:var(--cw-soft);
+}
+.cw26 .cw-cal-item span{display:block;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--cw-muted)}
+.cw26 .cw-cal-item strong{display:block;font-size:22px;font-weight:800;margin:6px 0 8px;color:var(--cw-ink)}
+.cw26 .cw-cal-item p{font-size:15px;margin:0}
+.cw26 .cw-cal-item--next{
+  background:linear-gradient(160deg,var(--cw-navy),#0a4f96);border-color:transparent;color:#fff;
+  box-shadow:0 12px 28px rgba(0,40,73,.25);
+}
+.cw26 .cw-cal-item--next span{color:#8fd0ff}
+.cw26 .cw-cal-item--next strong,.cw26 .cw-cal-item--next p{color:#fff}
+
+/* Tarjetas de categoría y enlaces */
+.cw26 .cw-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin:20px 0}
+.cw26 .cw-card{border:1px solid var(--cw-line);border-radius:var(--cw-radius);padding:22px;background:#fff;box-shadow:var(--cw-shadow)}
+.cw26 .cw-card h3{margin-top:0}
+.cw26 .cw-card p{font-size:16px}
+.cw26 .cw-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.cw26 .cw-chip{
+  display:inline-flex;align-items:center;min-height:40px;padding:8px 14px;border-radius:999px;
+  border:1px solid var(--cw-line);background:var(--cw-soft);font-size:14px;font-weight:600;color:var(--cw-ink) !important;
+  transition:background .15s ease,border-color .15s ease,color .15s ease;
+}
+.cw26 .cw-chip:hover{background:var(--cw-navy);border-color:var(--cw-navy);color:#fff !important;text-decoration:none}
+
+/* Pasos */
+.cw26 .cw-steps{list-style:none;margin:20px 0 !important;counter-reset:step;display:grid;gap:12px}
+.cw26 .cw-steps li{
+  counter-increment:step;position:relative;padding:18px 18px 18px 68px;margin:0 !important;
+  border:1px solid var(--cw-line);border-radius:var(--cw-radius);background:#fff;
+}
+.cw26 .cw-steps li::before{
+  content:counter(step);position:absolute;left:18px;top:16px;
+  width:34px;height:34px;border-radius:50%;display:grid;place-items:center;
+  background:var(--cw-blue);color:#fff;font-weight:800;font-size:15px;
+}
+
+/* Nota */
+.cw26 .cw-note{
+  border-left:4px solid var(--cw-blue);background:var(--cw-soft);border-radius:0 12px 12px 0;
+  padding:14px 18px;margin:16px 0;font-size:16px;
+}
+
+/* Preguntas frecuentes */
+.cw26 .cw-faq{display:grid;gap:10px;margin-top:16px}
+.cw26 .cw-faq details{border:1px solid var(--cw-line);border-radius:12px;background:#fff;overflow:hidden}
+.cw26 .cw-faq details[open]{border-color:#bcdcff;box-shadow:var(--cw-shadow)}
+.cw26 .cw-faq summary{
+  cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:16px;
+  padding:16px 18px;font-weight:700;color:var(--cw-ink);font-size:17px;
+}
+.cw26 .cw-faq summary::-webkit-details-marker{display:none}
+.cw26 .cw-faq summary::after{content:"+";font-size:22px;line-height:1;color:var(--cw-blue);transition:transform .2s ease}
+.cw26 .cw-faq details[open] summary::after{transform:rotate(45deg)}
+.cw26 .cw-faq details p{padding:0 18px 16px;margin:0;font-size:16px}
+
+/* Búsquedas relacionadas */
+.cw26 .cw-related{border-top:1px solid var(--cw-line);padding:36px 0 56px}
+.cw26 .cw-related h2{font-size:18px;font-weight:800;color:var(--cw-ink);margin-bottom:16px}
+
+@media (max-width:600px){
+  .cw26 .cw-toc{margin-top:-24px;padding:18px}
+  .cw26 .cw-steps li{padding-left:60px}
+  .cw26 .cw-article p,.cw26 .cw-article li{font-size:16px}
+}
+@media (prefers-reduced-motion:reduce){
+  .cw26 *{transition:none !important}
+}
+</style>
+
+<div class="cw26">
+
+  <header class="cw-hero">
+    <div class="cw-wrap">
+      <span class="cw-badge">Tercera edición del año</span>
+      <h1>Guía oficial <span>Cyber Wow 2026</span></h1>
+      <p>Fechas, categorías, medios de pago y envíos: todo lo que necesitas para comprar en el Cyber Wow de noviembre en Tiendas EFE.</p>
+      <div class="cw-date">Del lunes 2 al jueves 5 de noviembre de 2026</div>
+      <div class="cw-actions">
+        <a class="cw-btn cw-btn--primary" href="https://www.efe.com.pe/">Ver ofertas Cyber Wow</a>
+        <a class="cw-btn cw-btn--ghost" href="#como-comprar">Cómo comprar</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="cw-wrap">
+    <nav class="cw-toc cw-narrow" aria-label="Índice de la guía Cyber Wow 2026">
+      <p class="cw-toc-title">Contenido de la guía</p>
+      <ol>
+        <li><a href="#que-es">¿Qué es el Cyber Wow 2026?</a></li>
+        <li><a href="#calendario">Fechas del Cyber Wow 2026</a></li>
+        <li><a href="#categorias">Categorías con ofertas</a></li>
+        <li><a href="#como-comprar">Cómo comprar paso a paso</a></li>
+        <li><a href="#pagos">Tarjetas y medios de pago</a></li>
+        <li><a href="#envios">Envíos y retiro en tienda</a></li>
+        <li><a href="#historia">El Cyber Wow en el Perú</a></li>
+        <li><a href="#faq">Preguntas frecuentes</a></li>
+      </ol>
+    </nav>
+  </div>
+
+  <div class="cw-wrap">
+    <article class="cw-article cw-narrow">
+
+      <section id="que-es">
+        <h2>¿Qué es el Cyber Wow 2026?</h2>
+        <p>El <strong>Cyber Wow</strong> es el evento de compras online organizado por el <strong>IAB Perú</strong> (Interactive Advertising Bureau). Durante unos días, las tiendas participantes lanzan descuentos especiales en su web, y <strong>Tiendas EFE</strong> es una de ellas.</p>
+        <p>Es el mejor momento para hacer esas compras que tenías planificadas: una refrigeradora nueva, la lavadora que hace falta en casa, un televisor para la sala o la laptop para el trabajo o los estudios. En el Cyber Wow encuentras precios online que no siempre están en tienda física, con opciones de pago en cuotas.</p>
+      </section>
+
+      <section id="calendario">
+        <h2>¿Cuándo es el Cyber Wow 2026?</h2>
+        <p>El Cyber Wow tiene tres ediciones al año. Las dos primeras ya se realizaron; la tercera y última del año llega en noviembre, justo a tiempo para adelantar las compras de Navidad.</p>
+        <div class="cw-cal">
+          <div class="cw-cal-item">
+            <span>Primera edición</span>
+            <strong>Abril 2026</strong>
+            <p>Realizada. Fuerte en tecnología y regreso a clases.</p>
+          </div>
+          <div class="cw-cal-item">
+            <span>Segunda edición</span>
+            <strong>Julio 2026</strong>
+            <p>Realizada. Edición de Fiestas Patrias, con foco en televisores y audio.</p>
+          </div>
+          <div class="cw-cal-item cw-cal-item--next">
+            <span>Próxima · Tercera edición</span>
+            <strong>2 al 5 de noviembre</strong>
+            <p>Del lunes 2 al jueves 5 de noviembre de 2026. Ideal para regalos navideños y para renovar el hogar.</p>
+          </div>
+        </div>
+        <p>Te recomendamos armar tu lista desde antes y entrar el primer día: los productos más buscados suelen agotarse rápido.</p>
+      </section>
+
+      <section id="categorias">
+        <h2>Categorías con ofertas en el Cyber Wow de Tiendas EFE</h2>
+        <p>Nuestro catálogo Cyber Wow cubre tecnología, electrohogar, muebles y más. Estas son las categorías más buscadas:</p>
+
+        <div class="cw-cards">
+          <div class="cw-card">
+            <h3>Laptops y cómputo</h3>
+            <p>Desde laptops para estudiar hasta equipos gamer, de marcas como HP, Lenovo, Asus y Acer.</p>
+            <div class="cw-chips">
+              <a class="cw-chip" href="/tecnologia/computo/laptops">Laptops</a>
+              <a class="cw-chip" href="/tecnologia/computo/tablets">Tablets</a>
+              <a class="cw-chip" href="/tecnologia/computo/impresoras">Impresoras</a>
+            </div>
+          </div>
+          <div class="cw-card">
+            <h3>Televisores y audio</h3>
+            <p>Pantallas de todas las pulgadas en 4K, QLED y OLED de Samsung, LG y otras marcas, más barras de sonido y parlantes.</p>
+            <div class="cw-chips">
+              <a class="cw-chip" href="/tecnologia/televisores">Televisores</a>
+              <a class="cw-chip" href="/tecnologia/audio">Audio</a>
+            </div>
+          </div>
+          <div class="cw-card">
+            <h3>Celulares</h3>
+            <p>Equipos libres para usar con cualquier operador: Samsung Galaxy, Xiaomi, iPhone y más.</p>
+            <div class="cw-chips">
+              <a class="cw-chip" href="/tecnologia/celulares">Celulares</a>
+            </div>
+          </div>
+          <div class="cw-card">
+            <h3>Electrohogar</h3>
+            <p>Refrigeradoras, lavadoras y cocinas: las compras grandes del hogar, con opción de pagar en cuotas.</p>
+            <div class="cw-chips">
+              <a class="cw-chip" href="/electrohogar/refrigeracion">Refrigeradoras</a>
+              <a class="cw-chip" href="/electrohogar/lavado">Lavadoras</a>
+              <a class="cw-chip" href="/electrohogar/cocina">Cocinas</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="como-comprar">
+        <h2>Cómo comprar en el Cyber Wow 2026, paso a paso</h2>
+        <p>Comprar en efe.com.pe durante el Cyber Wow es simple. Con estos pasos llegas listo al 2 de noviembre:</p>
+        <ol class="cw-steps">
+          <li><strong>Crea tu cuenta antes del evento.</strong> Guarda tu dirección de entrega y tus datos de facturación para no perder tiempo el día de las ofertas.</li>
+          <li><strong>Arma tu carrito o lista.</strong> Agrega los productos que te interesan para revisar su precio en cuanto empiece el Cyber Wow.</li>
+          <li><strong>Revisa tu tarjeta.</strong> Confirma con tu banco que tengas habilitadas las compras por internet y suficiente línea disponible.</li>
+          <li><strong>Paga para asegurar tu producto.</strong> Tenerlo en el carrito no lo reserva: el stock se separa al completar el pago.</li>
+        </ol>
+        <p class="cw-note">Si la web va lenta por el alto tráfico, no recargues la página de pago varias veces: así evitas cobros duplicados.</p>
+      </section>
+
+      <section id="pagos">
+        <h2>Tarjetas y medios de pago</h2>
+        <p>En el Cyber Wow de Tiendas EFE puedes pagar como te sea más cómodo:</p>
+        <ul>
+          <li><strong>Tarjeta Única:</strong> precios exclusivos y cuotas en productos seleccionados.</li>
+          <li><strong>Tarjetas de crédito y débito:</strong> Visa, Mastercard, American Express y Diners Club, con pago protegido.</li>
+          <li><strong>PagoEfectivo:</strong> genera tu código en la web y paga en agentes, bancos o bodegas autorizadas.</li>
+          <li><strong>Billeteras digitales:</strong> Yape y Plin.</li>
+        </ul>
+      </section>
+
+      <section id="envios">
+        <h2>Envíos a todo el Perú y retiro en tienda</h2>
+        <h3>Despacho a domicilio</h3>
+        <p>Llevamos tu compra a la costa, sierra y selva, con flota propia y aliados logísticos para que tu refrigeradora o televisor llegue en buen estado hasta tu puerta.</p>
+        <h3>Retiro en tienda gratis</h3>
+        <p>¿Prefieres no pagar envío? Compra online durante el Cyber Wow, elige la tienda EFE más cercana y te avisamos por correo cuando tu producto esté listo para recoger.</p>
+      </section>
+
+      <section id="historia">
+        <h2>El Cyber Wow en el Perú</h2>
+        <p>El Cyber Wow nació como una iniciativa del IAB Perú para impulsar la confianza en las compras por internet. Con cada edición se suman más marcas y más peruanos que compran online.</p>
+        <p>En Tiendas EFE acompañamos ese crecimiento mejorando nuestra web, los medios de pago y los tiempos de entrega, para que comprar tecnología y electrohogar online sea tan fácil como hacerlo en tienda.</p>
+      </section>
+
+      <section id="faq">
+        <h2>Preguntas frecuentes sobre el Cyber Wow 2026</h2>
+        <div class="cw-faq">
+          <details open>
+            <summary>¿Cuándo es el Cyber Wow de noviembre 2026?</summary>
+            <p>La tercera edición del Cyber Wow 2026 se realiza del lunes 2 al jueves 5 de noviembre de 2026.</p>
+          </details>
+          <details>
+            <summary>¿Qué es el Cyber Wow?</summary>
+            <p>Es el evento de compras online organizado por el IAB Perú, en el que tiendas como Tiendas EFE ofrecen descuentos especiales en su web.</p>
+          </details>
+          <details>
+            <summary>¿Cuántas ediciones del Cyber Wow hay al año?</summary>
+            <p>Tres: abril, julio y noviembre. En 2026 las ediciones de abril y julio ya se realizaron; la de noviembre es la última del año.</p>
+          </details>
+          <details>
+            <summary>¿Puedo pagar en cuotas en el Cyber Wow de Tiendas EFE?</summary>
+            <p>Sí. Con Tarjeta Única accedes a cuotas en productos seleccionados, y también puedes pagar con tarjetas de crédito según las condiciones de tu banco.</p>
+          </details>
+          <details>
+            <summary>¿Puedo recoger mi compra del Cyber Wow en tienda?</summary>
+            <p>Sí. Al comprar online elige "Retiro en tienda" y la tienda EFE más cercana. El retiro es gratis y te avisamos por correo cuando tu pedido esté listo.</p>
+          </details>
+        </div>
+      </section>
+
+    </article>
+  </div>
+
+  <div class="cw-wrap">
+    <div class="cw-related cw-narrow">
+      <h2>Búsquedas relacionadas al Cyber Wow 2026</h2>
+      <div class="cw-chips">
+        <a class="cw-chip" href="/tecnologia/celulares">Celulares Cyber Wow</a>
+        <a class="cw-chip" href="/tecnologia/televisores">Televisores 4K Cyber Wow</a>
+        <a class="cw-chip" href="/electrohogar/refrigeracion">Refrigeradoras Cyber Wow</a>
+        <a class="cw-chip" href="/electrohogar/lavado">Lavadoras en oferta</a>
+        <a class="cw-chip" href="/muebles/sala">Muebles de sala Cyber Wow</a>
+        <a class="cw-chip" href="/deportes/bicicletas">Bicicletas Cyber Wow</a>
+        <a class="cw-chip" href="/tecnologia/computo/laptops">Laptops gamer Cyber Wow</a>
+        <a class="cw-chip" href="/tecnologia/audio">Parlantes bluetooth Cyber Wow</a>
+        <a class="cw-chip" href="/electrohogar/cocina">Cocinas a gas Cyber Wow</a>
+        <a class="cw-chip" href="/motos">Motos lineales Cyber Wow</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Cyber Wow 2026 Perú: guía oficial de ofertas en Tiendas EFE",
+  "description": "Fechas del Cyber Wow de noviembre 2026 (2 al 5 de noviembre), categorías con ofertas, medios de pago y envíos en Tiendas EFE.",
+  "author": {
+    "@type": "Organization",
+    "name": "Tiendas EFE"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Tiendas EFE",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.efe.com.pe/static/version1776337764/frontend/Grupoefe/default/es_PE/images/logo-efe-160.png"
+    }
+  },
+  "datePublished": "2025-05-01",
+  "dateModified": "2026-10-22"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [{
+    "@type": "Question",
+    "name": "¿Cuándo es el Cyber Wow de noviembre 2026?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "La tercera edición del Cyber Wow 2026 se realiza del lunes 2 al jueves 5 de noviembre de 2026."
+    }
+  }, {
+    "@type": "Question",
+    "name": "¿Qué es el Cyber Wow?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Es el evento de compras online organizado por el IAB Perú, en el que tiendas como Tiendas EFE ofrecen descuentos especiales en su web."
+    }
+  }, {
+    "@type": "Question",
+    "name": "¿Cuántas ediciones del Cyber Wow hay al año?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Tres: abril, julio y noviembre. En 2026 las ediciones de abril y julio ya se realizaron; la de noviembre es la última del año."
+    }
+  }, {
+    "@type": "Question",
+    "name": "¿Puedo pagar en cuotas en el Cyber Wow de Tiendas EFE?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Sí. Con Tarjeta Única accedes a cuotas en productos seleccionados, y también puedes pagar con tarjetas de crédito según las condiciones de tu banco."
+    }
+  }, {
+    "@type": "Question",
+    "name": "¿Puedo recoger mi compra del Cyber Wow en tienda?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Sí. Al comprar online elige \"Retiro en tienda\" y la tienda EFE más cercana. El retiro es gratis y te avisamos por correo cuando tu pedido esté listo."
+    }
+  }]
+}
+</script>
