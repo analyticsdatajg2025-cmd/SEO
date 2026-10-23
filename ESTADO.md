@@ -13,6 +13,7 @@ Un solo repo con todo el conocimiento SEO del grupo, orientado a **más ganancia
 - 2026-10-16 (v3): corregidas las bases de la tabla de plata neta (solo web vs empresa completa; Motocorp por debajo de LC y EFE en total), Efectibank marcado como negocio que sí vende en digital (cuentas y créditos vía pauta), y nuevos pedidos B13 (venta de piso por marca) y B14 (pauta digital de Efectibank por objetivo).
 
 - 2026-10-23: `prompts/prompt-landing-promociones.md`: prompt para generar landings de promoción en un solo HTML sin header ni footer. EFE y LC (Magento, solo el script del formulario) y Juntoz con BBVA, BCP o Scotiabank (HTML + CSS, sin JS). Toma como base las landings del sorteo Cyberweek y las de cupones de bancos.
+- 2026-10-23: `prompts/generador-prompt-landing.html`: página para subir como landing interna. El usuario elige marca, llena los datos, elige IA (Claude, ChatGPT o Gemini), pulsa "Crear prompt" y lo copia. Lo que falte sale como [PENDIENTE].
 
 ## Pendiente (orden)
 1. **Elias**: responder las preguntas de `docs/06`, dar los accesos A1-A8 y pedir a Efectibank los datos EF1-EF9 (`docs/08 §5`). Sin GSC y Ads por término no se confirma ni se mide nada.

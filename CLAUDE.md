@@ -31,6 +31,7 @@ Equipo SEO: **Josh Kevin Seminario** (SEO Senior: estrategia multimarca, auditor
 | `docs/08-efectibank-360.md` | Efectibank: cifras públicas, margen de mercado, auditoría de su web, palancas SEO en plata neta, datos que faltan por responsable, tiempos. |
 | `docs/09-capacidad-herramientas-y-riesgos.md` | Capacidad real del equipo (horas), herramientas disponibles y su impacto operativo, ventanas de riesgo Cyber, plazos de rastreo e indexación. |
 | `prompts/prompt-landing-promociones.md` | Prompt para generar landings de promoción (EFE, LC, Juntoz + banco) en un solo HTML, sin header ni footer. |
+| `prompts/generador-prompt-landing.html` | Página que arma ese prompt con formulario: marca, datos, IA (Claude, ChatGPT, Gemini) y botón de copiar. |
 | `grafo/ecosistema-seo.html` | Grafo visual del ecosistema: negocios, activos, datos, sistemas, acciones. Abrir en el navegador. |
 
 ## Reglas de negocio que no se tocan sin preguntar
