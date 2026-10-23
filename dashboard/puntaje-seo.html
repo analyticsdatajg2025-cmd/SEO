@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Puntaje SEO Grupo EFE</title>
+<meta name="description" content="Puntaje SEO 0-100 por marca del Grupo EFE (Efectibank, La Curacao, Tiendas EFE, Juntoz, Motocorp) por mes, con tráfico orgánico, keywords, autoridad de dominio y línea de historia.">
+<!--
+CÓMO ACTUALIZAR (una vez al mes, Josh Kevin o Carol):
+1. Agregar el mes en DATA.meses["AAAA-MM"] con, por marca:
+   puntaje: {tec, con, dat, loc, org} (puntos de la rúbrica; null = SIN DATO; "na" = no aplica)
+   trafico: clics orgánicos del mes en GSC (o sesiones orgánicas GA4; decir cuál en "fuente")
+   keywords: consultas con al menos 1 clic en GSC en el mes (o keywords top 100 de la herramienta que haya)
+   autoridad: DR de Ahrefs (Website Authority Checker, gratis) o DA de Moz; decir cuál en "fuente"
+2. Cada cifra lleva fuente y fecha. Lo que no se sabe va null (se muestra SIN DATO). No rellenar meses pasados con estimaciones.
+3. Eventos nuevos (cambios SEO, campañas, caídas) van en DATA.eventos.
+-->
+<style>
+/* Layout: cabecera con filtros, fila de KPIs de la marca, historial con pestañas, comparativo de marcas, línea de historia al pie. */
+:root{
+  color-scheme:light;
+  --bg:#f6f7f9; --surface:#ffffff; --fg:#17202b; --muted:#5b6675; --line:#d9dee5; --line-soft:#eceff3;
+  --accent:#2a78d6; --accent-soft:#e3eff7;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100; --s5:#8a5cd6;
+  --ok:#1f7a4d; --ok-soft:#dff3e8; --warn:#9a5b00; --warn-soft:#fbefd9; --bad:#b3261e; --bad-soft:#fbe3e1;
+  --nd:#8a94a3; --nd-soft:#eef0f3;
+  --f-body:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  color-scheme:dark; --bg:#10151c; --surface:#171e27; --fg:#e6ebf1; --muted:#9aa6b5; --line:#2c3644; --line-soft:#222b36;
+  --accent:#3987e5; --accent-soft:#16303f;
+  --s1:#3987e5; --s2:#e07040; --s3:#2bb886; --s4:#d9a21c; --s5:#a184ea;
+  --ok:#6fd19c; --ok-soft:#173326; --warn:#f0b65a; --warn-soft:#3a2c12; --bad:#f28b82; --bad-soft:#3d1c1a;
+  --nd:#7d8898; --nd-soft:#1f2731;}}
+:root[data-theme="dark"]{
+  color-scheme:dark; --bg:#10151c; --surface:#171e27; --fg:#e6ebf1; --muted:#9aa6b5; --line:#2c3644; --line-soft:#222b36;
+  --accent:#3987e5; --accent-soft:#16303f;
+  --s1:#3987e5; --s2:#e07040; --s3:#2bb886; --s4:#d9a21c; --s5:#a184ea;
+  --ok:#6fd19c; --ok-soft:#173326; --warn:#f0b65a; --warn-soft:#3a2c12; --bad:#f28b82; --bad-soft:#3d1c1a;
+  --nd:#7d8898; --nd-soft:#1f2731;}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 var(--f-body)}
+.wrap{max-width:1280px;margin:0 auto;padding-block:28px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:20px}
+h1{font-size:clamp(22px,3.4vw,30px);line-height:1.15;margin:0;text-wrap:balance}
+h2{font-size:17px;margin:0;text-wrap:balance}
+p{margin:0}
+.eyebrow,.lbl{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.lbl{color:var(--fg)}
+.meta{color:var(--muted);font-size:14px;max-width:80ch}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px}
+.pad{padding:16px 18px}
+.num{font-variant-numeric:tabular-nums}
+
+/* filtros */
+.filters{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips button{font:inherit;font-size:14px;border:1px solid var(--line);background:var(--surface);color:var(--fg);padding:5px 12px;border-radius:999px;cursor:pointer;display:inline-flex;align-items:center;gap:7px}
+.chips button i{width:9px;height:9px;border-radius:50%;display:inline-block}
+.chips button[aria-pressed="true"]{border-color:var(--fg);box-shadow:inset 0 0 0 1px var(--fg)}
+button:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+select{font:inherit;font-size:14px;padding:5px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--fg)}
+.month{display:flex;align-items:center;gap:8px}
+
+/* KPIs */
+.kpis{display:grid;grid-template-columns:minmax(220px,1.1fr) repeat(3,minmax(0,1fr));gap:0}
+.kpi{padding:18px 20px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.kpi+.kpi{border-left:1px solid var(--line-soft)}
+.kpi .row{display:flex;align-items:center;gap:12px}
+.ico{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;font-family:var(--f-mono);font-weight:700;font-size:15px;flex:none}
+.big{font-size:32px;font-weight:700;line-height:1.1;font-variant-numeric:tabular-nums;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.big small{font-size:14px;font-weight:600}
+.sub{font-size:13px;color:var(--muted)}
+.delta-up{color:var(--ok)} .delta-dn{color:var(--bad)}
+.tag{font-family:var(--f-mono);font-size:11px;letter-spacing:.05em;padding:2px 7px;border-radius:5px;white-space:nowrap}
+.t-comp{background:var(--ok-soft);color:var(--ok)}
+.t-hip{background:var(--warn-soft);color:var(--warn)}
+.t-nd{background:var(--nd-soft);color:var(--nd)}
+.t-der{background:var(--accent-soft);color:var(--accent)}
+.nd{color:var(--nd)}
+.gauge{flex:none}
+.gauge .track{stroke:var(--line-soft)}
+.gauge text{fill:var(--fg);font-family:var(--f-body);font-weight:700}
+
+/* pestañas e historial */
+.tabs{display:flex;border-bottom:1px solid var(--line);overflow-x:auto}
+.tabs button{font-family:var(--f-mono);font-size:13px;letter-spacing:.06em;text-transform:uppercase;background:transparent;border:0;border-right:1px solid var(--line-soft);color:var(--fg);padding:14px 20px;cursor:pointer;white-space:nowrap}
+.tabs button[aria-selected="true"]{color:var(--accent);background:var(--surface);box-shadow:inset 0 -2px 0 var(--accent)}
+.chartbox{padding:14px 18px 18px;display:flex;flex-direction:column;gap:10px}
+.chartwrap{overflow-x:auto}
+svg.chart{display:block;width:100%;min-width:640px;height:auto;font-family:var(--f-mono)}
+svg.chart .grid{stroke:var(--line-soft)}
+svg.chart .axis{fill:var(--muted);font-size:11px}
+svg.chart .sel-band{fill:var(--accent-soft)}
+svg.chart .empty{fill:var(--nd);font-size:13px;font-family:var(--f-body)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:14px;height:3px;border-radius:2px;display:inline-block}
+.note{font-size:13px;color:var(--muted);max-width:90ch}
+
+/* comparativo */
+.grid2{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:20px}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:620px}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line-soft);vertical-align:middle}
+th{font-family:var(--f-mono);font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:500}
+td.n{font-variant-numeric:tabular-nums;text-align:right}
+tr.cur td{background:var(--accent-soft)}
+.bar{height:8px;border-radius:4px;background:var(--line-soft);position:relative;min-width:70px}
+.bar b{position:absolute;inset:0 auto 0 0;border-radius:4px}
+.pill{font-weight:700;font-variant-numeric:tabular-nums;padding:2px 9px;border-radius:999px;font-size:13px;display:inline-block;min-width:44px;text-align:center}
+.p-bad{background:var(--bad-soft);color:var(--bad)} .p-warn{background:var(--warn-soft);color:var(--warn)} .p-ok{background:var(--ok-soft);color:var(--ok)}
+.dims{display:flex;flex-direction:column;gap:12px}
+.dim{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px}
+.dim .bar{grid-column:1/-1}
+.dim p{grid-column:1/-1;font-size:13px;color:var(--muted)}
+
+/* línea de historia */
+.tl{position:relative;padding:8px 0 4px;overflow-x:auto}
+.tl ol{list-style:none;margin:0;padding:0 4px;display:grid;grid-auto-flow:column;grid-auto-columns:240px;gap:0;position:relative;min-width:max-content}
+.tl ol::before{content:"";position:absolute;left:0;right:0;top:27px;height:2px;background:var(--line)}
+.tl li{padding:0 14px 0 0;display:flex;flex-direction:column;gap:6px;position:relative}
+.tl .when{font-family:var(--f-mono);font-size:12px;color:var(--muted);height:18px}
+.tl .dot{width:14px;height:14px;border-radius:50%;border:2px solid var(--surface);box-shadow:0 0 0 2px var(--line);background:var(--muted);position:relative;z-index:1}
+.tl li.fut .dot{background:var(--surface);box-shadow:0 0 0 2px var(--muted)}
+.tl li.now .dot{box-shadow:0 0 0 3px var(--accent)}
+.tl .what{font-size:14px;font-weight:600;line-height:1.3}
+.tl .why{font-size:13px;color:var(--muted);line-height:1.4}
+.tl .brands{display:flex;flex-wrap:wrap;gap:4px}
+.tl .brands span{font-size:11px;font-family:var(--f-mono);padding:1px 6px;border-radius:4px;border:1px solid var(--line)}
+footer{font-size:13px;color:var(--muted);display:flex;flex-direction:column;gap:6px;max-width:100ch}
+
+@media (max-width:900px){
+  .kpis{grid-template-columns:1fr 1fr}
+  .kpi:nth-child(3){border-left:0}
+  .kpi:nth-child(n+3){border-top:1px solid var(--line-soft)}
+  .grid2{grid-template-columns:1fr}
+}
+@media (max-width:520px){
+  .kpis{grid-template-columns:1fr}
+  .kpi+.kpi{border-left:0;border-top:1px solid var(--line-soft)}
+}
+@media (prefers-reduced-motion:no-preference){ .bar b,.gauge .val{transition:all .4s ease} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header style="display:flex;flex-direction:column;gap:8px">
+  <span class="eyebrow">Grupo EFE · Área SEO · Diagnóstico al 16 oct 2026</span>
+  <h1>Puntaje SEO por marca</h1>
+  <p class="meta">Puntaje 0-100 según el diagnóstico público de los sitios (<code>docs/02</code>). Es criterio del equipo SEO, <b>no una medición de Google</b>: el HTML dice lo que el sitio declara, no lo que Google decidió. Tráfico, keywords y autoridad se llenan mes a mes cuando haya Search Console y una herramienta; hasta entonces dicen <span class="tag t-nd">SIN DATO</span>.</p>
+</header>
+
+<section class="filters" aria-label="Filtros">
+  <div class="chips" id="brandChips" role="group" aria-label="Marca"></div>
+  <label class="month"><span class="eyebrow">Mes</span><select id="monthSel"></select></label>
+</section>
+
+<section class="card kpis" id="kpis" aria-live="polite"></section>
+
+<section class="card" aria-label="Historial">
+  <div class="tabs" role="tablist" id="tabs"></div>
+  <div class="chartbox">
+    <div class="chartwrap"><svg class="chart" id="chart" viewBox="0 0 960 300" role="img"></svg></div>
+    <div class="legend" id="legend"></div>
+    <p class="note" id="chartNote"></p>
+  </div>
+</section>
+
+<section class="grid2">
+  <div class="card pad" style="display:flex;flex-direction:column;gap:12px;min-width:0">
+    <h2>Comparativo de marcas · <span id="cmpMonth"></span></h2>
+    <div class="tbl"><table id="cmp"></table></div>
+    <p class="note">Puntaje = puntos obtenidos ÷ puntos posibles × 100. Las dimensiones sin dato o que no aplican no suman ni restan; la columna <b>Cobertura</b> dice qué parte de la rúbrica se pudo evaluar. Bandas: <span class="pill p-bad">0-39</span> crítico · <span class="pill p-warn">40-59</span> débil · <span class="pill p-ok">60-100</span> aceptable o mejor.</p>
+  </div>
+  <div class="card pad" style="display:flex;flex-direction:column;gap:12px;min-width:0">
+    <h2 id="dimTitle">Por qué ese puntaje</h2>
+    <div class="dims" id="dims"></div>
+  </div>
+</section>
+
+<section class="card pad" style="display:flex;flex-direction:column;gap:10px" aria-label="Línea de historia">
+  <h2>Línea de historia</h2>
+  <p class="note">Hechos con fecha que explican o van a mover el SEO. Los puntos huecos son futuros. Se filtra por la marca elegida.</p>
+  <div class="tl"><ol id="timeline"></ol></div>
+</section>
+
+<footer>
+  <span class="eyebrow">Fuentes</span>
+  <span><b>W/S</b> revisión pública de HTML, robots y sitemaps, 16-oct-2026 (<code>docs/02</code>). <b>F1</b> ficha de negocio por retail, GA4 + tracker, oct-25 a sep-26. <b>F2</b> ficha Juntoz, 1-ene a 15-oct-2026. <b>P</b> prensa. <b>ENFEN</b> comunicados de El Niño (<code>docs/05</code>). Detalle en <code>docs/01</code>.</span>
+  <span>Para llenar el historial: Search Console (acceso A1), GA4 (A2) y una herramienta de autoridad/keywords (<code>docs/09 §2b</code>). Sin esos accesos no se inventa ningún mes.</span>
+</footer>
+</div>
+
+<script>
+// ===== DATOS =====
+// Rúbrica: puntos máximos por dimensión.
+const RUBRICA = [
+  {k:"tec", nombre:"Técnico e indexación", max:30, que:"robots, sitemap, canonical, duplicados, códigos de respuesta"},
+  {k:"con", nombre:"Contenido y on-page", max:25, que:"title, H1, descripciones, calidad de fichas y landings"},
+  {k:"dat", nombre:"Datos estructurados", max:15, que:"Organization, Product, Breadcrumb, FAQ, Store"},
+  {k:"loc", nombre:"SEO local", max:15, que:"una URL por tienda u oficina, schema, Google Business Profile"},
+  {k:"org", nombre:"Peso del orgánico", max:15, que:"participación del orgánico en sesiones o venta (F1)"}
+];
+
+const MARCAS = [
+  {id:"efectibank", nombre:"Efectibank", dominio:"efectibank.pe", plataforma:"WordPress + Yoast", color:"--s5", urls:{v:229, f:"Sitemap Yoast, 16-oct-2026", e:"COMPROBADO"}},
+  {id:"lc", nombre:"La Curacao", dominio:"lacuracao.pe", plataforma:"Magento 2", color:"--s2", urls:{v:99554, f:"Índice de 9 sitemaps, 16-oct-2026", e:"COMPROBADO"}},
+  {id:"efe", nombre:"Tiendas EFE", dominio:"efe.com.pe", plataforma:"Magento 2", color:"--s1", urls:{v:99210, f:"Índice de 9 sitemaps, 16-oct-2026", e:"COMPROBADO"}},
+  {id:"juntoz", nombre:"Juntoz", dominio:"juntoz.com", plataforma:"Next.js", color:"--s4", urls:{v:null, f:"Sin sitemap: /sitemap.xml da 404, 16-oct-2026", e:"COMPROBADO"}},
+  {id:"motocorp", nombre:"Motocorp", dominio:"motocorp.pe", plataforma:"Magento 2", color:"--s3", urls:{v:842, f:"sitemap_motocorp.xml, 16-oct-2026", e:"COMPROBADO"}}
+];
+
+// Promedio mensual de 12 meses (oct-25 a sep-26) derivado de F1: % orgánico × sesiones/mes. No es un dato mensual.
+const TRAFICO_PROMEDIO = {
+  efe:{v:114400, f:"F1: 13% de 880 K sesiones/mes (oct-25 a sep-26)"},
+  lc:{v:112000, f:"F1: 8% de 1.4 M sesiones/mes (oct-25 a sep-26)"},
+  motocorp:{v:84150, f:"F1: 51% de 165 K sesiones/mes"},
+  juntoz:{v:null, f:"F2: sin orgánico por canal de tráfico"},
+  efectibank:{v:null, f:"Sin dato de tráfico (pedido EF3, docs/08)"}
+};
+
+// Un registro por mes. Solo hay diagnóstico de oct-2026; los demás meses quedan SIN DATO hasta tener GSC.
+const DATA = {
+  meses:{
+    "2026-10":{
+      fecha:"16-oct-2026",
+      efectibank:{
+        puntaje:{tec:15, con:7, dat:8, loc:2, org:null},
+        razones:{
+          tec:"Sitemap Yoast y canonical correcto en préstamos. En contra: /test/ y \"Términos y condiciones María\" indexables; 129 de 229 páginas son promociones; enlaces a localhost, SafeLinks y staging; UTM largos en enlaces internos.",
+          con:"Título de la home solo \"Efectibank\" y sin H1; H1 de eslogan sin la palabra clave; sin montos ni TEA en el HTML (solo PDF); /blog/ sin artículos.",
+          dat:"FAQPage en las páginas de préstamo.",
+          loc:"/agencias/ es una sola página, sin las 176 oficinas.",
+          org:"SIN DATO: no hay tráfico orgánico ni solicitudes por canal (EF3)."
+        },
+        trafico:null, keywords:null, autoridad:null
+      },
+      lc:{
+        puntaje:{tec:12, con:11, dat:4, loc:3, org:6},
+        razones:{
+          tec:"Canonical de /cyber-days apunta a /cyber-Days, que redirige de vuelta; sitemap con ~99.5 K URLs contra ~17 K SKU; \"Sitemap :\" mal escrito en robots.",
+          con:"Landings Cyber con varias <title>, H1 oculto y título \"Del 06 al 10 de Julio\"; varias URLs por evento en el sitemap.",
+          dat:"Home sin JSON-LD visible.",
+          loc:"Localizador en una sola URL, datos cargados por JS, sin schema Store.",
+          org:"Orgánico = 8% de sesiones y 12% de la venta web (S/ 7 M/año), la mitad que EFE con la misma plataforma (F1)."
+        },
+        trafico:null, keywords:null, autoridad:null
+      },
+      efe:{
+        puntaje:{tec:10, con:11, dat:4, loc:3, org:11},
+        razones:{
+          tec:"Sin canonical en home, categorías, fichas y landings; sitemap con ~99 K URLs contra ~17 K SKU; páginas de EFE indexables dentro de Skullcandy y Motocorp.",
+          con:"H1 de la home correcto. En contra: landings Cyber con metadatos sucios; fichas de ~100 palabras con errores y sin texto de cuotas.",
+          dat:"Home sin JSON-LD; fichas sin reseñas ni AggregateRating.",
+          loc:"Localizador en una sola URL, datos cargados por JS, sin schema Store.",
+          org:"Orgánico = 13% de sesiones y 23% de la venta web ene-sep 26 (S/ 6.4 M, +26% vs 2025) (F1)."
+        },
+        trafico:null, keywords:null, autoridad:null
+      },
+      juntoz:{
+        puntaje:{tec:6, con:8, dat:2, loc:"na", org:null},
+        razones:{
+          tec:"Sin sitemap (404) y robots sin Sitemap:; sin canonical; las mismas fichas /p/ indexables en Juntoz, Diners y BanBif; render de Next.js no revisado.",
+          con:"Home sin H1; títulos de ficha con el vendedor delante; CMS no permite editar metadatos ni crear landings.",
+          dat:"Fichas sin Product JSON-LD.",
+          loc:"No aplica: no tiene tiendas propias (recojo en LC/EFE).",
+          org:"SIN DATO: sin orgánico por canal; se cumple el 83% de la meta de sesiones (F2)."
+        },
+        trafico:null, keywords:null, autoridad:null
+      },
+      motocorp:{
+        puntaje:{tec:22, con:13, dat:13, loc:4, org:13},
+        razones:{
+          tec:"Buena base: robots limpio, sitemap de 842 URLs, INDEX,FOLLOW. En contra: páginas de Tiendas EFE indexables dentro del dominio.",
+          con:"Home y categorías sin H1; meta description de ficha con texto legal; WhatsApp que parece placeholder; alt genéricos.",
+          dat:"Organization, WebSite, SearchAction, CollectionPage, Product, Offer y BreadcrumbList.",
+          loc:"Talleres con título \"Workshops\" y redirección; sin páginas por tienda ni por taller.",
+          org:"51% del tráfico ya es orgánico, de 165 K sesiones/mes (F1)."
+        },
+        trafico:null, keywords:null, autoridad:null
+      }
+    }
+  },
+  // Línea de historia. marcas: ids de MARCAS o "grupo".
+  eventos:[
+    {f:"2025-12", t:"Nace BanBif Mall", d:"Tercer dominio con las mismas fichas /p/ de Juntoz.", m:["juntoz"], s:"F2"},
+    {f:"2026-03", t:"Arranca mMall y la web de Skullcandy", d:"Más dominios sobre las mismas plataformas (Next.js y Magento).", m:["juntoz"], s:"F1, F2"},
+    {f:"2026-05", t:"Financiera Efectiva pasa a ser Efectibank", d:"Cambio de marca y de dominio; enlaces viejos a efectiva.com.pe siguen en las webs; la app se queda en el splash tras el rebrand.", m:["efectibank","lc","efe"], s:"P, W"},
+    {f:"2026-07", t:"Cyber Days y Fiestas Patrias", d:"Mes récord de todas las marcas. Cyber 2026 de LC vendió -20% vs 2025.", m:["grupo"], s:"F1"},
+    {f:"2026-09", t:"Empieza el calor récord por El Niño", d:"ENFEN: temperaturas récord en la costa set-nov; sube la búsqueda de climatización.", m:["grupo"], s:"ENFEN"},
+    {f:"2026-10", t:"Diagnóstico SEO público de 9 sitios", d:"Primer puntaje de este tablero. Sin Search Console: nada validado en Google.", m:["grupo"], s:"W, S"},
+    {f:"2026-10", t:"Congelar cambios 72 h antes del Cyber Wow", d:"~30-oct: no tocar pauta ni redirigir URLs.", m:["lc","efe","juntoz","motocorp"], s:"docs/04", fut:true},
+    {f:"2026-11", t:"Cyber Wow (2-5 nov, por confirmar)", d:"Días Cyber venden ~4x un día normal y pesan ~25% de la venta web del año.", m:["lc","efe","juntoz","motocorp"], s:"P", fut:true},
+    {f:"2027-01", t:"Pico de lluvias en la costa norte", d:"Riesgo de vías cortadas; despacho y tiendas del norte afectados.", m:["grupo"], s:"ENFEN", fut:true}
+  ]
+};
+
+// ===== LÓGICA =====
+const MESES_ES = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+const RANGO = (()=>{ const out=[]; let y=2025,m=10; while(y<2026||(y===2026&&m<=12)){ out.push(`${y}-${String(m).padStart(2,"0")}`); m++; if(m>12){m=1;y++;} } return out; })();
+const lblMes = k => { const [y,m]=k.split("-"); return `${MESES_ES[+m-1]}-${y.slice(2)}`; };
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const fmt = n => n==null ? "SIN DATO" : n>=1e6 ? (n/1e6).toFixed(1).replace(/\.0$/,"")+" M" : n>=1e3 ? Math.round(n/1e3)+" K" : String(n);
+const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+function score(p){
+  if(!p) return null;
+  let pts=0,max=0,total=0;
+  RUBRICA.forEach(r=>{ const v=p[r.k]; if(v!=="na") total+=r.max; if(typeof v==="number"){pts+=v;max+=r.max;} });
+  if(!max) return null;
+  return {val:Math.round(pts/max*100), cobertura:Math.round(max/total*100), pts, max};
+}
+const band = v => v==null ? "nd" : v<40 ? "bad" : v<60 ? "warn" : "ok";
+const bandTxt = {bad:"Crítico", warn:"Débil", ok:"Aceptable", nd:"SIN DATO"};
+
+let state = {marca:"efectibank", mes:"2026-10", tab:"puntaje"};
+try{ const s=JSON.parse(localStorage.getItem("puntaje-seo")||"{}"); Object.assign(state, s); }catch(e){}
+const save = ()=>{ try{ localStorage.setItem("puntaje-seo", JSON.stringify(state)); }catch(e){} };
+const reg = (mes,id) => (DATA.meses[mes]||{})[id];
+const mesAnterior = k => { const i=RANGO.indexOf(k); return i>0 ? RANGO[i-1] : null; };
+
+function chips(){
+  const el=document.getElementById("brandChips");
+  el.innerHTML = MARCAS.map(b=>`<button type="button" data-id="${b.id}" aria-pressed="${state.marca===b.id}"><i style="background:var(${b.color})"></i>${esc(b.nombre)}</button>`).join("");
+  el.querySelectorAll("button").forEach(btn=>btn.onclick=()=>{state.marca=btn.dataset.id;save();render();});
+  const sel=document.getElementById("monthSel");
+  sel.innerHTML = RANGO.slice().reverse().map(k=>`<option value="${k}" ${k===state.mes?"selected":""}>${lblMes(k)}${DATA.meses[k]?"":" · sin registro"}</option>`).join("");
+  sel.onchange=()=>{state.mes=sel.value;save();render();};
+}
+
+function gauge(v){
+  const r=30, c=2*Math.PI*r, b=band(v), col = b==="nd" ? css("--nd") : css("--"+b);
+  const off = v==null ? c : c*(1-v/100);
+  return `<svg class="gauge" width="76" height="76" viewBox="0 0 76 76" aria-hidden="true">
+    <circle class="track" cx="38" cy="38" r="${r}" fill="none" stroke-width="8"/>
+    <circle class="val" cx="38" cy="38" r="${r}" fill="none" stroke="${col}" stroke-width="8" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${off}" transform="rotate(-90 38 38)"/>
+    <text x="38" y="43" text-anchor="middle" font-size="17">${v==null?"—":v}</text></svg>`;
+}
+
+function delta(cur,prev,unit=""){
+  if(cur==null||prev==null) return "";
+  const d=cur-prev; if(d===0) return `<small class="sub">= vs mes anterior</small>`;
+  return `<small class="${d>0?"delta-up":"delta-dn"}">${d>0?"▲":"▼"} ${fmt(Math.abs(d))}${unit}</small>`;
+}
+
+function kpis(){
+  const b=MARCAS.find(x=>x.id===state.marca), r=reg(state.mes,b.id), pr=reg(mesAnterior(state.mes),b.id);
+  const s=score(r&&r.puntaje), sp=score(pr&&pr.puntaje), bd=band(s&&s.val);
+  const tp=TRAFICO_PROMEDIO[b.id];
+  const traf = r&&r.trafico!=null ? r.trafico : null;
+  const tile = (ico,icoBg,icoFg,label,big,sub,tag) => `<div class="kpi"><div class="row"><span class="ico" style="background:${icoBg};color:${icoFg}">${ico}</span></div><span class="lbl">${label}</span><div class="big">${big}</div><span class="sub">${sub}</span>${tag?`<span>${tag}</span>`:""}</div>`;
+  const nd = `<span class="nd">SIN DATO</span>`;
+  document.getElementById("kpis").innerHTML =
+    `<div class="kpi"><span class="lbl">Puntaje SEO · ${esc(b.nombre)}</span>
+      <div class="row">${gauge(s&&s.val)}<div style="display:flex;flex-direction:column;gap:4px;min-width:0">
+        <div class="big">${s?`${s.val}<small class="sub">/100</small>`:nd}${s&&sp?delta(s.val,sp.val):""}</div>
+        <span class="pill p-${bd==="nd"?"warn":bd}" style="align-self:flex-start">${bandTxt[bd]}</span></div></div>
+      <span class="sub">${s?`Cobertura de la rúbrica ${s.cobertura}% · ${esc(b.dominio)} · ${esc(b.plataforma)}`:`Sin diagnóstico en ${lblMes(state.mes)}`}</span>
+      <span>${s?`<span class="tag t-hip">HIPÓTESIS · criterio SEO</span>`:`<span class="tag t-nd">SIN DATO</span>`}</span></div>`
+    + tile("↗", "var(--ok-soft)","var(--ok)","Tráfico orgánico",
+        traf!=null ? `${fmt(traf)}${delta(traf, pr&&pr.trafico)}` : (tp.v!=null ? `<span>~${fmt(tp.v)}</span>` : nd),
+        traf!=null ? `Clics/mes · ${lblMes(state.mes)}` : (tp.v!=null ? `Sesiones/mes, promedio 12 meses. ${esc(tp.f)}` : esc(tp.f)),
+        traf!=null ? `<span class="tag t-comp">GSC</span>` : (tp.v!=null ? `<span class="tag t-der">DERIVADO · no mensual</span>` : `<span class="tag t-nd">SIN DATO</span>`))
+    + tile("K", "var(--accent-soft)","var(--accent)","Keywords",
+        r&&r.keywords!=null ? `${fmt(r.keywords)}${delta(r.keywords, pr&&pr.keywords)}` : nd,
+        r&&r.keywords!=null ? `Consultas con clic · ${lblMes(state.mes)}` : `Requiere Search Console (A1) o Semrush/Ahrefs`,
+        `<span class="tag ${r&&r.keywords!=null?"t-comp":"t-nd"}">${r&&r.keywords!=null?"GSC":"SIN DATO"}</span>`)
+    + tile("DA", "var(--warn-soft)","var(--warn)","Autoridad de dominio",
+        r&&r.autoridad!=null ? `${r.autoridad}<small class="sub">/100</small>${delta(r.autoridad, pr&&pr.autoridad)}` : nd,
+        `URLs en sitemap: <b class="num">${b.urls.v!=null?b.urls.v.toLocaleString("es-PE"):"ninguno"}</b> · ${esc(b.urls.f)}`,
+        `<span class="tag ${r&&r.autoridad!=null?"t-comp":"t-nd"}">${r&&r.autoridad!=null?"Ahrefs/Moz":"SIN DATO · DR Ahrefs gratis"}</span>`);
+}
+
+const TABS = [
+  {k:"puntaje", t:"Puntaje SEO"},
+  {k:"trafico", t:"Tráfico orgánico"},
+  {k:"keywords", t:"Keywords"},
+  {k:"autoridad", t:"Autoridad de dominio"}
+];
+function tabs(){
+  const el=document.getElementById("tabs");
+  el.innerHTML = TABS.map(t=>`<button type="button" role="tab" aria-selected="${state.tab===t.k}" data-k="${t.k}">${t.t}</button>`).join("");
+  el.querySelectorAll("button").forEach(b=>b.onclick=()=>{state.tab=b.dataset.k;save();render();});
+}
+
+function serie(id,k){
+  return RANGO.map(m=>{ const r=reg(m,id); if(!r) return null; if(k==="puntaje"){ const s=score(r.puntaje); return s?s.val:null; } return r[k]!=null?r[k]:null; });
+}
+
+function chart(){
+  const svg=document.getElementById("chart"), W=960,H=300,L=56,R=16,T=18,B=34;
+  const iw=W-L-R, ih=H-T-B, n=RANGO.length, x=i=>L+iw*(i+.5)/n;
+  const series = MARCAS.map(b=>({b, v:serie(b.id,state.tab)}));
+  let refs = state.tab==="trafico" ? MARCAS.filter(b=>TRAFICO_PROMEDIO[b.id].v!=null).map(b=>({b,v:TRAFICO_PROMEDIO[b.id].v})) : [];
+  const vals = series.flatMap(s=>s.v.filter(v=>v!=null)).concat(refs.map(r=>r.v));
+  let ymax = state.tab==="puntaje"||state.tab==="autoridad" ? 100 : (vals.length ? Math.max(...vals)*1.15 : 1);
+  const nice = v => { const p=Math.pow(10,Math.floor(Math.log10(v))); return Math.ceil(v/p)*p; };
+  if(state.tab==="trafico"||state.tab==="keywords") ymax = nice(ymax);
+  const y=v=>T+ih*(1-v/ymax);
+  const si=RANGO.indexOf(state.mes);
+  let g=`<rect class="sel-band" x="${L+iw*si/n}" y="${T}" width="${iw/n}" height="${ih}" rx="4"/>`;
+  for(let i=0;i<=4;i++){ const v=ymax*i/4; g+=`<line class="grid" x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}"/><text class="axis" x="${L-8}" y="${y(v)+4}" text-anchor="end">${fmt(Math.round(v))}</text>`; }
+  RANGO.forEach((m,i)=>{ g+=`<text class="axis" x="${x(i)}" y="${H-12}" text-anchor="middle" ${i===si?'font-weight="700" style="fill:var(--fg)"':''}>${lblMes(m)}</text>`; });
+  // referencia de promedio 12 m (oct-25 a sep-26)
+  refs.forEach(r=>{ const cur=r.b.id===state.marca; g+=`<line x1="${x(0)}" x2="${x(11)}" y1="${y(r.v)}" y2="${y(r.v)}" stroke="var(${r.b.color})" stroke-width="${cur?2.5:1.5}" stroke-dasharray="6 5" opacity="${cur?1:.45}"/>${cur?`<text class="axis" x="${x(11)+6}" y="${y(r.v)+4}" style="fill:var(${r.b.color})">~${fmt(r.v)}</text>`:""}`; });
+  // series mensuales
+  series.forEach(({b,v})=>{
+    const cur=b.id===state.marca; let d="";
+    v.forEach((val,i)=>{ if(val==null){ d+=" "; return; } d+= (i===0||v[i-1]==null?"M":"L")+x(i)+","+y(val)+" "; });
+    if(d.trim()) g+=`<path d="${d}" fill="none" stroke="var(${b.color})" stroke-width="${cur?3:1.6}" opacity="${cur?1:.5}"/>`;
+    v.forEach((val,i)=>{ if(val!=null) g+=`<circle cx="${x(i)}" cy="${y(val)}" r="${cur?6:4}" fill="var(${b.color})" stroke="var(--surface)" stroke-width="2" opacity="${cur?1:.6}"><title>${esc(b.nombre)} · ${lblMes(RANGO[i])}: ${val}</title></circle>`+(cur?`<text x="${x(i)}" y="${y(val)-12}" text-anchor="middle" font-size="13" font-weight="700" style="fill:var(--fg)">${val}</text>`:""); });
+  });
+  if(!vals.length) g+=`<text class="empty" x="${L+iw/2}" y="${T+ih/2-6}" text-anchor="middle">SIN DATO para ningún mes</text><text class="empty" x="${L+iw/2}" y="${T+ih/2+16}" text-anchor="middle" font-size="12">Se llena con Search Console (A1) y una herramienta de autoridad; ver docs/09 §2b</text>`;
+  svg.innerHTML=g;
+  svg.setAttribute("aria-label", `Historial de ${TABS.find(t=>t.k===state.tab).t} por marca, oct-25 a dic-26`);
+  document.getElementById("legend").innerHTML = MARCAS.map(b=>`<span><i style="background:var(${b.color})"></i>${esc(b.nombre)}</span>`).join("") + (refs.length?`<span><i style="background:repeating-linear-gradient(90deg,var(--muted) 0 5px,transparent 5px 9px)"></i>Promedio 12 meses (F1, derivado)</span>`:"");
+  const notes={
+    puntaje:"Un solo punto: el diagnóstico del 16-oct-2026 es el primero. No se reconstruyen meses pasados. El próximo punto sale al repetir la revisión en noviembre, después del Cyber Wow.",
+    trafico:"Sin datos mensuales: el equipo no tiene acceso a Search Console ni a exportes GA4 por canal. La línea punteada es el promedio oct-25 a sep-26 en sesiones (F1), no un dato de cada mes. Efectibank y Juntoz: SIN DATO.",
+    keywords:"Sin dato para ninguna marca. Definición propuesta: consultas con al menos un clic en el mes (Search Console). Sin Semrush no hay vista de competencia.",
+    autoridad:"Sin dato para ninguna marca. Propuesta: DR mensual del Website Authority Checker gratuito de Ahrefs, anotado el día 1 de cada mes. Es secundario para resultados en 90 días (docs/09)."
+  };
+  document.getElementById("chartNote").textContent=notes[state.tab];
+}
+
+function cmp(){
+  document.getElementById("cmpMonth").textContent=lblMes(state.mes);
+  const rows = MARCAS.map(b=>{ const r=reg(state.mes,b.id); return {b, s:score(r&&r.puntaje), tp:TRAFICO_PROMEDIO[b.id]}; })
+    .sort((a,c)=>((c.s&&c.s.val)??-1)-((a.s&&a.s.val)??-1));
+  document.getElementById("cmp").innerHTML = `<thead><tr><th>Marca</th><th>Puntaje</th><th style="width:30%">Barra</th><th style="text-align:right">Cobertura</th><th style="text-align:right">Orgánico/mes*</th></tr></thead><tbody>`
+   + rows.map(({b,s,tp})=>{ const bd=band(s&&s.val); return `<tr class="${b.id===state.marca?"cur":""}" data-id="${b.id}" style="cursor:pointer">
+      <td><span style="display:inline-flex;align-items:center;gap:8px"><i style="width:9px;height:9px;border-radius:50%;background:var(${b.color});display:inline-block"></i><b>${esc(b.nombre)}</b></span></td>
+      <td>${s?`<span class="pill p-${bd}">${s.val}</span>`:`<span class="tag t-nd">SIN DATO</span>`}</td>
+      <td><div class="bar"><b style="width:${s?s.val:0}%;background:var(--${bd==="nd"?"nd":bd})"></b></div></td>
+      <td class="n">${s?s.cobertura+"%":"—"}</td>
+      <td class="n">${tp.v!=null?"~"+fmt(tp.v):'<span class="nd">SIN DATO</span>'}</td></tr>`; }).join("") + `</tbody>`;
+  document.querySelectorAll("#cmp tbody tr").forEach(tr=>tr.onclick=()=>{state.marca=tr.dataset.id;save();render();});
+}
+
+function dims(){
+  const b=MARCAS.find(x=>x.id===state.marca), r=reg(state.mes,b.id);
+  document.getElementById("dimTitle").textContent=`Por qué ese puntaje · ${b.nombre}`;
+  if(!r){ document.getElementById("dims").innerHTML=`<p class="note">No hay diagnóstico registrado en ${lblMes(state.mes)}. El único es oct-26.</p>`; return; }
+  document.getElementById("dims").innerHTML = RUBRICA.map(d=>{
+    const v=r.puntaje[d.k], num=typeof v==="number", pct=num?v/d.max*100:0, bd=num?band(pct):"nd";
+    return `<div class="dim"><span class="lbl" style="font-size:11px">${d.nombre}</span>
+      <span class="num" style="font-size:13px;font-weight:700">${num?`${v}/${d.max}`:v==="na"?"No aplica":"SIN DATO"}</span>
+      <div class="bar"><b style="width:${pct}%;background:var(--${bd})"></b></div>
+      <p>${esc(r.razones[d.k])}</p></div>`;
+  }).join("");
+}
+
+function timeline(){
+  const ev = DATA.eventos.filter(e=>e.m.includes("grupo")||e.m.includes(state.marca));
+  const nombre = id => id==="grupo" ? "Grupo" : MARCAS.find(b=>b.id===id).nombre;
+  document.getElementById("timeline").innerHTML = ev.map(e=>`<li class="${e.fut?"fut":""} ${e.f===state.mes?"now":""}">
+    <span class="when">${lblMes(e.f)}${e.fut?" · próximo":""}</span>
+    <span class="dot" style="${e.fut?"":`background:${e.m.includes("grupo")?"var(--muted)":`var(${MARCAS.find(b=>b.id===state.marca).color})`}`}"></span>
+    <span class="what">${esc(e.t)}</span>
+    <span class="why">${esc(e.d)}</span>
+    <span class="brands">${e.m.map(id=>`<span>${esc(nombre(id))}</span>`).join("")}<span>${esc(e.s)}</span></span></li>`).join("");
+}
+
+function render(){ chips(); kpis(); tabs(); chart(); cmp(); dims(); timeline(); }
+if(!MARCAS.some(b=>b.id===state.marca)) state.marca="efectibank";
+if(!RANGO.includes(state.mes)) state.mes="2026-10";
+render();
+if(window.matchMedia) matchMedia("(prefers-color-scheme: dark)").addEventListener?.("change", render);
+</script>
+</body>
+</html>
