@@ -12,6 +12,8 @@ Un solo repo con todo el conocimiento SEO del grupo, orientado a **más ganancia
 
 - 2026-10-16 (v3): corregidas las bases de la tabla de plata neta (solo web vs empresa completa; Motocorp por debajo de LC y EFE en total), Efectibank marcado como negocio que sí vende en digital (cuentas y créditos vía pauta), y nuevos pedidos B13 (venta de piso por marca) y B14 (pauta digital de Efectibank por objetivo).
 
+- 2026-10-23: `dashboard/puntaje-seo.html`: puntaje SEO 0-100 por marca (Efectibank, La Curacao, Tiendas EFE, Juntoz, Motocorp) con rúbrica de 5 dimensiones sobre el diagnóstico de `docs/02` (criterio, `HIPÓTESIS`), selector de mes, historial de tráfico orgánico, keywords y autoridad (hoy `SIN DATO` salvo el promedio derivado de F1) y línea de historia. Puntajes oct-26: Motocorp 65, EFE 39, Efectibank 38, LC 36, Juntoz 23.
+
 ## Pendiente (orden)
 1. **Elias**: responder las preguntas de `docs/06`, dar los accesos A1-A8 y pedir a Efectibank los datos EF1-EF9 (`docs/08 §5`). Sin GSC y Ads por término no se confirma ni se mide nada.
 1b. **Elias**: entregar las cifras verificadas de agosto 2026 vs PY y el registro de cambios SEO (B11) para la referencia histórica; decidir el presupuesto de herramientas (`docs/09 §2b`).
@@ -19,6 +21,7 @@ Un solo repo con todo el conocimiento SEO del grupo, orientado a **más ganancia
 3. Guardar en Drive (no en el repo) las fichas `.docx`, audios y `analisis-marcas-seo.html` de la sesión "SEO"; enlazarlos en `docs/01`.
 4. Kevin: línea base GSC/GA4 por grupo de URL; rastreo acotado; cruce sitemap ↔ feed.
 5. Carolina: inventario de landings Cyber y cupones; exporte GBP + maestro de tiendas; reseñas de apps.
+5b. Kevin/Carol: cargar cada mes en `dashboard/puntaje-seo.html` (clics GSC, consultas con clic, DR de Ahrefs gratis) y repetir el puntaje en noviembre, después del Cyber Wow.
 6. Decidir qué hacer con los repos vacíos (SEO-LOCAL, SEO-Landing, BI-REPO, Contenido-Repo) y con el PR #38 "panel SEO" de MKT-SISTEMA.
 
 ## Decisiones / cuidado con
