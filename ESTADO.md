@@ -12,6 +12,8 @@ Un solo repo con todo el conocimiento SEO del grupo, orientado a **más ganancia
 
 - 2026-10-16 (v3): corregidas las bases de la tabla de plata neta (solo web vs empresa completa; Motocorp por debajo de LC y EFE en total), Efectibank marcado como negocio que sí vende en digital (cuentas y créditos vía pauta), y nuevos pedidos B13 (venta de piso por marca) y B14 (pauta digital de Efectibank por objetivo).
 
+- 2026-10-29: auditoría de velocidad, SEO y GEO de 9 tiendas (`docs/10`) con Lighthouse 12.6.1 local (la API de PageSpeed sin clave dio 429): 19 de 20 páginas móviles bajo 50; GTM es el tercero que más bloquea en todas; imagen principal en lazy en 9 de 20; portadas de 11-25 MB. Dashboard "Salud web de tiendas EFE" (artifact `QyjQU1iq1wZ1wzFy7Y1KaF`, privado). Corrige `docs/02`: la portada de EFE sí tiene Organization/WebSite.
+
 ## Pendiente (orden)
 1. **Elias**: responder las preguntas de `docs/06`, dar los accesos A1-A8 y pedir a Efectibank los datos EF1-EF9 (`docs/08 §5`). Sin GSC y Ads por término no se confirma ni se mide nada.
 1b. **Elias**: entregar las cifras verificadas de agosto 2026 vs PY y el registro de cambios SEO (B11) para la referencia histórica; decidir el presupuesto de herramientas (`docs/09 §2b`).
@@ -19,6 +21,7 @@ Un solo repo con todo el conocimiento SEO del grupo, orientado a **más ganancia
 3. Guardar en Drive (no en el repo) las fichas `.docx`, audios y `analisis-marcas-seo.html` de la sesión "SEO"; enlazarlos en `docs/01`.
 4. Kevin: línea base GSC/GA4 por grupo de URL; rastreo acotado; cruce sitemap ↔ feed.
 5. Carolina: inventario de landings Cyber y cupones; exporte GBP + maestro de tiendas; reseñas de apps.
+5b. **Elias / TI**: clave de API de PageSpeed (Google Cloud) para datos de campo CrUX; evaluar las 10 acciones de `docs/10 §4` para después de Cyber Wow (desde 6-nov).
 6. Decidir qué hacer con los repos vacíos (SEO-LOCAL, SEO-Landing, BI-REPO, Contenido-Repo) y con el PR #38 "panel SEO" de MKT-SISTEMA.
 
 ## Decisiones / cuidado con
