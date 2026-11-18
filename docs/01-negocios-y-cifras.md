@@ -128,6 +128,7 @@ Claves (F2, A2): Juntoz fue una startup comprada con pérdida (feb-2022) y **no 
 
 ## 7. Calendario comercial relevante
 - **Cyber Wow noviembre 2026**: prensa estima 2–5 nov (confirmar con IAB Perú). Días Cyber venden ~4x un día normal.
+  - La Curacao, 12-oct a 15-nov 2026 (tablero Canales GA4 + Qlik, exporte del 18-nov): 1,078,517 sesiones, 7,515 trx gross, venta gross S/ 6.68 M, venta neta S/ 5.59 M (Net/Gross 93%). Orgánico: 156,073 sesiones, 1,334 trx, S/ 1.86 M gross. Semana Cyber (2-8 nov) por semana y canal en `docs/10`.
 - **Navidad / fin de año**: pico de regalos y tecnología.
 - **Verano 2027 + El Niño**: calor récord sep-26 a ene-27 en toda la costa; lluvias sobre lo normal en la costa norte (ver `docs/05`).
 - **Fiestas Patrias (julio)**: mes récord de todas las marcas en 2026.
