@@ -1,6 +1,6 @@
 # 10 · La Curacao · caída del CR orgánico alrededor de Cyber Wow (12-oct a 15-nov 2026)
 
-Análisis del 18-nov-2026. Fuente: tablero "Canales" (GA4 + Qlik), capturas semanales y exporte del periodo entregados por Elias el 18-nov; gráfico de Términos de búsqueda de Google Ads (todas las campañas). **La hoja de GSC no se pudo abrir (privada): todo lo que depende de GSC queda como `HIPÓTESIS`.** Los archivos crudos no están en el repo.
+Análisis del 18-nov-2026. Fuente: tablero "Canales" (GA4 + Qlik), capturas semanales y exporte del periodo entregados por Elias el 18-nov; gráfico de Términos de búsqueda de Google Ads (todas las campañas). Actualizado el mismo día con el exporte de GSC de lacuracao.pe (§2b). Los archivos crudos no están en el repo.
 
 ## 1. Los datos
 
@@ -29,15 +29,37 @@ Hay dos caídas distintas.
 - **Sumados, SEO + SEM convierten igual que antes**: 0.75% contra 0.71-0.79% en octubre.
 - El gráfico de Ads muestra lo mismo: tras Cyber las impresiones vuelven al nivel de octubre pero los clics quedan más altos (lectura visual, ~13-14 mil/día vs ~10 mil), es decir, sube el CTR. Eso es típico de términos de marca.
 
-**Conclusión (`HIPÓTESIS`, falta GSC y el detalle de términos de Ads):** la búsqueda en Google no convierte peor. Los compradores con intención (sobre todo quien busca la marca) están entrando por el anuncio y no por el resultado orgánico. El orgánico se queda con el tráfico informativo y por eso su CR se ve bajo. El costo real no es venta perdida, es **pagar clics que antes eran gratis**.
+**Conclusión (GSC la respalda, ver §2b; falta el corte semanal y el detalle de Ads):** la búsqueda en Google no convierte peor. Los compradores con intención (sobre todo quien busca la marca) están entrando por el anuncio y no por el resultado orgánico. El orgánico se queda con el tráfico informativo y por eso su CR se ve bajo. El costo real no es venta perdida, es **pagar clics que antes eran gratis**.
 
 **c) Durante Cyber** el orgánico no creció en sesiones (31.5 mil, menos que en octubre) mientras SEM se multiplicó casi por 6 y PMAX por 2.5. La demanda extra de Cyber la captó la pauta. La venta orgánica de esa semana (S/ 1.08 M gross, ticket ~S/ 2,400 vs ~S/ 900 habitual) merece revisión: puede haber pocas órdenes muy grandes.
+
+## 2b. Lo que dice GSC (exporte del 18-nov)
+
+Límite del exporte: compara 12-oct a 15-nov (35 días) contra 22-sep a 19-oct (28 días). Los periodos se traslapan 8 días y no hay corte por semana, así que todo va en **promedio por día** y la caída real es mayor a la que se ve. Marca = consultas con "curacao" y variantes, o "efectiva".
+
+| Grupo | Clics/día antes | Clics/día ahora | Cambio | Impr./día | CTR antes → ahora | Posición |
+|---|---|---|---|---|---|---|
+| Consultas de marca (421) | 2,470 | 1,777 | **-28%** | +6% | 24.7% → 16.7% | sin cambio |
+| "curacao" | 1,195 | 825 | -31% | +12% | 33.5% → 20.6% | 4.4 → 4.3 |
+| "la curacao" | 871 | 587 | -33% | +14% | 30.4% → 18.0% | 4.1 → 4.1 |
+| Consultas sin marca (894) | 299 | 356 | +19% | +20% | 0.70% → 0.69% | sin cambio |
+| Home | 2,441 | 1,733 | -29% | +9% | 19.1% → 12.4% | 4.8 → 4.9 |
+| Resto de páginas | 1,417 | 1,642 | +16% | +19% | 0.94% → 0.91% | — |
+| Total sitio | 4,312 | 3,943 | -9% | +18% | 2.4% → 1.8% | 7.1 → 7.0 |
+
+`COMPROBADO` en GSC:
+- **La gente busca la marca más que antes, en la misma posición, y hace clic mucho menos en el resultado orgánico.** Eso solo pasa cuando algo se pone encima: el anuncio. Son unos 700 clics de marca menos por día, casi todos a la home.
+- **El SEO sin marca está sano**: más clics, mismo CTR, mismas posiciones. No hay problema técnico ni de ranking.
+- **El tráfico orgánico que sí creció convierte poco por naturaleza**: "ventilador(es)" (x3, inicio de verano), consultas de seguimiento de pedido ("curacao seguimiento de pedido" pasó de 4 a 9 clics/día; `/curacao/rastrea-tu-pedido` 81 → 92) y consultas Cyber. Baja el CR sin que se pierda venta.
+- **Oportunidad perdida en Cyber**: "cyber wow" tuvo 47,691 impresiones y 295 clics (posición 8, CTR 0.6%). La landing fue `/cyber-mkt-2620-a7f3k9q2`, una URL nueva y descartable que quedó en posición 8.6 con 110 mil impresiones y 609 clics. A evaluar con Elias: una URL fija de Cyber que acumule autoridad entre eventos.
+
+Con esto, la lectura de §2 pasa de hipótesis a explicación principal. Lo que GSC no puede decir es **en qué semana** cayó el CTR de marca ni cuánto se pagó por esos clics.
 
 ## 3. Qué falta para confirmarlo
 
 | Dato | De dónde | Qué confirma |
 |---|---|---|
-| Clics, impresiones y posición de consultas **con marca vs sin marca**, por semana | GSC | Si lo que cayó en orgánico son los clics de marca |
+| Clics y CTR de consultas que contienen "curacao", **por día** (pestaña Fechas con filtro de consulta) | GSC | En qué semana cayó el CTR de marca y si sigue caído |
 | Términos de búsqueda de Ads por semana, con campaña y costo | Google Ads | Cuánto de SEM post-Cyber es marca y cuánto costó |
 | Campañas de Search activas desde el 9-nov (¿quedó prendida una de marca o de "Cyber extendido"?) | Performance | Causa directa |
 | Páginas de destino orgánicas del 9-15 nov y su CR | GA4 | Si landings de Cyber vencidas siguen recibiendo tráfico |
