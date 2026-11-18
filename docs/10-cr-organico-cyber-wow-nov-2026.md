@@ -35,14 +35,14 @@ Hay dos caídas distintas.
 
 ## 2b. Lo que dice GSC (exporte del 18-nov)
 
-Límite del exporte: compara 12-oct a 15-nov (35 días) contra 22-sep a 19-oct (28 días). Los periodos se traslapan 8 días y no hay corte por semana, así que todo va en **promedio por día** y la caída real es mayor a la que se ve. Marca = consultas con "curacao" y variantes, o "efectiva".
+Límite del exporte: compara 12-oct a 15-nov (35 días) contra 22-sep a 19-oct (28 días). Los periodos se traslapan 8 días y no hay corte por semana, así que todo va en **promedio por día** y la caída real es mayor a la que se ve. Marca = consultas con "curacao" y sus variantes mal escritas, "efectiva" o "kiosko".
 
 | Grupo | Clics/día antes | Clics/día ahora | Cambio | Impr./día | CTR antes → ahora | Posición |
 |---|---|---|---|---|---|---|
-| Consultas de marca (421) | 2,470 | 1,777 | **-28%** | +6% | 24.7% → 16.7% | sin cambio |
+| Consultas de marca (439) | 2,497 | 1,797 | **-28%** | +6% | 24.7% → 16.7% | sin cambio |
 | "curacao" | 1,195 | 825 | -31% | +12% | 33.5% → 20.6% | 4.4 → 4.3 |
 | "la curacao" | 871 | 587 | -33% | +14% | 30.4% → 18.0% | 4.1 → 4.1 |
-| Consultas sin marca (894) | 299 | 356 | +19% | +20% | 0.70% → 0.69% | sin cambio |
+| Consultas sin marca (876) | 272 | 337 | +24% | +20% | 0.64% → 0.65% | sin cambio |
 | Home | 2,441 | 1,733 | -29% | +9% | 19.1% → 12.4% | 4.8 → 4.9 |
 | Resto de páginas | 1,417 | 1,642 | +16% | +19% | 0.94% → 0.91% | — |
 | Total sitio | 4,312 | 3,943 | -9% | +18% | 2.4% → 1.8% | 7.1 → 7.0 |
