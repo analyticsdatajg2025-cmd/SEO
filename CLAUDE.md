@@ -31,6 +31,7 @@ Equipo SEO: **Josh Kevin Seminario** (SEO Senior: estrategia multimarca, auditor
 | `docs/08-efectibank-360.md` | Efectibank: cifras públicas, margen de mercado, auditoría de su web, palancas SEO en plata neta, datos que faltan por responsable, tiempos. |
 | `docs/09-capacidad-herramientas-y-riesgos.md` | Capacidad real del equipo (horas), herramientas disponibles y su impacto operativo, ventanas de riesgo Cyber, plazos de rastreo e indexación. |
 | `dashboards/kws-diarias-efe.html` | Dashboard diario: top 10 keywords de marca y genéricas de EFE (carga CSV de GSC). Abrir en el navegador. |
+| `scripts/gsc_kws_diarias.py` | Extrae de la API de Search Console las consultas diarias de efe.com.pe a un CSV y genera el dashboard con datos incrustados (`--html-out`). **Las salidas van fuera del repo**; lee la cuenta de servicio de `GOOGLE_APPLICATION_CREDENTIALS_JSON`. |
 | `grafo/ecosistema-seo.html` | Grafo visual del ecosistema: negocios, activos, datos, sistemas, acciones. Abrir en el navegador. |
 
 ## Reglas de negocio que no se tocan sin preguntar

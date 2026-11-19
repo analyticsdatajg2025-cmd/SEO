@@ -469,6 +469,7 @@ HAVING SUM(impressions) &gt;= 5</pre>
 
     const banner = $("#banner");
     if (state.demo) { banner.className = "banner"; banner.innerHTML = "<b>DATOS DE EJEMPLO, no son reales.</b> Sirven solo para ver cómo funciona el tablero. Carga el CSV diario de Search Console (filtro «Cargar CSV de GSC») para ver las cifras de efe.com.pe. Formato abajo, en «Datos y reglas»."; }
+    else if (state.meta && state.fileName === "incrustado") { const m = state.meta; banner.className = "banner ok"; banner.innerHTML = `Fuente: <b>Google Search Console</b>, propiedad <b>${esc(m.propiedad)}</b>, búsqueda web. Datos del ${m.desde} al ${m.hasta}, extraídos el ${m.extraido}. ${nf.format(m.filas_extraidas)} filas día × consulta extraídas; aquí van las ${nf.format(m.consultas_incrustadas)} consultas principales. GSC llega con 2-3 días de retraso y no reporta las consultas anonimizadas.`; }
     else { banner.className = "banner ok"; banner.innerHTML = `Fuente: <b>${state.fileName}</b> (Search Console). ${nf.format(state.rows.length)} filas día × consulta. Datos del ${state.minD} al ${state.maxD}. GSC llega con 2-3 días de retraso.`; }
 
     // KPIs
@@ -565,8 +566,15 @@ HAVING SUM(impressions) &gt;= 5</pre>
   let rt; window.addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(render, 150); });
   if (window.matchMedia) window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", render);
 
+  // ---------- datos incrustados (los pone scripts/gsc_kws_diarias.py --html-out; en el repo queda null) ----------
+  const EMBED = /*__GSC_EMBED__*/null;
+  function embedRows(e) {
+    return e.rows.map(([d, q, clicks, impressions, pos]) => ({ date: e.days[d], query: e.queries[q], q: norm(e.queries[q]), clicks, impressions, posw: pos * impressions }));
+  }
+
   buildBrandRe();
-  setData(demoData(), true);
+  if (EMBED) { state.meta = EMBED.meta; setData(embedRows(EMBED), false, "incrustado"); }
+  else setData(demoData(), true);
 })();
 </script>
 </body>
