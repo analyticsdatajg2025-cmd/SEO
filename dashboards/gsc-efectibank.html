@@ -1,0 +1,534 @@
+<title>SEO Efectibank</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Panel de control: resumen arriba (KPIs + tendencia), luego dónde se gana (grupos de URL, marca), luego el detalle. */
+:root {
+  color-scheme: light;
+  --surface-0: #f2f4f3;
+  --surface-1: #fcfdfc;
+  --border: #dde3e0;
+  --grid: #e8ecea;
+  --text-primary: #0d1311;
+  --text-secondary: #4d5753;
+  --text-muted: #77817c;
+  --series-1: #2a78d6;
+  --series-2: #eb6834;
+  --series-3: #1baf7a;
+  --accent: #00875a;
+  --accent-soft: #e3f3ec;
+  --good: #1a7f37;
+  --bad: #c62828;
+  --warn-bg: #fff4d6;
+  --warn-fg: #6b4e00;
+  --font-ui: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-head: "Space Grotesk", "Inter", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --surface-0: #0f1312;
+    --surface-1: #171c1a;
+    --border: #2a322f;
+    --grid: #222926;
+    --text-primary: #eef2f0;
+    --text-secondary: #bdc6c2;
+    --text-muted: #8a9490;
+    --series-1: #3987e5;
+    --series-2: #d95926;
+    --series-3: #199e70;
+    --accent: #2fbf87;
+    --accent-soft: #15332a;
+    --good: #4cc26a;
+    --bad: #ef6b6b;
+    --warn-bg: #3a2f10;
+    --warn-fg: #f3d27a;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --surface-0: #0f1312;
+  --surface-1: #171c1a;
+  --border: #2a322f;
+  --grid: #222926;
+  --text-primary: #eef2f0;
+  --text-secondary: #bdc6c2;
+  --text-muted: #8a9490;
+  --series-1: #3987e5;
+  --series-2: #d95926;
+  --series-3: #199e70;
+  --accent: #2fbf87;
+  --accent-soft: #15332a;
+  --good: #4cc26a;
+  --bad: #ef6b6b;
+  --warn-bg: #3a2f10;
+  --warn-fg: #f3d27a;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--surface-0); color: var(--text-primary); font: 14px/1.45 var(--font-ui); }
+.wrap { max-width: 1200px; margin: 0 auto; padding-block: 20px 48px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 12px; }
+header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+h1 { font: 600 20px/1.2 var(--font-head); margin: 0; display: flex; align-items: center; gap: 10px; text-wrap: balance; }
+h1 .marca { width: 10px; height: 22px; background: var(--accent); border-radius: 2px; flex: none; }
+h2 { font: 600 15px/1.3 var(--font-head); margin: 0 0 4px; }
+h2 small { font: 400 12px var(--font-ui); color: var(--text-muted); }
+.sub { color: var(--text-secondary); font-size: 13px; margin-top: 2px; }
+.aviso { background: var(--warn-bg); color: var(--warn-fg); border-radius: 8px; padding: 8px 12px; font-size: 13px; }
+.seg { display: inline-flex; max-width: 100%; overflow-x: auto; border: 1px solid var(--border); border-radius: 8px; background: var(--surface-1); }
+.seg button { flex: none; border: 0; background: none; color: var(--text-secondary); font: inherit; padding: 6px 12px; cursor: pointer; }
+.seg button + button { border-left: 1px solid var(--border); }
+.seg button[aria-pressed="true"] { background: var(--text-primary); color: var(--surface-1); }
+button:focus-visible, input:focus-visible, select:focus-visible, th:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.btn { font: inherit; border: 1px solid var(--border); background: var(--surface-1); color: var(--text-primary); border-radius: 8px; padding: 7px 14px; cursor: pointer; }
+.btn.prim { background: var(--accent); border-color: var(--accent); color: var(--surface-1); }
+.card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 10px; padding: 16px; min-width: 0; }
+.kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.kpi .eti { color: var(--text-secondary); font-size: 13px; display: flex; align-items: center; gap: 6px; }
+.kpi .eti i { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+.kpi .val { font: 600 28px/1.2 var(--font-head); margin: 4px 0 2px; font-variant-numeric: tabular-nums; }
+.delta { font-size: 13px; color: var(--text-muted); }
+.up { color: var(--good); font-weight: 600; }
+.down { color: var(--bad); font-weight: 600; }
+.charts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.chart svg { display: block; width: 100%; height: 190px; overflow: visible; }
+.ax { fill: var(--text-muted); font-size: 11px; }
+.gl { stroke: var(--grid); stroke-width: 1; }
+.ln { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.ar { opacity: .10; }
+.ch { stroke: var(--text-muted); stroke-width: 1; stroke-dasharray: 3 3; }
+.pt { stroke: var(--surface-1); stroke-width: 2; }
+.tip { position: fixed; pointer-events: none; z-index: 10; background: var(--surface-1); color: var(--text-primary); border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; font-size: 12px; box-shadow: 0 4px 16px rgba(0,0,0,.12); display: none; white-space: nowrap; }
+.dos { display: grid; grid-template-columns: 3fr 2fr; gap: 12px; }
+.nota { color: var(--text-muted); font-size: 12px; margin-top: 8px; }
+.scroll { overflow: auto; max-height: 560px; }
+table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+th, td { padding: 7px 8px; border-bottom: 1px solid var(--grid); text-align: right; white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; }
+td:first-child { max-width: 480px; overflow: hidden; text-overflow: ellipsis; }
+td a { color: var(--text-primary); text-decoration: none; }
+td a:hover { text-decoration: underline; }
+thead th { position: sticky; top: 0; background: var(--surface-1); z-index: 1; color: var(--text-secondary); font-weight: 600; font-size: 12px; cursor: pointer; user-select: none; }
+th[aria-sort="descending"]::after { content: " ▼"; }
+th[aria-sort="ascending"]::after { content: " ▲"; }
+tr.dinero td:first-child { font-weight: 600; }
+.chip { display: inline-block; font-size: 11px; padding: 1px 7px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); margin-left: 6px; font-weight: 600; }
+.barra { display: inline-block; height: 6px; border-radius: 3px; background: var(--series-1); vertical-align: middle; margin-right: 8px; opacity: .8; }
+.pila { display: flex; height: 14px; border-radius: 4px; overflow: hidden; margin: 10px 0 12px; background: var(--grid); }
+.pila span { display: block; height: 100%; }
+.leyenda { display: grid; gap: 6px; }
+.leyenda div { display: grid; grid-template-columns: 12px 1fr auto auto; gap: 8px; align-items: center; font-variant-numeric: tabular-nums; }
+.leyenda i { width: 10px; height: 10px; border-radius: 2px; }
+.regla { display: grid; gap: 4px; margin-top: 12px; font-size: 12px; color: var(--text-secondary); }
+input[type=search], input[type=text], select { font: inherit; padding: 6px 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface-0); color: var(--text-primary); min-width: 0; }
+.tabs { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.filtros { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.filtros label { color: var(--text-secondary); font-size: 13px; display: flex; gap: 6px; align-items: center; cursor: pointer; }
+.vacio { text-align: center; padding: 40px 16px; display: grid; gap: 12px; justify-items: center; }
+.vacio p { margin: 0; max-width: 62ch; }
+.vacio code { background: var(--surface-0); padding: 2px 6px; border-radius: 4px; font-size: 12px; }
+.acciones { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+@media (max-width: 900px) {
+  .kpis { grid-template-columns: repeat(2, 1fr); }
+  .charts, .dos { grid-template-columns: 1fr; }
+}
+@media (max-width: 480px) { .kpi .val { font-size: 22px; } }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Space+Grotesk:wght@600&display=swap">
+<script>
+// Lo reemplaza scripts/gsc_efectibank.py con los datos de Search Console. No editar a mano.
+window.GSC_DATOS = /*__GSC_EMBED__*/null;
+</script>
+<div class="wrap" id="app"></div>
+<div class="tip" id="tip"></div>
+<input type="file" id="archivo" accept=".json,application/json" hidden>
+<script>
+'use strict';
+const app = document.getElementById('app');
+const tip = document.getElementById('tip');
+const nf = new Intl.NumberFormat('es-PE');
+const pct = v => (v * 100).toLocaleString('es-PE', { minimumFractionDigits: 1, maximumFractionDigits: 2 }) + ' %';
+const pos = v => v.toLocaleString('es-PE', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+const fecha = s => new Date(s + 'T00:00:00Z').toLocaleDateString('es-PE', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+const fechaCorta = s => new Date(s + 'T00:00:00Z').toLocaleDateString('es-PE', { day: 'numeric', month: 'short', timeZone: 'UTC' });
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+const sinTildes = s => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').trim();
+
+// Consultas de marca. Misma regla que gsc-bigquery/sql/01_config_efectibank.sql (HIPÓTESIS: validar con las consultas reales).
+// "efectiva" sola no basta: choca con "tasa efectiva anual".
+const MARCA_DEF = String.raw`efect[iy] ?-?ban[ck]|(financiera|banco|caja|app|prestamos?|credito|cuenta) efectiva|^efectiva\b`;
+
+// Grupos de URL: rutas COMPROBADAS en el sitemap de efectibank.pe (19-oct-2026). Gana la primera que coincide.
+const GRUPOS = [
+  ['pruebas_basura', /^\/(test|prueba|sample-page|hello-world|20261-2|home-nuevo-efectibank|portada-marzo-2023|blog-2|simulador-de-cuotas-2|efectiva-digital-2|campana-kfc-2|category)\//],
+  ['home', /^\/$/],
+  ['prestamos', /^\/(prestamos|adquisicion-de-vivienda-nueva-avn|construccion-sitio-propio)\//],
+  ['solicitud', /^\/solicitar-prestamo\//],
+  ['simulador', /^\/simulador-de-cuotas\//],
+  ['ahorros', /^\/(ahorros|banca-preferente|landing-banca-preferente|tarjeta-debito)\//],
+  ['seguros', /^\/(seguros|segurosefectiva)\//],
+  ['agencias', /^\/agencias\//],
+  ['blog', /^\/(blog|que-es-[^/]+)\//],
+  ['promociones', /^\/(promociones-y-campanas|promociones-20[0-9]{2}|campana-[^/]+)\//],
+  ['landings', /^\/(landing[^/]*|nuevalandingsimplificada|premium|c2f|aliados-efectiva-aliados|alianzas|clientes-aliados|conoce-a-maria)\//],
+  ['servicios', /^\/(pago-de-servicios|pago-online|canales-de-pago|remesas)\//],
+  ['atencion', /^\/(preguntas-frecuentes|contactanos|procedimiento-de-atencion|derecho-de-arrepentimiento|devolucion-de-comisiones|gracias-devoluciones|actualizacion-de-datos|formulario-no-contactar|equipos-adquiridos-en-cuotas|seguridad|comunicado-[^/]+)\//],
+  ['institucional', /^\/(quienes-somos|transparencia|informacion-al-inversionista|notas-de-prensa|linea-etica|trabaja-con-nosotros|aviso-legal|politica-[^/]+|terminos-[^/]+|tratamiento-de-datos[^/]*|clausulas-grupo-efe)\//],
+];
+const NOMBRE_GRUPO = {
+  prestamos: 'Préstamos', solicitud: 'Solicitud de préstamo', simulador: 'Simulador de cuotas', ahorros: 'Ahorros y tarjeta',
+  seguros: 'Seguros', agencias: 'Agencias', blog: 'Blog y guías', promociones: 'Promociones y campañas', landings: 'Landings de pauta',
+  servicios: 'Pagos y remesas', atencion: 'Atención al cliente', institucional: 'Institucional y legal', home: 'Portada',
+  pruebas_basura: 'Pruebas y duplicados', otro_host: 'Otro dominio', otros: 'Sin regla',
+};
+// Los que generan crédito (docs/08 §2: la plata de Efectibank está en el préstamo desembolsado).
+const DINERO = new Set(['prestamos', 'solicitud', 'simulador']);
+
+function grupoDe(url) {
+  let u;
+  try { u = new URL(url); } catch { return 'otros'; }
+  if (!/(^|\.)efectibank\.pe$/i.test(u.hostname)) return 'otro_host';
+  let ruta = u.pathname.toLowerCase();
+  if (!ruta.endsWith('/')) ruta += '/';
+  for (const [g, re] of GRUPOS) if (re.test(ruta)) return g;
+  return 'otros';
+}
+
+let D = window.GSC_DATOS;
+let RANGOS = [];
+const estado = { rango: 28, tab: 'consultas', q: '', sinMarca: false, grupo: '', orden: 'clics', dir: -1, marca: MARCA_DEF };
+try { const m = localStorage.getItem('efb-marca'); if (m) estado.marca = m; } catch {}
+
+function reMarca() {
+  try { return new RegExp(estado.marca, 'i'); } catch { return null; }
+}
+
+function totales(filas) {
+  let clics = 0, impresiones = 0, sp = 0;
+  for (const f of filas) { clics += f.clics; impresiones += f.impresiones; sp += f.posicion * f.impresiones; }
+  return { clics, impresiones, ctr: impresiones ? clics / impresiones : 0, posicion: impresiones ? sp / impresiones : 0 };
+}
+function tramo(n) {
+  const d = D.diario, fin = d.length;
+  return { actual: d.slice(Math.max(0, fin - n)), previo: fin - n > 0 ? d.slice(Math.max(0, fin - 2 * n), fin - n) : [] };
+}
+function variacion(act, prev) {
+  if (prev == null || !prev) return '<span class="delta">—</span>';
+  const r = (act - prev) / prev;
+  if (Math.abs(r) < 0.0005) return '<span class="delta">=</span>';
+  return `<span class="${r > 0 ? 'up' : 'down'}">${r > 0 ? '+' : '−'}${Math.abs(r * 100).toLocaleString('es-PE', { maximumFractionDigits: 1 })} %</span>`;
+}
+function delta(act, prev, menorEsMejor, fmt) {
+  if (prev == null) return 'Sin período anterior';
+  const dif = act - prev;
+  if (Math.abs(dif) < 1e-9) return 'Igual que el período anterior';
+  const mejor = menorEsMejor ? dif < 0 : dif > 0;
+  const txt = fmt ? fmt(Math.abs(dif)) : (Math.abs(dif / prev) * 100).toLocaleString('es-PE', { maximumFractionDigits: 1 }) + ' %';
+  // La flecha dice si mejoró: en posición, bajar el número es subir en Google.
+  return `<span class="${mejor ? 'up' : 'down'}">${mejor ? '▲' : '▼'} ${menorEsMejor ? (mejor ? 'mejora ' : 'cae ') : (dif > 0 ? '+' : '−')}${txt}</span> vs. ${estado.rango} días previos`;
+}
+
+// Suma filas de páginas por grupo de URL.
+function porGrupo(paginas) {
+  const m = {};
+  for (const p of paginas || []) {
+    const g = grupoDe(p.clave);
+    const t = m[g] || (m[g] = { clics: 0, impresiones: 0, sp: 0, urls: 0 });
+    t.clics += p.clics; t.impresiones += p.impresiones; t.sp += p.posicion * p.impresiones; t.urls++;
+  }
+  return m;
+}
+// Marca / no marca / anónimas (las que GSC no muestra por privacidad = total del sitio − suma de consultas).
+function porMarca(consultas, total) {
+  const re = reMarca();
+  const r = { marca: { clics: 0, impresiones: 0 }, generica: { clics: 0, impresiones: 0 } };
+  for (const c of consultas || []) {
+    const k = re && re.test(sinTildes(c.clave)) ? 'marca' : 'generica';
+    r[k].clics += c.clics; r[k].impresiones += c.impresiones;
+  }
+  r.anonima = { clics: Math.max(0, total.clics - r.marca.clics - r.generica.clics), impresiones: Math.max(0, total.impresiones - r.marca.impresiones - r.generica.impresiones) };
+  return r;
+}
+
+function vacio() {
+  app.innerHTML = `<div class="card vacio">
+    <h1><span class="marca"></span>SEO Efectibank</h1>
+    <p>Todavía no hay datos de Search Console. Este panel se llena con <code>scripts/gsc_efectibank.py</code>, que necesita la cuenta de servicio agregada como usuario en la propiedad de efectibank.pe.</p>
+    <p class="sub"><code>python3 scripts/gsc_efectibank.py --clave ruta/clave.json --html-out ~/gsc-efectibank.html</code></p>
+    <div class="acciones"><button class="btn prim" id="b-cargar">Cargar JSON de datos</button><button class="btn" id="b-ejemplo">Ver con datos de ejemplo</button></div>
+  </div>`;
+  document.getElementById('b-cargar').onclick = () => document.getElementById('archivo').click();
+  document.getElementById('b-ejemplo').onclick = () => iniciar(ejemplo());
+}
+
+function iniciar(datos) {
+  D = datos;
+  RANGOS = Object.keys(D.tablas || {}).map(Number).sort((a, b) => a - b);
+  if (!D.diario?.length || !RANGOS.length) { vacio(); return; }
+  estado.rango = RANGOS.includes(28) ? 28 : RANGOS[0];
+  try { const r = Number(localStorage.getItem('efb-rango')); if (RANGOS.includes(r)) estado.rango = r; } catch {}
+  render();
+}
+
+function render() {
+  const { actual, previo } = tramo(estado.rango);
+  const t = totales(actual), p = previo.length === actual.length ? totales(previo) : null;
+  const tab = D.tablas[estado.rango];
+  app.innerHTML = `
+    <header>
+      <div>
+        <h1><span class="marca"></span>SEO Efectibank</h1>
+        <div class="sub">${esc(D.sitio)} · ${fecha(actual[0].fecha)} – ${fecha(actual[actual.length - 1].fecha)} · Search Console, búsqueda web · actualizado ${new Date(D.generado).toLocaleString('es-PE', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'America/Lima' })}</div>
+      </div>
+      <div class="seg" role="group" aria-label="Período">
+        ${RANGOS.map(n => `<button data-rango="${n}" aria-pressed="${n === estado.rango}">${n === 365 ? '12 meses' : n + ' días'}</button>`).join('')}
+      </div>
+    </header>
+    ${D.ejemplo ? '<div class="aviso"><b>Datos de ejemplo.</b> Cifras inventadas para ver cómo funciona el panel: no son de Efectibank. Los datos reales salen de <code>scripts/gsc_efectibank.py</code>.</div>' : ''}
+    <section class="kpis">
+      <div class="card kpi"><div class="eti"><i style="background:var(--series-1)"></i>Clics</div><div class="val">${nf.format(t.clics)}</div><div class="delta">${delta(t.clics, p?.clics)}</div></div>
+      <div class="card kpi"><div class="eti"><i style="background:var(--series-2)"></i>Impresiones</div><div class="val">${nf.format(t.impresiones)}</div><div class="delta">${delta(t.impresiones, p?.impresiones)}</div></div>
+      <div class="card kpi"><div class="eti">CTR medio</div><div class="val">${pct(t.ctr)}</div><div class="delta">${delta(t.ctr, p?.ctr, false, v => (v * 100).toLocaleString('es-PE', { maximumFractionDigits: 2 }) + ' pts')}</div></div>
+      <div class="card kpi"><div class="eti"><i style="background:var(--series-3)"></i>Posición media</div><div class="val">${pos(t.posicion)}</div><div class="delta">${delta(t.posicion, p?.posicion, true, v => pos(v) + ' pos.')}</div></div>
+    </section>
+    <section class="charts">
+      <div class="card chart"><h2>Clics por día</h2><svg id="g-clics" role="img" aria-label="Clics por día"></svg></div>
+      <div class="card chart"><h2>Impresiones por día</h2><svg id="g-impresiones" role="img" aria-label="Impresiones por día"></svg></div>
+      <div class="card chart"><h2>Posición media <small>(arriba = mejor)</small></h2><svg id="g-posicion" role="img" aria-label="Posición media por día"></svg></div>
+    </section>
+    <section class="dos">
+      <div class="card">
+        <h2>Tráfico por tipo de página <small>· vs. ${estado.rango} días previos</small></h2>
+        <div class="scroll"><table id="t-grupos"></table></div>
+        <div class="nota">Agrupado por ruta de URL con las reglas del sitemap (19-oct-2026). <span class="chip">crédito</span> marca las páginas que llevan a un préstamo: ahí está el margen (docs/08). Clic en una fila para ver sus URLs.</div>
+      </div>
+      <div class="card" id="c-marca"></div>
+    </section>
+    <section class="card">
+      <div class="tabs">
+        <div class="seg" role="tablist">
+          ${[['consultas', 'Consultas'], ['paginas', 'Páginas'], ['dispositivos', 'Dispositivos'], ['paises', 'Países']]
+            .map(([k, v]) => `<button role="tab" data-tab="${k}" aria-pressed="${k === estado.tab}">${v}</button>`).join('')}
+        </div>
+        <div class="filtros">
+          <label id="l-marca" ${estado.tab === 'consultas' ? '' : 'hidden'}><input type="checkbox" id="sin-marca" ${estado.sinMarca ? 'checked' : ''}> Ocultar consultas de marca</label>
+          <select id="f-grupo" aria-label="Tipo de página" ${estado.tab === 'paginas' ? '' : 'hidden'}>
+            <option value="">Todos los tipos de página</option>
+            ${Object.keys(NOMBRE_GRUPO).map(g => `<option value="${g}" ${g === estado.grupo ? 'selected' : ''}>${NOMBRE_GRUPO[g]}</option>`).join('')}
+          </select>
+          <input type="search" id="q" placeholder="Filtrar…" value="${esc(estado.q)}" aria-label="Filtrar filas">
+        </div>
+      </div>
+      <div class="scroll"><table id="tbl"></table></div>
+      <div class="nota">${tab.desde} → ${tab.hasta}. Son las filas que entrega Search Console (hasta 5.000 consultas); las consultas anónimas no aparecen, por eso la suma de la tabla puede ser menor que el total.</div>
+    </section>`;
+  linea('g-clics', actual, 'clics', 'var(--series-1)', v => nf.format(v), false);
+  linea('g-impresiones', actual, 'impresiones', 'var(--series-2)', v => nf.format(v), false);
+  linea('g-posicion', actual, 'posicion', 'var(--series-3)', pos, true);
+  grupos(tab);
+  marca(tab, t, p);
+  tabla();
+  app.querySelectorAll('[data-rango]').forEach(b => b.onclick = () => {
+    estado.rango = Number(b.dataset.rango);
+    try { localStorage.setItem('efb-rango', estado.rango); } catch {}
+    render();
+  });
+  app.querySelectorAll('[data-tab]').forEach(b => b.onclick = () => cambiarTab(b.dataset.tab));
+  document.getElementById('q').oninput = e => { estado.q = e.target.value; tabla(); };
+  document.getElementById('sin-marca').onchange = e => { estado.sinMarca = e.target.checked; tabla(); };
+  document.getElementById('f-grupo').onchange = e => { estado.grupo = e.target.value; tabla(); };
+}
+
+function cambiarTab(k) {
+  estado.tab = k;
+  app.querySelectorAll('[data-tab]').forEach(x => x.setAttribute('aria-pressed', x.dataset.tab === k));
+  document.getElementById('l-marca').hidden = k !== 'consultas';
+  document.getElementById('f-grupo').hidden = k !== 'paginas';
+  tabla();
+}
+
+function grupos(tab) {
+  const act = porGrupo(tab.paginas), prev = tab.previo ? porGrupo(tab.previo.paginas) : null;
+  const filas = Object.entries(act).map(([g, v]) => ({ g, ...v })).sort((a, b) => b.clics - a.clics);
+  const max = Math.max(1, ...filas.map(f => f.clics));
+  document.getElementById('t-grupos').innerHTML = `<thead><tr><th>Tipo de página</th><th>URLs</th><th>Clics</th><th>Δ clics</th><th>Impresiones</th><th>CTR</th><th>Posición</th></tr></thead><tbody>${
+    filas.map(f => `<tr class="${DINERO.has(f.g) ? 'dinero' : ''}" data-grupo="${f.g}" style="cursor:pointer">
+      <td>${NOMBRE_GRUPO[f.g] || f.g}${DINERO.has(f.g) ? '<span class="chip">crédito</span>' : ''}</td>
+      <td>${nf.format(f.urls)}</td>
+      <td><span class="barra" style="width:${Math.round(f.clics / max * 60)}px"></span>${nf.format(f.clics)}</td>
+      <td>${prev ? variacion(f.clics, prev[f.g]?.clics) : '—'}</td>
+      <td>${nf.format(f.impresiones)}</td>
+      <td>${pct(f.impresiones ? f.clics / f.impresiones : 0)}</td>
+      <td>${pos(f.impresiones ? f.sp / f.impresiones : 0)}</td></tr>`).join('') || '<tr><td colspan="7">Sin páginas en este período.</td></tr>'
+  }</tbody>`;
+  document.querySelectorAll('#t-grupos [data-grupo]').forEach(tr => tr.onclick = () => {
+    estado.grupo = tr.dataset.grupo; estado.q = '';
+    document.getElementById('f-grupo').value = estado.grupo;
+    document.getElementById('q').value = '';
+    cambiarTab('paginas');
+    document.getElementById('tbl').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+}
+
+function marca(tab, t, p) {
+  const act = porMarca(tab.consultas, t);
+  const prev = tab.previo && p ? porMarca(tab.previo.consultas, p) : null;
+  const seg = [['marca', 'De marca', 'var(--series-1)'], ['generica', 'Sin marca (genéricas)', 'var(--series-3)'], ['anonima', 'Anónimas (GSC no las muestra)', 'var(--text-muted)']];
+  const tot = Math.max(1, t.clics);
+  document.getElementById('c-marca').innerHTML = `
+    <h2>Marca vs. sin marca <small>· clics</small></h2>
+    <div class="pila" role="img" aria-label="Reparto de clics">${seg.map(([k, , c]) => `<span style="width:${act[k].clics / tot * 100}%;background:${c}"></span>`).join('')}</div>
+    <div class="leyenda">${seg.map(([k, n, c]) => `<div><i style="background:${c}"></i><span>${n}</span><b>${nf.format(act[k].clics)}</b>${prev ? variacion(act[k].clics, prev[k].clics) : '<span></span>'}</div>`).join('')}</div>
+    <div class="nota">Lo genérico es lo que trae clientes nuevos que todavía no conocen Efectibank («préstamo para moto», «depósito a plazo»).</div>
+    <label class="regla" for="re-marca">Regla de marca (expresión regular, sin tildes)
+      <input type="text" id="re-marca" value="${esc(estado.marca)}" spellcheck="false">
+    </label>
+    <div class="nota" id="re-estado">${reMarca() ? (estado.marca === MARCA_DEF ? 'Regla por defecto (HIPÓTESIS: validar con las consultas reales).' : 'Regla editada en este navegador. <button class="btn" id="re-reset" style="padding:2px 8px">Volver a la de defecto</button>') : '<span class="down">La expresión no es válida.</span>'}</div>`;
+  const inp = document.getElementById('re-marca');
+  inp.onchange = () => {
+    estado.marca = inp.value.trim() || MARCA_DEF;
+    try { localStorage.setItem('efb-marca', estado.marca); } catch {}
+    marca(tab, t, p); tabla();
+  };
+  const rs = document.getElementById('re-reset');
+  if (rs) rs.onclick = () => { estado.marca = MARCA_DEF; try { localStorage.removeItem('efb-marca'); } catch {} marca(tab, t, p); tabla(); };
+}
+
+function tabla() {
+  const tab = D.tablas[estado.rango];
+  let filas = (tab[estado.tab] || []).slice();
+  const prevIdx = new Map((tab.previo?.[estado.tab] || []).map(f => [f.clave, f]));
+  const re = reMarca();
+  if (estado.tab === 'consultas' && estado.sinMarca && re) filas = filas.filter(f => !re.test(sinTildes(f.clave)));
+  if (estado.tab === 'paginas' && estado.grupo) filas = filas.filter(f => grupoDe(f.clave) === estado.grupo);
+  const q = sinTildes(estado.q);
+  if (q) filas = filas.filter(f => sinTildes(f.clave).includes(q));
+  const col = estado.orden;
+  filas.sort((a, b) => col === 'clave' ? estado.dir * a.clave.localeCompare(b.clave) : estado.dir * ((a[col] ?? 0) - (b[col] ?? 0)));
+  const max = Math.max(1, ...filas.map(f => f.clics));
+  const nombre = { consultas: 'Consulta', paginas: 'Página', dispositivos: 'Dispositivo', paises: 'País' }[estado.tab];
+  const cols = [['clave', nombre], ['clics', 'Clics'], ['delta', 'Δ clics'], ['impresiones', 'Impresiones'], ['ctr', 'CTR'], ['posicion', 'Posición']];
+  const celda = f => {
+    if (estado.tab === 'paginas') {
+      let ruta = f.clave; try { ruta = new URL(f.clave).pathname; } catch {}
+      return `<a href="${esc(f.clave)}" target="_blank" rel="noopener" title="${esc(f.clave)}">${esc(ruta)}</a>`;
+    }
+    if (estado.tab === 'dispositivos') return esc({ MOBILE: 'Móvil', DESKTOP: 'Computadora', TABLET: 'Tablet' }[f.clave] || f.clave);
+    if (estado.tab === 'paises') return esc(f.clave.toUpperCase());
+    return esc(f.clave);
+  };
+  const vista = filas.slice(0, 500);
+  document.getElementById('tbl').innerHTML = `<thead><tr>${cols.map(([k, v]) => k === 'delta' ? `<th>${v}</th>` :
+    `<th tabindex="0" data-orden="${k}" ${k === col ? `aria-sort="${estado.dir < 0 ? 'descending' : 'ascending'}"` : ''}>${v}</th>`).join('')}</tr></thead>
+    <tbody>${vista.map(f => `<tr><td>${celda(f)}</td>
+      <td><span class="barra" style="width:${Math.round(f.clics / max * 60)}px"></span>${nf.format(f.clics)}</td>
+      <td>${tab.previo ? variacion(f.clics, prevIdx.get(f.clave)?.clics) : '—'}</td>
+      <td>${nf.format(f.impresiones)}</td><td>${pct(f.ctr)}</td><td>${pos(f.posicion)}</td></tr>`).join('') ||
+      '<tr><td colspan="6">Ninguna fila coincide con el filtro.</td></tr>'}
+    ${filas.length > vista.length ? `<tr><td colspan="6" class="nota">Se muestran 500 de ${nf.format(filas.length)} filas. Usa el filtro para encontrar el resto.</td></tr>` : ''}</tbody>`;
+  document.querySelectorAll('#tbl th[data-orden]').forEach(th => {
+    const ordenar = () => {
+      const k = th.dataset.orden;
+      estado.dir = estado.orden === k ? -estado.dir : (k === 'clave' || k === 'posicion' ? 1 : -1);
+      estado.orden = k; tabla();
+    };
+    th.onclick = ordenar;
+    th.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); ordenar(); } };
+  });
+}
+
+function tickPaso(rango, n) {
+  const bruto = rango / n || 1, mag = Math.pow(10, Math.floor(Math.log10(bruto))), r = bruto / mag;
+  return (r <= 1 ? 1 : r <= 2 ? 2 : r <= 2.5 ? 2.5 : r <= 5 ? 5 : 10) * mag;
+}
+// Línea con área tenue, eje Y en ticks redondos y crosshair con tooltip.
+function linea(id, filas, campo, color, fmt, invertido) {
+  const svg = document.getElementById(id);
+  const W = svg.clientWidth || 360, H = 190, m = { t: 8, r: 8, b: 22, l: 48 };
+  const iw = W - m.l - m.r, ih = H - m.t - m.b;
+  const vals = filas.map(f => f[campo]);
+  let lo = invertido ? Math.min(...vals) : 0, hi = Math.max(...vals);
+  if (invertido) { const pad = (hi - lo) * 0.1 || 1; lo = Math.max(1, lo - pad); hi = hi + pad; }
+  const paso = tickPaso(hi - lo, 4);
+  lo = Math.floor(lo / paso) * paso; hi = Math.ceil(hi / paso) * paso || paso;
+  if (hi === lo) hi = lo + paso;
+  const x = i => m.l + (filas.length > 1 ? i / (filas.length - 1) : 0.5) * iw;
+  const y = v => invertido ? m.t + (v - lo) / (hi - lo) * ih : m.t + ih - (v - lo) / (hi - lo) * ih;
+  const ticks = []; for (let v = lo; v <= hi + 1e-9; v += paso) ticks.push(v);
+  const path = filas.map((f, i) => (i ? 'L' : 'M') + x(i).toFixed(1) + ',' + y(f[campo]).toFixed(1)).join('');
+  const base = invertido ? m.t + ih : y(lo);
+  const nx = Math.min(filas.length, Math.max(2, Math.floor(iw / 70)));
+  const xt = []; for (let k = 0; k < nx; k++) xt.push(Math.round(k * (filas.length - 1) / (nx - 1)));
+  const ult = filas.length - 1;
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  svg.innerHTML = `
+    ${ticks.map(v => `<line class="gl" x1="${m.l}" x2="${W - m.r}" y1="${y(v)}" y2="${y(v)}"/><text class="ax" x="${m.l - 6}" y="${y(v) + 4}" text-anchor="end">${fmt(v)}</text>`).join('')}
+    ${xt.map((i, k) => `<text class="ax" x="${x(i)}" y="${H - 4}" text-anchor="${k === 0 ? 'start' : k === xt.length - 1 ? 'end' : 'middle'}">${fechaCorta(filas[i].fecha)}</text>`).join('')}
+    <path class="ar" fill="${color}" d="${path}L${x(ult).toFixed(1)},${base}L${x(0).toFixed(1)},${base}Z"/>
+    <path class="ln" stroke="${color}" d="${path}"/>
+    <circle class="pt" fill="${color}" r="4" cx="${x(ult)}" cy="${y(filas[ult][campo])}"/>
+    <line class="ch" id="${id}-ch" y1="${m.t}" y2="${m.t + ih}" visibility="hidden"/>
+    <circle class="pt" id="${id}-pt" fill="${color}" r="4" visibility="hidden"/>
+    <rect x="${m.l}" y="${m.t}" width="${iw}" height="${ih}" fill="transparent"/>`;
+  const ch = document.getElementById(id + '-ch'), pt = document.getElementById(id + '-pt');
+  svg.onpointermove = e => {
+    const r = svg.getBoundingClientRect();
+    const px = (e.clientX - r.left) * W / r.width;
+    const i = Math.max(0, Math.min(ult, Math.round((px - m.l) / iw * ult)));
+    const f = filas[i];
+    ch.setAttribute('x1', x(i)); ch.setAttribute('x2', x(i)); ch.setAttribute('visibility', 'visible');
+    pt.setAttribute('cx', x(i)); pt.setAttribute('cy', y(f[campo])); pt.setAttribute('visibility', 'visible');
+    tip.innerHTML = `${fecha(f.fecha)}<br><b>${fmt(f[campo])}</b>`;
+    tip.style.display = 'block';
+    tip.style.left = Math.min(window.innerWidth - tip.offsetWidth - 8, e.clientX + 12) + 'px';
+    tip.style.top = (e.clientY - 40) + 'px';
+  };
+  svg.onpointerleave = () => { ch.setAttribute('visibility', 'hidden'); pt.setAttribute('visibility', 'hidden'); tip.style.display = 'none'; };
+}
+
+// Datos de EJEMPLO, generados aquí mismo y marcados en pantalla. No son cifras de Efectibank.
+function ejemplo() {
+  let s = 7; const rnd = () => (s = (s * 16807) % 2147483647) / 2147483647;
+  const hoy = new Date(); hoy.setUTCHours(0, 0, 0, 0); hoy.setUTCDate(hoy.getUTCDate() - 3);
+  const diario = [];
+  for (let i = 400; i >= 0; i--) {
+    const d = new Date(hoy); d.setUTCDate(d.getUTCDate() - i);
+    const finde = [0, 6].includes(d.getUTCDay()) ? 0.75 : 1;
+    const impresiones = Math.round((9000 + (400 - i) * 6) * finde * (0.9 + rnd() * 0.2));
+    const ctr = 0.045 + rnd() * 0.01, clics = Math.round(impresiones * ctr);
+    diario.push({ fecha: d.toISOString().slice(0, 10), clics, impresiones, ctr: +(clics / impresiones).toFixed(4), posicion: +(9 + rnd() * 1.5 - (400 - i) / 400).toFixed(1) });
+  }
+  const consultasBase = ['efectibank', 'efectiva', 'financiera efectiva', 'efectibank prestamos', 'prestamo efectivo', 'prestamos para motos', 'prestamo para moto', 'credito para electrodomesticos', 'deposito a plazo', 'cuenta de ahorros sueldo', 'simulador de prestamos', 'prestamo con garantia liquida', 'agencias efectiva', 'efectibank telefono', 'tasa efectiva anual', 'que es la tcea', 'prestamo mivivienda', 'seguro de vida barato', 'como pagar efectibank', 'prestamo rapido lima'];
+  const paginasBase = ['/', '/prestamos/prestamo/prestamo-efectivo/', '/prestamos/prestamo/prestamo-motos/', '/prestamos/prestamo/prestamo-electro/', '/solicitar-prestamo/', '/simulador-de-cuotas/', '/ahorros/deposito-a-plazo/', '/ahorros/cuenta-de-ahorros/', '/seguros/vida/', '/agencias/', '/que-es-la-tcea/', '/promociones-y-campanas/', '/campana-kfc/', '/pago-online/', '/preguntas-frecuentes/', '/quienes-somos/', '/test/'];
+  const tablaDe = (lista, total, pref) => lista.map((k, i) => {
+    const peso = 1 / (i + 1.5), impresiones = Math.round(total * peso * 0.6 * (0.8 + rnd() * 0.4));
+    const clics = Math.round(impresiones * (0.02 + rnd() * 0.08));
+    return { clave: pref + k, clics, impresiones, ctr: +(clics / Math.max(1, impresiones)).toFixed(4), posicion: +(2 + i * 0.8 + rnd() * 3).toFixed(1) };
+  }).sort((a, b) => b.clics - a.clics);
+  const tablas = {};
+  for (const n of [7, 28, 90, 365]) {
+    const act = diario.slice(-n), prev = diario.slice(-2 * n, -n);
+    const sum = a => a.reduce((x, f) => x + f.impresiones, 0);
+    const hacer = (tramo) => ({
+      desde: tramo[0].fecha, hasta: tramo[tramo.length - 1].fecha,
+      consultas: tablaDe(consultasBase, sum(tramo), ''),
+      paginas: tablaDe(paginasBase, sum(tramo), 'https://www.efectibank.pe'),
+      dispositivos: tablaDe(['MOBILE', 'DESKTOP', 'TABLET'], sum(tramo) * 1.4, ''),
+      paises: tablaDe(['per', 'usa', 'esp', 'chl'], sum(tramo) * 1.5, ''),
+    });
+    tablas[n] = hacer(act);
+    if (prev.length === n) tablas[n].previo = hacer(prev);
+  }
+  return { ejemplo: true, sitio: 'sc-domain:efectibank.pe (EJEMPLO)', generado: new Date().toISOString(), diario, tablas };
+}
+
+document.getElementById('archivo').onchange = e => {
+  const f = e.target.files[0]; if (!f) return;
+  const lector = new FileReader();
+  lector.onload = () => {
+    try { iniciar(JSON.parse(lector.result)); }
+    catch { app.insertAdjacentHTML('afterbegin', '<div class="aviso">El archivo no es un JSON de <code>gsc_efectibank.py --json-out</code>. Vuelve a generarlo.</div>'); }
+  };
+  lector.readAsText(f);
+};
+window.addEventListener('resize', () => { if (D?.diario) render(); });
+D ? iniciar(D) : vacio();
+</script>
