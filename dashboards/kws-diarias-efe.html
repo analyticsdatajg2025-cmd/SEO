@@ -1,0 +1,573 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Keywords diarias EFE</title>
+<style>
+:root {
+  color-scheme: light;
+  --bg: #f6f6f4;
+  --surface-1: #fcfcfb;
+  --border: #e3e2de;
+  --grid: #ecebe7;
+  --text-primary: #0b0b0b;
+  --text-secondary: #52514e;
+  --text-muted: #7a7974;
+  --marca: #2a78d6;
+  --generica: #eb6834;
+  --warn-bg: #fff4d6;
+  --warn-border: #fab219;
+  --accent: #2a78d6;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #111110;
+    --surface-1: #1a1a19;
+    --border: #2f2f2c;
+    --grid: #262624;
+    --text-primary: #f0efec;
+    --text-secondary: #c3c2b7;
+    --text-muted: #8f8e86;
+    --marca: #3987e5;
+    --generica: #d95926;
+    --warn-bg: #2e2610;
+    --warn-border: #c98500;
+    --accent: #3987e5;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #111110;
+  --surface-1: #1a1a19;
+  --border: #2f2f2c;
+  --grid: #262624;
+  --text-primary: #f0efec;
+  --text-secondary: #c3c2b7;
+  --text-muted: #8f8e86;
+  --marca: #3987e5;
+  --generica: #d95926;
+  --warn-bg: #2e2610;
+  --warn-border: #c98500;
+  --accent: #3987e5;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--text-primary);
+  font: 14px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+.wrap { max-width: 1280px; margin: 0 auto; padding: 20px 16px 48px; }
+header h1 { font-size: 22px; margin: 0 0 4px; }
+header p { margin: 0; color: var(--text-secondary); }
+.banner {
+  margin: 14px 0; padding: 10px 14px; border-radius: 8px;
+  background: var(--warn-bg); border: 1px solid var(--warn-border); color: var(--text-primary);
+}
+.banner.ok { background: var(--surface-1); border-color: var(--border); }
+.filters {
+  display: flex; flex-wrap: wrap; gap: 12px 16px; align-items: flex-end;
+  background: var(--surface-1); border: 1px solid var(--border); border-radius: 10px;
+  padding: 12px 14px; margin: 14px 0; position: sticky; top: 0; z-index: 5;
+}
+.f { display: flex; flex-direction: column; gap: 4px; }
+.f label, .f .lbl { font-size: 12px; color: var(--text-secondary); }
+input[type=date], select, input[type=text] {
+  font: inherit; color: var(--text-primary); background: var(--bg);
+  border: 1px solid var(--border); border-radius: 6px; padding: 5px 8px; min-height: 32px;
+}
+input[type=text] { min-width: 220px; }
+.seg { display: inline-flex; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+.seg button {
+  font: inherit; border: 0; background: var(--bg); color: var(--text-secondary);
+  padding: 5px 11px; min-height: 32px; cursor: pointer; border-right: 1px solid var(--border);
+}
+.seg button:last-child { border-right: 0; }
+.seg button[aria-pressed=true] { background: var(--accent); color: #fff; }
+.btn {
+  font: inherit; border: 1px solid var(--border); background: var(--bg); color: var(--text-primary);
+  border-radius: 6px; padding: 5px 11px; min-height: 32px; cursor: pointer;
+}
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin: 14px 0; }
+.kpi { background: var(--surface-1); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; }
+.kpi .k { font-size: 12px; color: var(--text-secondary); display: flex; align-items: center; gap: 6px; }
+.kpi .v { font-size: 24px; font-weight: 600; margin-top: 2px; font-variant-numeric: tabular-nums; }
+.kpi .d { font-size: 12px; color: var(--text-muted); }
+.dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; flex: none; }
+.card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 10px; padding: 14px; margin: 14px 0; }
+.card h2 { font-size: 16px; margin: 0 0 2px; }
+.card .sub { color: var(--text-secondary); font-size: 12px; margin: 0 0 10px; }
+.legend { display: flex; gap: 16px; font-size: 12px; color: var(--text-secondary); margin-bottom: 6px; }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.grid10 { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 10px; }
+.mini { border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px 4px; position: relative; }
+.mini .t { display: flex; justify-content: space-between; gap: 8px; font-size: 13px; }
+.mini .t b { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mini .t i { font-style: normal; color: var(--text-secondary); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.mini .rk { color: var(--text-muted); font-size: 11px; }
+svg { display: block; width: 100%; overflow: visible; }
+svg text { fill: var(--text-muted); font-size: 10px; font-family: inherit; }
+.tip {
+  position: fixed; pointer-events: none; z-index: 20; display: none;
+  background: var(--surface-1); color: var(--text-primary); border: 1px solid var(--border);
+  border-radius: 6px; padding: 6px 9px; font-size: 12px; box-shadow: 0 4px 14px rgba(0,0,0,.12);
+  font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+table { width: 100%; border-collapse: collapse; font-size: 13px; font-variant-numeric: tabular-nums; }
+th, td { text-align: right; padding: 6px 8px; border-bottom: 1px solid var(--grid); }
+th:nth-child(-n+3), td:nth-child(-n+3) { text-align: left; }
+th { color: var(--text-secondary); font-weight: 500; font-size: 12px; }
+.tablewrap { overflow-x: auto; }
+details { margin-top: 10px; color: var(--text-secondary); }
+details pre { background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 10px; overflow-x: auto; font-size: 12px; color: var(--text-primary); }
+.empty { color: var(--text-muted); padding: 20px 0; }
+.hidden { display: none !important; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Top keywords diarias · Tiendas EFE</h1>
+    <p>Top 10 de marca y top 10 genéricas de efe.com.pe, evolución por día. Fuente: Google Search Console (export diario por consulta).</p>
+  </header>
+
+  <div id="banner" class="banner"></div>
+
+  <div class="filters" role="group" aria-label="Filtros">
+    <div class="f">
+      <label for="dFrom">Desde</label>
+      <input type="date" id="dFrom">
+    </div>
+    <div class="f">
+      <label for="dTo">Hasta</label>
+      <input type="date" id="dTo">
+    </div>
+    <div class="f">
+      <span class="lbl">Rango rápido</span>
+      <div class="seg" id="presets">
+        <button data-days="7">7 d</button>
+        <button data-days="28">28 d</button>
+        <button data-days="90">90 d</button>
+        <button data-days="0">Todo</button>
+      </div>
+    </div>
+    <div class="f">
+      <span class="lbl">Tipo de keyword</span>
+      <div class="seg" id="tipo">
+        <button data-v="ambas" aria-pressed="true">Ambas</button>
+        <button data-v="marca">Marca</button>
+        <button data-v="generica">Genéricas</button>
+      </div>
+    </div>
+    <div class="f">
+      <label for="metric">Métrica</label>
+      <select id="metric">
+        <option value="clicks">Clics</option>
+        <option value="impressions">Impresiones</option>
+        <option value="ctr">CTR</option>
+        <option value="position">Posición media</option>
+      </select>
+    </div>
+    <div class="f">
+      <label for="rankBy">Top 10 según</label>
+      <select id="rankBy">
+        <option value="clicks">Clics del rango</option>
+        <option value="impressions">Impresiones del rango</option>
+      </select>
+    </div>
+    <div class="f">
+      <span class="lbl">Escala de las mini gráficas</span>
+      <div class="seg" id="scale">
+        <button data-v="shared" aria-pressed="true">Común</button>
+        <button data-v="own">Propia</button>
+      </div>
+    </div>
+    <div class="f">
+      <label for="file">Cargar CSV de GSC</label>
+      <input type="file" id="file" accept=".csv,text/csv">
+    </div>
+  </div>
+
+  <div class="kpis" id="kpis"></div>
+
+  <section class="card" id="overview">
+    <h2 id="ovTitle">Top 10 de marca vs top 10 genéricas, por día</h2>
+    <p class="sub" id="ovSub"></p>
+    <div class="legend" id="ovLegend"></div>
+    <div id="ovChart"></div>
+  </section>
+
+  <section class="card" id="secMarca">
+    <h2>Top 10 keywords de marca</h2>
+    <p class="sub" id="subMarca"></p>
+    <div class="grid10" id="gridMarca"></div>
+  </section>
+
+  <section class="card" id="secGen">
+    <h2>Top 10 keywords genéricas</h2>
+    <p class="sub" id="subGen"></p>
+    <div class="grid10" id="gridGen"></div>
+  </section>
+
+  <section class="card">
+    <h2>Tabla del rango</h2>
+    <p class="sub">Totales del rango seleccionado. Variación = segunda mitad del rango vs primera mitad, en la métrica elegida.</p>
+    <div class="tablewrap"><table id="tbl"></table></div>
+  </section>
+
+  <section class="card">
+    <h2>Datos y reglas</h2>
+    <div class="f" style="max-width:560px">
+      <label for="brandRe">Regla de marca (expresión regular, sin mayúsculas ni tildes)</label>
+      <input type="text" id="brandRe" value="\befe\b|tiendas ?efe|efe\.com|tiendaefe">
+    </div>
+    <details>
+      <summary>Formato del CSV que acepta</summary>
+      <p>Una fila por día y consulta. Columnas (encabezados en inglés o español, en cualquier orden):
+        <code>date/fecha</code>, <code>query/consulta</code>, <code>clicks/clics</code>, <code>impressions/impresiones</code>, y
+        <code>position/posicion</code> <em>o</em> <code>sum_top_position</code> (export masivo a BigQuery). CTR se calcula.
+        Separador coma o punto y coma. El archivo se lee en el navegador; no se sube a ningún lado.</p>
+      <p>El informe de Rendimiento de la interfaz de GSC no exporta día × consulta; hay que sacarlo por la API, Looker Studio o el export masivo a BigQuery. Consulta para el export masivo:</p>
+<pre>SELECT
+  data_date AS date,
+  query,
+  SUM(clicks) AS clicks,
+  SUM(impressions) AS impressions,
+  SUM(sum_top_position) AS sum_top_position
+FROM `PROYECTO.searchconsole.searchdata_site_impression`
+WHERE site_url = 'sc-domain:efe.com.pe'   -- o la propiedad que corresponda
+  AND data_date &gt;= DATE_SUB(CURRENT_DATE(), INTERVAL 120 DAY)
+  AND query IS NOT NULL
+GROUP BY 1, 2
+HAVING SUM(impressions) &gt;= 5</pre>
+      <p>Con el CSV no se guarda nada en el repo (regla: no subir datos crudos). Guárdalo en Drive.</p>
+    </details>
+  </section>
+</div>
+<div class="tip" id="tip"></div>
+
+<script>
+(function () {
+  "use strict";
+  const $ = (s) => document.querySelector(s);
+  const tip = $("#tip");
+  const state = { rows: [], demo: true, from: null, to: null, tipo: "ambas", metric: "clicks", rankBy: "clicks", scale: "shared", brandRe: null, fileName: "" };
+
+  // ---------- utilidades ----------
+  const norm = (s) => String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").trim();
+  const iso = (d) => d.toISOString().slice(0, 10);
+  const addDays = (s, n) => { const d = new Date(s + "T00:00:00Z"); d.setUTCDate(d.getUTCDate() + n); return iso(d); };
+  const daysBetween = (a, b) => { const out = []; for (let d = a; d <= b; d = addDays(d, 1)) out.push(d); return out; };
+  const nf = new Intl.NumberFormat("es-PE");
+  const nf1 = new Intl.NumberFormat("es-PE", { maximumFractionDigits: 1, minimumFractionDigits: 1 });
+  const fmt = (m, v) => {
+    if (v == null || isNaN(v)) return "–";
+    if (m === "ctr") return nf1.format(v * 100) + "%";
+    if (m === "position") return nf1.format(v);
+    if (Math.abs(v) >= 10000) return nf.format(Math.round(v / 100) / 10) + " mil";
+    return nf.format(Math.round(v));
+  };
+  const fmtDate = (s) => { const [y, m, d] = s.split("-"); return d + "/" + m; };
+  const metricName = { clicks: "Clics", impressions: "Impresiones", ctr: "CTR", position: "Posición media" };
+  const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+
+  function buildBrandRe() {
+    try { state.brandRe = new RegExp($("#brandRe").value, "i"); $("#brandRe").style.borderColor = ""; }
+    catch (e) { $("#brandRe").style.borderColor = "#d03b3b"; }
+  }
+  const isBrand = (q) => state.brandRe.test(q);
+
+  // ---------- datos de ejemplo (NO reales) ----------
+  function demoData() {
+    let seed = 7;
+    const rnd = () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; };
+    const marca = [["efe",900],["tiendas efe",640],["efe peru",310],["efe ofertas",220],["efe celulares",180],["efe televisores",150],["tienda efe cerca de mi",120],["efe catalogo",95],["efe lavadoras",80],["efe credito",70],["efe motos",55],["efe laptops",45]];
+    const gen = [["televisores",260],["refrigeradoras",210],["lavadoras",190],["celulares baratos",170],["smart tv 55 pulgadas",140],["colchones",120],["cocinas a gas",110],["laptops",95],["motos lineales",85],["aire acondicionado",70],["ventiladores",60],["licuadoras",50]];
+    const end = iso(new Date(Date.UTC(2026, 10, 17)));
+    const start = addDays(end, -119);
+    const rows = [];
+    const days = daysBetween(start, end);
+    const cyber = (d) => (d >= "2026-11-03" && d <= "2026-11-07") ? 3.2 : (d >= "2026-07-14" && d <= "2026-07-17" ? 2.4 : 1);
+    days.forEach((d, i) => {
+      const dow = new Date(d + "T00:00:00Z").getUTCDay();
+      const wk = dow === 0 || dow === 6 ? 0.85 : 1;
+      [[marca, true], [gen, false]].forEach(([list, br]) => list.forEach(([q, base], j) => {
+        const trend = br ? 1 + 0.15 * Math.sin(i / 20 + j) : 1 + (q === "ventiladores" || q === "aire acondicionado" ? i / 90 : 0.1 * Math.sin(i / 15 + j));
+        const clicks = Math.max(0, Math.round(base * wk * cyber(d) * trend * (0.8 + 0.4 * rnd())));
+        const ctr = br ? 0.25 + 0.15 * rnd() : 0.03 + 0.04 * rnd();
+        const impressions = Math.max(clicks, Math.round(clicks / ctr));
+        const position = br ? 1 + rnd() * 1.5 : 4 + j * 0.6 + rnd() * 3 - (cyber(d) > 1 ? 1 : 0);
+        rows.push({ date: d, query: q, q: norm(q), clicks, impressions, posw: position * impressions });
+      }));
+    });
+    return rows;
+  }
+
+  // ---------- CSV ----------
+  function parseCSV(text) {
+    text = text.replace(/^﻿/, "");
+    const first = text.split(/\r?\n/, 1)[0];
+    const sep = (first.match(/;/g) || []).length > (first.match(/,/g) || []).length ? ";" : (first.includes("\t") ? "\t" : ",");
+    const out = []; let row = [], cur = "", q = false;
+    for (let i = 0; i < text.length; i++) {
+      const c = text[i];
+      if (q) { if (c === '"') { if (text[i + 1] === '"') { cur += '"'; i++; } else q = false; } else cur += c; }
+      else if (c === '"') q = true;
+      else if (c === sep) { row.push(cur); cur = ""; }
+      else if (c === "\n" || c === "\r") { if (c === "\r" && text[i + 1] === "\n") i++; row.push(cur); out.push(row); row = []; cur = ""; }
+      else cur += c;
+    }
+    if (cur || row.length) { row.push(cur); out.push(row); }
+    return out.filter((r) => r.some((x) => x.trim() !== ""));
+  }
+  const num = (s) => {
+    s = String(s == null ? "" : s).trim().replace(/%$/, "");
+    if (/^-?\d{1,3}(\.\d{3})+(,\d+)?$/.test(s)) s = s.replace(/\./g, "").replace(",", ".");
+    else if (/^-?\d+,\d+$/.test(s)) s = s.replace(",", ".");
+    else s = s.replace(/,/g, "");
+    const v = parseFloat(s); return isNaN(v) ? 0 : v;
+  };
+  function toISODate(s) {
+    s = String(s).trim();
+    let m = s.match(/^(\d{4})-(\d{2})-(\d{2})/); if (m) return m[1] + "-" + m[2] + "-" + m[3];
+    m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/); if (m) return m[3] + "-" + m[2].padStart(2, "0") + "-" + m[1].padStart(2, "0");
+    m = s.match(/^(\d{4})(\d{2})(\d{2})$/); if (m) return m[1] + "-" + m[2] + "-" + m[3];
+    return null;
+  }
+  function loadCSV(text) {
+    const t = parseCSV(text);
+    if (t.length < 2) throw new Error("El archivo está vacío.");
+    const h = t[0].map(norm);
+    const find = (...names) => h.findIndex((x) => names.includes(x));
+    const iD = find("date", "fecha", "data_date", "dia", "day");
+    const iQ = find("query", "consulta", "top queries", "consultas principales", "keyword", "search query");
+    const iC = find("clicks", "clics", "clic");
+    const iI = find("impressions", "impresiones");
+    const iP = find("position", "posicion", "avg position", "average position", "posicion media");
+    const iS = find("sum_top_position");
+    if (iD < 0 || iQ < 0 || iC < 0 || iI < 0) throw new Error("Faltan columnas. Se necesitan: fecha, consulta, clics, impresiones (y posición o sum_top_position). Encabezados leídos: " + t[0].join(", "));
+    const agg = new Map();
+    for (let r = 1; r < t.length; r++) {
+      const row = t[r]; const d = toISODate(row[iD]); const query = (row[iQ] || "").trim();
+      if (!d || !query) continue;
+      const impressions = num(row[iI]); const clicks = num(row[iC]);
+      let posw = 0;
+      if (iS >= 0) posw = num(row[iS]) + impressions; // GSC: posición = sum_top_position / impresiones + 1
+      else if (iP >= 0) posw = num(row[iP]) * impressions;
+      const qn = norm(query); const k = d + "|" + qn;
+      const a = agg.get(k) || { date: d, query, q: qn, clicks: 0, impressions: 0, posw: 0 };
+      a.clicks += clicks; a.impressions += impressions; a.posw += posw; agg.set(k, a);
+    }
+    const rows = [...agg.values()];
+    if (!rows.length) throw new Error("No se encontraron filas válidas (revisa el formato de fecha).");
+    return rows;
+  }
+
+  // ---------- cálculo ----------
+  const value = (m, a) => m === "clicks" ? a.clicks : m === "impressions" ? a.impressions
+    : m === "ctr" ? (a.impressions ? a.clicks / a.impressions : null)
+    : (a.impressions ? a.posw / a.impressions : null);
+
+  function compute() {
+    const { from, to } = state;
+    const inRange = state.rows.filter((r) => r.date >= from && r.date <= to);
+    const days = daysBetween(from, to);
+    const byQ = new Map();
+    inRange.forEach((r) => {
+      let e = byQ.get(r.q);
+      if (!e) { e = { q: r.q, query: r.query, brand: isBrand(r.q), clicks: 0, impressions: 0, posw: 0, daily: new Map() }; byQ.set(r.q, e); }
+      e.clicks += r.clicks; e.impressions += r.impressions; e.posw += r.posw;
+      const dd = e.daily.get(r.date) || { clicks: 0, impressions: 0, posw: 0 };
+      dd.clicks += r.clicks; dd.impressions += r.impressions; dd.posw += r.posw; e.daily.set(r.date, dd);
+    });
+    const all = [...byQ.values()];
+    const rank = (a, b) => b[state.rankBy] - a[state.rankBy] || b.clicks - a.clicks;
+    const topM = all.filter((e) => e.brand).sort(rank).slice(0, 10);
+    const topG = all.filter((e) => !e.brand).sort(rank).slice(0, 10);
+    const sumGroup = (list) => days.map((d) => {
+      const a = { clicks: 0, impressions: 0, posw: 0 };
+      list.forEach((e) => { const x = e.daily.get(d); if (x) { a.clicks += x.clicks; a.impressions += x.impressions; a.posw += x.posw; } });
+      return a;
+    });
+    const half = (e) => {
+      const mid = Math.floor(days.length / 2);
+      const agg = (ds) => ds.reduce((a, d) => { const x = e.daily.get(d); if (x) { a.clicks += x.clicks; a.impressions += x.impressions; a.posw += x.posw; } return a; }, { clicks: 0, impressions: 0, posw: 0 });
+      return [agg(days.slice(0, mid)), agg(days.slice(mid))];
+    };
+    return { days, topM, topG, dayM: sumGroup(topM), dayG: sumGroup(topG), half };
+  }
+
+  // ---------- gráficas SVG ----------
+  function lineChart(el, days, series, opt) {
+    const W = Math.max(260, el.clientWidth || 600), H = opt.h || 240;
+    const m = { t: 10, r: 12, b: opt.mini ? 18 : 26, l: opt.mini ? 34 : 50 };
+    const iw = W - m.l - m.r, ih = H - m.t - m.b;
+    const metric = state.metric, inv = metric === "position";
+    let vals = []; series.forEach((s) => s.vals.forEach((v) => v != null && vals.push(v)));
+    let lo = opt.yMin != null ? opt.yMin : 0, hi = opt.yMax != null ? opt.yMax : (vals.length ? Math.max(...vals) : 1);
+    if (inv) { lo = opt.yMin != null ? opt.yMin : (vals.length ? Math.max(1, Math.floor(Math.min(...vals))) : 1); hi = opt.yMax != null ? opt.yMax : (vals.length ? Math.ceil(Math.max(...vals)) : 10); }
+    if (hi === lo) hi = lo + 1;
+    const nice = niceTicks(lo, hi, opt.mini ? 3 : 5); lo = inv ? lo : nice[0]; hi = nice[nice.length - 1];
+    const x = (i) => m.l + (days.length === 1 ? iw / 2 : (i / (days.length - 1)) * iw);
+    const y = (v) => inv ? m.t + ((v - lo) / (hi - lo)) * ih : m.t + ih - ((v - lo) / (hi - lo)) * ih;
+    const ns = "http://www.w3.org/2000/svg";
+    let s = `<svg xmlns="${ns}" viewBox="0 0 ${W} ${H}" height="${H}" role="img" aria-label="${opt.label || ""}">`;
+    nice.filter((t) => t >= lo && t <= hi).forEach((t) => {
+      s += `<line x1="${m.l}" x2="${W - m.r}" y1="${y(t)}" y2="${y(t)}" stroke="${css("--grid")}" stroke-width="1"/>`;
+      s += `<text x="${m.l - 6}" y="${y(t) + 3}" text-anchor="end">${fmt(metric, t)}</text>`;
+    });
+    const nx = opt.mini ? 3 : Math.min(8, days.length);
+    const step = Math.max(1, Math.round((days.length - 1) / (nx - 1 || 1)));
+    for (let i = 0; i < days.length; i += step) s += `<text x="${x(i)}" y="${H - 6}" text-anchor="middle">${fmtDate(days[i])}</text>`;
+    series.forEach((se) => {
+      let d = "", pen = false;
+      se.vals.forEach((v, i) => { if (v == null) { pen = false; return; } d += (pen ? "L" : "M") + x(i).toFixed(1) + "," + y(v).toFixed(1); pen = true; });
+      s += `<path d="${d}" fill="none" stroke="${se.color}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`;
+      if (days.length <= 14) se.vals.forEach((v, i) => { if (v != null) s += `<circle cx="${x(i)}" cy="${y(v)}" r="3" fill="${se.color}" stroke="${css("--surface-1")}" stroke-width="2"/>`; });
+    });
+    s += `<line class="xh" x1="0" x2="0" y1="${m.t}" y2="${m.t + ih}" stroke="${css("--text-muted")}" stroke-width="1" stroke-dasharray="3 3" visibility="hidden"/>`;
+    series.forEach((se, k) => s += `<circle class="hd" data-k="${k}" r="4" fill="${se.color}" stroke="${css("--surface-1")}" stroke-width="2" visibility="hidden"/>`);
+    s += `<rect x="${m.l}" y="0" width="${iw}" height="${H}" fill="transparent"/></svg>`;
+    el.innerHTML = s;
+    const svg = el.querySelector("svg"), xh = svg.querySelector(".xh"), hds = svg.querySelectorAll(".hd");
+    svg.addEventListener("mousemove", (ev) => {
+      const r = svg.getBoundingClientRect(); const px = (ev.clientX - r.left) * (W / r.width);
+      const i = Math.max(0, Math.min(days.length - 1, Math.round(((px - m.l) / iw) * (days.length - 1))));
+      xh.setAttribute("x1", x(i)); xh.setAttribute("x2", x(i)); xh.setAttribute("visibility", "visible");
+      let html = `<b>${days[i]}</b>`;
+      series.forEach((se, k) => {
+        const v = se.vals[i];
+        if (v != null) { hds[k].setAttribute("cx", x(i)); hds[k].setAttribute("cy", y(v)); hds[k].setAttribute("visibility", "visible"); }
+        else hds[k].setAttribute("visibility", "hidden");
+        html += `<br><span class="dot" style="background:${se.color}"></span> ${se.name}: ${fmt(metric, v)}`;
+        if (se.extra) html += se.extra(i);
+      });
+      tip.innerHTML = html; tip.style.display = "block";
+      const tx = Math.min(window.innerWidth - tip.offsetWidth - 8, ev.clientX + 14);
+      tip.style.left = tx + "px"; tip.style.top = (ev.clientY + 14) + "px";
+    });
+    svg.addEventListener("mouseleave", () => { tip.style.display = "none"; xh.setAttribute("visibility", "hidden"); hds.forEach((h) => h.setAttribute("visibility", "hidden")); });
+  }
+  function niceTicks(lo, hi, n) {
+    const span = hi - lo, raw = span / n, mag = Math.pow(10, Math.floor(Math.log10(raw)));
+    const st = [1, 2, 2.5, 5, 10].map((f) => f * mag).find((f) => span / f <= n) || 10 * mag;
+    const a = Math.floor(lo / st) * st, out = [];
+    for (let v = a; v <= hi + st * 0.001; v += st) out.push(+v.toFixed(6));
+    if (out[out.length - 1] < hi) out.push(+(out[out.length - 1] + st).toFixed(6));
+    return out;
+  }
+
+  // ---------- render ----------
+  function render() {
+    if (!state.rows.length) return;
+    const c = compute();
+    const met = state.metric;
+    const cm = css("--marca"), cg = css("--generica");
+    const showM = state.tipo !== "generica", showG = state.tipo !== "marca";
+    $("#secMarca").classList.toggle("hidden", !showM);
+    $("#secGen").classList.toggle("hidden", !showG);
+
+    const banner = $("#banner");
+    if (state.demo) { banner.className = "banner"; banner.innerHTML = "<b>DATOS DE EJEMPLO, no son reales.</b> Sirven solo para ver cómo funciona el tablero. Carga el CSV diario de Search Console (filtro «Cargar CSV de GSC») para ver las cifras de efe.com.pe. Formato abajo, en «Datos y reglas»."; }
+    else { banner.className = "banner ok"; banner.innerHTML = `Fuente: <b>${state.fileName}</b> (Search Console). ${nf.format(state.rows.length)} filas día × consulta. Datos del ${state.minD} al ${state.maxD}. GSC llega con 2-3 días de retraso.`; }
+
+    // KPIs
+    const tot = (list) => list.reduce((a, e) => ({ clicks: a.clicks + e.clicks, impressions: a.impressions + e.impressions, posw: a.posw + e.posw }), { clicks: 0, impressions: 0, posw: 0 });
+    const tM = tot(c.topM), tG = tot(c.topG);
+    const kp = [];
+    if (showM) kp.push(["Marca · top 10", cm, tM]);
+    if (showG) kp.push(["Genéricas · top 10", cg, tG]);
+    $("#kpis").innerHTML = kp.map(([n, col, t]) => `
+      <div class="kpi"><div class="k"><span class="dot" style="background:${col}"></span>${n} · clics</div><div class="v">${fmt("clicks", t.clicks)}</div><div class="d">${fmt("impressions", t.impressions)} impresiones</div></div>
+      <div class="kpi"><div class="k"><span class="dot" style="background:${col}"></span>${n} · CTR / posición</div><div class="v">${fmt("ctr", value("ctr", t))}</div><div class="d">posición media ${fmt("position", value("position", t))}</div></div>`).join("")
+      + `<div class="kpi"><div class="k">Rango</div><div class="v">${c.days.length} días</div><div class="d">${state.from} → ${state.to}</div></div>`;
+
+    // Resumen
+    const ser = [];
+    if (showM) ser.push({ name: "Marca (top 10)", color: cm, vals: c.dayM.map((a) => value(met, a)) });
+    if (showG) ser.push({ name: "Genéricas (top 10)", color: cg, vals: c.dayG.map((a) => value(met, a)) });
+    $("#ovTitle").textContent = state.tipo === "ambas" ? "Top 10 de marca vs top 10 genéricas, por día" : (state.tipo === "marca" ? "Top 10 de marca, suma por día" : "Top 10 genéricas, suma por día");
+    $("#ovSub").textContent = metricName[met] + (met === "position" ? " ponderada por impresiones (más abajo = mejor)" : met === "ctr" ? " del grupo (clics / impresiones)" : " sumados de las 10 keywords de cada grupo");
+    $("#ovLegend").innerHTML = ser.length > 1 ? ser.map((s) => `<span><span class="dot" style="background:${s.color}"></span>${s.name}</span>`).join("") : "";
+    lineChart($("#ovChart"), c.days, ser, { h: 260, label: "Evolución diaria" });
+
+    // Mini gráficas
+    const grid = (el, list, color, subEl, label) => {
+      subEl.textContent = list.length ? `${metricName[met]} por día de cada keyword. Ordenadas por ${state.rankBy === "clicks" ? "clics" : "impresiones"} del rango. Escala ${state.scale === "shared" ? "común (comparables entre sí)" : "propia de cada keyword (para ver su forma)"}.` : "";
+      if (!list.length) { el.innerHTML = `<div class="empty">No hay keywords ${label} en el rango.</div>`; return; }
+      const seriesVals = list.map((e) => c.days.map((d) => { const x = e.daily.get(d); return x ? value(met, x) : (met === "clicks" || met === "impressions" ? 0 : null); }));
+      let yMin = null, yMax = null;
+      if (state.scale === "shared") {
+        const flat = seriesVals.flat().filter((v) => v != null);
+        if (met === "position") { yMin = Math.max(1, Math.floor(Math.min(...flat))); yMax = Math.ceil(Math.max(...flat)); }
+        else { yMin = 0; yMax = Math.max(...flat, 0.0001); }
+      }
+      el.innerHTML = list.map((e, i) => `<div class="mini"><div class="t"><b title="${esc(e.query)}"><span class="rk">#${i + 1}</span> ${esc(e.query)}</b><i>${fmt(met === "ctr" || met === "position" ? met : state.metric, value(met, e))}</i></div><div class="ch"></div></div>`).join("");
+      el.querySelectorAll(".ch").forEach((ch, i) => lineChart(ch, c.days, [{ name: list[i].query, color, vals: seriesVals[i] }], { h: 110, mini: true, yMin, yMax, label: list[i].query }));
+    };
+    if (showM) grid($("#gridMarca"), c.topM, cm, $("#subMarca"), "de marca");
+    if (showG) grid($("#gridGen"), c.topG, cg, $("#subGen"), "genéricas");
+
+    // Tabla
+    const rowsT = [];
+    if (showM) c.topM.forEach((e, i) => rowsT.push(["Marca", cm, i + 1, e]));
+    if (showG) c.topG.forEach((e, i) => rowsT.push(["Genérica", cg, i + 1, e]));
+    const varTxt = (e) => {
+      const [a, b] = c.half(e); const va = value(met, a), vb = value(met, b);
+      if (va == null || vb == null) return "–";
+      if (met === "position") { const dlt = vb - va; if (Math.abs(dlt) < 0.05) return "= 0.0 pos."; return (dlt < 0 ? "▲ " : "▼ ") + nf1.format(Math.abs(dlt)) + " pos."; }
+      if (!va) return "nuevo";
+      const p = (vb - va) / va * 100; return (p >= 0 ? "+" : "") + nf1.format(p) + "%";
+    };
+    $("#tbl").innerHTML = `<thead><tr><th>Tipo</th><th>#</th><th>Keyword</th><th>Clics</th><th>Impresiones</th><th>CTR</th><th>Posición</th><th>Variación (${metricName[met]})</th></tr></thead><tbody>`
+      + rowsT.map(([t, col, i, e]) => `<tr><td><span class="dot" style="background:${col}"></span> ${t}</td><td>${i}</td><td>${esc(e.query)}</td><td>${fmt("clicks", e.clicks)}</td><td>${fmt("impressions", e.impressions)}</td><td>${fmt("ctr", value("ctr", e))}</td><td>${fmt("position", value("position", e))}</td><td>${varTxt(e)}</td></tr>`).join("") + "</tbody>";
+  }
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+  // ---------- eventos ----------
+  function setData(rows, demo, name) {
+    state.rows = rows; state.demo = demo; state.fileName = name || "";
+    const ds = rows.map((r) => r.date).sort();
+    state.minD = ds[0]; state.maxD = ds[ds.length - 1];
+    ["#dFrom", "#dTo"].forEach((s) => { $(s).min = state.minD; $(s).max = state.maxD; });
+    applyPreset(28);
+  }
+  function applyPreset(n) {
+    state.to = state.maxD;
+    state.from = n ? (addDays(state.maxD, -(n - 1)) < state.minD ? state.minD : addDays(state.maxD, -(n - 1))) : state.minD;
+    $("#dFrom").value = state.from; $("#dTo").value = state.to;
+    document.querySelectorAll("#presets button").forEach((b) => b.setAttribute("aria-pressed", String(+b.dataset.days === n)));
+    render();
+  }
+  document.querySelectorAll("#presets button").forEach((b) => b.addEventListener("click", () => applyPreset(+b.dataset.days)));
+  const onDate = () => {
+    let f = $("#dFrom").value, t = $("#dTo").value; if (!f || !t) return;
+    if (f > t) [f, t] = [t, f];
+    state.from = f; state.to = t;
+    document.querySelectorAll("#presets button").forEach((b) => b.setAttribute("aria-pressed", "false"));
+    render();
+  };
+  $("#dFrom").addEventListener("change", onDate); $("#dTo").addEventListener("change", onDate);
+  const seg = (id, key) => document.querySelectorAll(id + " button").forEach((b) => b.addEventListener("click", () => {
+    document.querySelectorAll(id + " button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+    state[key] = b.dataset.v; render();
+  }));
+  seg("#tipo", "tipo"); seg("#scale", "scale");
+  $("#metric").addEventListener("change", (e) => { state.metric = e.target.value; render(); });
+  $("#rankBy").addEventListener("change", (e) => { state.rankBy = e.target.value; render(); });
+  $("#brandRe").addEventListener("change", () => { buildBrandRe(); render(); });
+  $("#file").addEventListener("change", (e) => {
+    const f = e.target.files[0]; if (!f) return;
+    const rd = new FileReader();
+    rd.onload = () => { try { setData(loadCSV(rd.result), false, f.name); } catch (err) { alert("No se pudo leer el CSV: " + err.message); } };
+    rd.readAsText(f);
+  });
+  let rt; window.addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(render, 150); });
+  if (window.matchMedia) window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", render);
+
+  buildBrandRe();
+  setData(demoData(), true);
+})();
+</script>
+</body>
+</html>
