@@ -12,7 +12,12 @@ Un solo repo con todo el conocimiento SEO del grupo, orientado a **más ganancia
 
 - 2026-10-16 (v3): corregidas las bases de la tabla de plata neta (solo web vs empresa completa; Motocorp por debajo de LC y EFE en total), Efectibank marcado como negocio que sí vende en digital (cuentas y créditos vía pauta), y nuevos pedidos B13 (venta de piso por marca) y B14 (pauta digital de Efectibank por objetivo).
 
+- 2026-11-19: dashboard `dashboards/kws-diarias-efe.html`: top 10 keywords de marca y top 10 genéricas de efe.com.pe por día, con filtro de fecha, tipo (marca/genéricas/ambas), métrica y regla de marca editable. Lee el CSV diario de GSC en el navegador; sin CSV muestra datos de EJEMPLO marcados. Falta: acceso GSC (A1) o export a BigQuery para cargar cifras reales.
+
+- 2026-11-19: `scripts/gsc_kws_diarias.py`: extrae de la API de Search Console las consultas diarias de efe.com.pe (date + query, web, día por día con paginación) a un CSV fuera del repo y, con `--html-out`, genera el dashboard con los datos incrustados (la plantilla trae el marcador `/*__GSC_EMBED__*/null`). Se niega a escribir dentro del repo. Mecánica probada con un CSV de prueba (carga por botón y HTML incrustado, sin errores). **La extracción real NO se pudo hacer**: en el entorno cloud "SEO - Grupo EFE" la red sí llega a `searchconsole.googleapis.com`, pero el token de Google que inyecta el entorno solo trae el permiso `cloud-platform` y Search Console exige `webmasters.readonly` (error `ACCESS_TOKEN_SCOPE_INSUFFICIENT`, comprobado 19-nov). No se listaron propiedades ni se extrajo ninguna fila; el dashboard del repo sigue con datos de EJEMPLO y la regla de marca no se tocó (no hay consultas reales contra qué validarla).
+
 ## Pendiente (orden)
+0. **Elias**: destrabar el acceso a GSC para el dashboard de keywords. Dos caminos: (a) correr `python3 scripts/gsc_kws_diarias.py --csv-out ... --html-out ...` en una máquina donde `GOOGLE_APPLICATION_CREDENTIALS_JSON` tenga el JSON completo de la cuenta de servicio (el script pide solo el permiso de lectura de Search Console) y con esa cuenta agregada como usuario en la propiedad de efe.com.pe; o (b) que la credencial de Google del entorno cloud entregue el permiso `webmasters.readonly`. Después: validar la regla de marca con las consultas reales y publicar el dashboard con datos como artifact privado.
 1. **Elias**: responder las preguntas de `docs/06`, dar los accesos A1-A8 y pedir a Efectibank los datos EF1-EF9 (`docs/08 §5`). Sin GSC y Ads por término no se confirma ni se mide nada.
 1b. **Elias**: entregar las cifras verificadas de agosto 2026 vs PY y el registro de cambios SEO (B11) para la referencia histórica; decidir el presupuesto de herramientas (`docs/09 §2b`).
 2. **Evaluar con Elias** los pesos (`docs/03`) y el plan (`docs/04`): qué entra antes de Cyber Wow (congelar 72 h antes, ~30-oct) y qué después.
@@ -28,4 +33,4 @@ Un solo repo con todo el conocimiento SEO del grupo, orientado a **más ganancia
 - `SEO-repo-efe` no es un repo de SEO: es el feed de catálogo de EFE para Meta/TikTok en producción. No tocarlo.
 
 ## Archivos clave
-`CLAUDE.md` (reglas) · `docs/01` (cifras) · `docs/02` (diagnóstico) · `docs/03` (pesos) · `docs/04` (plan) · `docs/05` (El Niño) · `docs/06` (faltante y preguntas) · `docs/07` (inventario de repos) · `grafo/ecosistema-seo.html` (grafo).
+`CLAUDE.md` (reglas) · `docs/01` (cifras) · `docs/02` (diagnóstico) · `docs/03` (pesos) · `docs/04` (plan) · `docs/05` (El Niño) · `docs/06` (faltante y preguntas) · `docs/07` (inventario de repos) · `grafo/ecosistema-seo.html` (grafo) · `dashboards/kws-diarias-efe.html` + `scripts/gsc_kws_diarias.py` (keywords diarias de EFE).
