@@ -36,7 +36,9 @@ Cambió desde el 16-oct: `robots.txt` de La Curacao **ya declara bien** el sitem
 | Punto | Estado |
 |---|---|
 | `llms.txt` publicado con departamentos, categorías clave y crédito con Financiera Efectiva | COMPROBADO · bien. Pendiente: actualizar el nombre a **Efectibank** y sumar las 7 subcategorías de §3 |
-| `robots.txt` no bloquea bots de IA (GPTBot, PerplexityBot, Google-Extended) | COMPROBADO |
+| `robots.txt` no bloquea bots de IA (solo `User-agent: *` con rutas de Magento) | COMPROBADO |
+| **El CDN (Fastly/Varnish) responde 403 a `GPTBot` y `ClaudeBot`** en todas las URLs, incluido `robots.txt` ("Error 54113", respuesta en el borde en <0,1 s). Es una regla por user-agent que distingue mayúsculas (`gptbot` en minúsculas pasa). **Igual en efe.com.pe**. Pasan con 200: OAI-SearchBot, ChatGPT-User, Claude-SearchBot, Claude-User, PerplexityBot, Perplexity-User, Googlebot, Bingbot, Applebot, meta-externalagent, Amazonbot, CCBot, Bytespider, DuckAssistBot, MistralAI-User. Prueba del 24-nov con user-agent simulado desde un servidor externo: no detecta bloqueos por IP que apliquen solo a las IP reales de cada bot | COMPROBADO |
+| Efecto: ChatGPT Search y Claude con búsqueda **sí pueden leer y citar** el sitio (sus bots de búsqueda pasan). Lo bloqueado son los rastreadores de **entrenamiento** de OpenAI y Anthropic: los modelos conocen menos el catálogo y la marca, y la regla contradice el `llms.txt`. Decisión de negocio (Elias): quitar la regla del CDN y, si se quiere limitar, hacerlo en `robots.txt` o con límite de velocidad | HIPÓTESIS sobre el impacto |
 | Lo que la IA puede citar: categorías sin texto ni FAQ (T2), fichas con descripción de una línea en el schema (T3) | COMPROBADO · es la brecha GEO principal: sin texto propio, la respuesta de la IA cita a otro retail |
 | Visibilidad real en ChatGPT/Perplexity/AI Overviews para "mejor refrigeradora", "aire acondicionado precio Perú" | SIN DATO · se mide a mano con 20 consultas fijas por mes (planilla de Carol) |
 
