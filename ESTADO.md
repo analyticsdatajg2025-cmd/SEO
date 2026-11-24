@@ -14,8 +14,10 @@ Un solo repo con todo el conocimiento SEO del grupo, orientado a **más ganancia
 
 - 2026-11-24: **Agente SEO con IA, piloto Skullcandy** (`docs/10`). Elias: periodo de exploración; acceso admin a GSC y GA4; el equipo puede tocar blog, fichas y textos de categorías; la home y lo visible no; aprueba Kevin; respetar el plan de `docs/04`. Auditoría pública de skullcandy.com.pe con `herramientas/auditar_sitio.py`: 143 URLs en el sitemap, ~65 ajenas o de prueba. De paso, auditoría del blog de La Curacao (105 artículos, fuera del sitemap; `docs/02 §1`).
 
+- 2026-11-24 (2): decisiones de Elias para el agente: **3-4 blogs por semana**, 4-5 (o diario) en las semanas previas a Cyber; **cero invención** (todo con dato y fuente); blogs pensados para Google y para búsquedas con IA; ver y editar en un panel. Agregados a `docs/10`: ritmo con arranque gradual, regla de cero invención (§5b), plantilla de blog SEO + IA (§5c), panel + tarea programada como recomendación (§6), cómo hacer los exportes (§8b) y qué medir antes y después (§9).
+
 ## Pendiente (orden)
-0. **Piloto agente Skullcandy** (`docs/10 §7-8`): exporte GSC (AG1), Kevin valida ritmo, ticket TI S1-S4/S8, lote 1 de títulos y metas. Preguntas AG1-AG6 en `docs/06 §D`.
+0. **Piloto agente Skullcandy** (`docs/10 §7-8`): Elias sube los exportes de GSC y GA4 (paso a paso en `docs/10 §8b`); armar el panel y la tarea programada semanal (`docs/10 §6`); Kevin valida ritmo; ticket TI S1-S4/S8; lote 1 de títulos y metas. Preguntas AG1-AG6 en `docs/06 §D`.
 1. **Elias**: responder las preguntas de `docs/06`, dar los accesos A1-A8 y pedir a Efectibank los datos EF1-EF9 (`docs/08 §5`). Sin GSC y Ads por término no se confirma ni se mide nada.
 1b. **Elias**: entregar las cifras verificadas de agosto 2026 vs PY y el registro de cambios SEO (B11) para la referencia histórica; decidir el presupuesto de herramientas (`docs/09 §2b`).
 2. **Evaluar con Elias** los pesos (`docs/03`) y el plan (`docs/04`): qué entra antes de Cyber Wow (congelar 72 h antes, ~30-oct) y qué después.

@@ -100,9 +100,7 @@ Realismo: en marca y modelo Skullcandy puede ser primero. En "audífonos bluetoo
 
 **7 · Publicar**: al inicio el equipo pega lo aprobado en el admin. Más adelante, si el módulo de blog (Mageplaza) tiene API en la edición instalada, el agente puede dejar el **borrador** en Magento, nunca publicado. Esto es `HIPÓTESIS`: hay que verificar la edición.
 
-**8 · Medir.** Cada cambio queda en un **registro**: fecha, URL, antes, después y quién aprobó. A los 28 días se compara la URL contra sí misma y contra un **grupo de control** que no se tocó, para descontar la estacionalidad. Se mide:
-- Clics, impresiones, posición y CTR.
-- Vía GA4: sesiones, ventas orgánicas y su efecto en la dependencia de pauta.
+**8 · Medir.** Cada cambio queda en un **registro**: fecha, URL, antes, después y quién aprobó. A los 28 días se compara la URL contra sí misma y contra un **grupo de control** que no se tocó, para descontar la estacionalidad. Qué se mide: §9.
 
 **9 · Aprender**: los tipos de cambio que movieron la aguja suben de prioridad en el ciclo siguiente.
 
@@ -114,9 +112,73 @@ Realismo: en marca y modelo Skullcandy puede ser primero. En "audífonos bluetoo
 | Fichas: título SEO, meta, descripción propia | Precios, promociones, landings en pauta |
 | Tickets técnicos a TI: páginas ajenas, sitemap, 301, H1 de la home sin cambio visual | Cambios en el Magento compartido sin ticket ni reversión |
 
-**Ritmo** (`ESTIMACIÓN`, ajustable con Kevin): por ciclo de 2 semanas, hasta 10 ajustes de títulos, metas y textos, más 2-3 artículos nuevos. Google castiga el contenido generado en masa sin valor. Por eso se trabaja en lotes chicos, revisados, con datos propios (modelos, precios reales, garantía, envío en Perú). **Se respeta el plan de `docs/04`**: sin cambios de plantillas después del 10-dic y congelamiento 72 h antes de cada Cyber.
+**Ritmo** (decisión de Elias, 24-nov-2026; Kevin ajusta):
 
-## 6. Dónde corre (de menos a más automático)
+| Periodo | Blogs nuevos | Ajustes (títulos, metas, textos, blogs viejos) |
+|---|---|---|
+| Semana normal | **3-4 por semana** | hasta 10 |
+| 4-8 semanas antes de un Cyber | **4-5 por semana** (o diario en las semanas pico), enfocados en el Cyber | hasta 15 |
+| Semana del Cyber | Sin blogs nuevos: solo actualizar los ya publicados (ofertas, stock, fechas) | Lo urgente |
+
+Cuidados que el agente aplica solo:
+- **Arranque gradual**: las primeras 4 semanas, 2-3 por semana. Se sube a 3-4 si Kevin aprueba sin cambios grandes al menos 8 de cada 10 borradores y no aparece canibalización.
+- **Un tema = una búsqueda distinta.** Skullcandy tiene ~48 productos; 3-4 blogs por semana son ~150-200 al año (`ESTIMACIÓN`). Sin control, los blogs empiezan a competir entre sí. Antes de proponer un blog, el agente revisa el mapa de zonas (§3) y los blogs existentes. Si el tema ya tiene página, propone actualizar en vez de crear.
+- **El contenido de Cyber se publica antes.** Un blog nuevo tarda semanas en indexarse y posicionar (`docs/09`), así que lo de Cyber sale 4-8 semanas antes. La fecha del próximo Cyber es `SIN DATO`.
+- **Capacidad de revisión**: con 3-4 blogs a la semana, Kevin necesita unas 2-4 horas semanales para revisar (`ESTIMACIÓN`, 30-60 min por blog).
+
+**Se respeta el plan de `docs/04`**: sin cambios de plantillas después del 10-dic y congelamiento 72 h antes de cada Cyber. Los blogs no son plantillas.
+
+### 5b. Regla de oro: cero invención
+- **Cada dato tiene fuente**:
+  - Las búsquedas y su volumen salen de GSC, del Planificador o de Trends.
+  - Los modelos, precios, especificaciones y stock salen del catálogo de skullcandy.com.pe o de la ficha oficial de la marca.
+  - El envío, la garantía y las devoluciones salen de las políticas publicadas en el sitio.
+- **Cada borrador trae sus fuentes al lado** (visibles solo para el aprobador): de dónde sale cada cifra y cada especificación.
+- **Si falta un dato, no se rellena.** El borrador lo marca `PENDIENTE` en amarillo y Kevin decide.
+- **Prohibido en el texto publicado**:
+  - Cifras sin fuente ("el 80% de los peruanos...").
+  - Reseñas, testimonios o citas inventadas.
+  - Comparaciones con datos de otras marcas sin fuente.
+  - Fechas de lanzamiento no confirmadas.
+- **El verificador automático (paso 5) rechaza el borrador** si encuentra un precio, una especificación o una cifra que no esté en las fuentes del lote.
+
+### 5c. Cómo se arma cada blog (Google + búsquedas con IA)
+Cada blog sigue una plantilla pensada para dos lectores. El primero es Google clásico. El segundo son los buscadores con IA: AI Overviews y modo IA de Google, ChatGPT, Perplexity y Gemini, que citan fuentes claras y bien estructuradas.
+
+| Parte | Para qué |
+|---|---|
+| **Una búsqueda objetivo** (de GSC o del Planificador) y 3-5 relacionadas | Que el blog compita por algo que la gente busca de verdad |
+| **Título ≤ 60 caracteres** con la búsqueda; meta ≤ 155 | Que Google lo muestre y la gente haga clic |
+| **Respuesta directa en el primer párrafo** (40-60 palabras) | Es lo que citan los fragmentos destacados y las respuestas de IA |
+| **H2 escritos como preguntas reales** (de "Más preguntas" de Google y de las consultas de GSC) | Cada H2 responde una pregunta; las IA extraen por sección |
+| **Tabla comparativa** con especificaciones reales del catálogo | Las tablas se citan mucho y ayudan a decidir |
+| **Modelos con su nombre exacto** (Crusher ANC 2, Method 360 ANC...), enlazados a su ficha con stock | Entidades claras para Google y las IA; puente a la venta |
+| **FAQ** de 4-6 preguntas con `FAQPage`, más `BlogPosting` con autor y fecha | Datos estructurados para resultados enriquecidos |
+| **"Actualizado el..."** visible, y autor (Skullcandy Perú / equipo) | Frescura y confianza (E-E-A-T) |
+| **Dato local**: envío en Perú, garantía, tiendas o recojo (de las políticas publicadas) | Lo que el sitio global y los revendedores no dicen |
+| **Sin relleno**: 800-1,500 palabras según la búsqueda | Se gana por utilidad, no por largo |
+
+
+## 6. Dónde corre
+
+**Recomendación** (lo más visual y lo más fácil, sin servidores ni instalaciones):
+
+| Pieza | Qué es | Por qué |
+|---|---|---|
+| **Panel** | Página privada en claude.ai, como el dashboard de martech, con base de datos propia. Elias y Kevin entran por un enlace | Ahí se ve, se edita y se aprueba todo; mismo patrón que ya usan |
+| **Motor** | Una **tarea programada** de Claude que corre sola cada semana (lunes): lee los datos, detecta, genera 3-4 borradores, los verifica y los deja en el panel | Sin servidores ni clave de API aparte; se pausa o se cambia el día cuando se quiera |
+| **Datos** | Al inicio, exportes de GSC y GA4 que se suben al chat (ver §8). Después, exportación de GSC a BigQuery para que el motor lea solo | Se arranca ya; se automatiza cuando haya proyecto de Google Cloud |
+
+**Pestañas del panel**:
+1. **Esta semana**: los borradores del lunes, cada uno con la búsqueda objetivo, por qué se eligió (datos de GSC) y su estado (borrador, en revisión, aprobado, publicado, rechazado).
+2. **Editor**: vista previa del blog tal como se verá en el sitio y edición directa del texto, el título, la meta y la FAQ. Al lado, las fuentes de cada dato y los `PENDIENTE`. Botones: *Aprobar*, *Pedir cambios a la IA* (con un comentario), *Rechazar*, *Copiar HTML para Magento*.
+3. **Ajustes**: los cambios propuestos a blogs, categorías y fichas existentes, con el antes y el después lado a lado.
+4. **Calendario**: lo programado por semana, con las ventanas de Cyber y los congelamientos.
+5. **Medición**: los indicadores de §9, antes y después, por blog y en total, contra el grupo de control.
+
+Publicar sigue siendo manual: se copia el HTML aprobado al admin de Magento (Mageplaza Blog). Si la edición del módulo tiene API, más adelante el motor deja el borrador directo en Magento, sin publicarlo.
+
+### Otras opciones evaluadas
 | Opción | Cómo | Costo | Cuándo |
 |---|---|---|---|
 | **A · Copiloto** | Cada 2 semanas una sesión de Claude Code lee los datos, corre los chequeos y llena la cola de propuestas | Cuenta actual | **Piloto** (ya) |
@@ -128,12 +190,7 @@ Opcional, y simplifica mucho la lectura: la **exportación masiva de Search Cons
 - Esta sesión tiene conexión a BigQuery, así que con la exportación activa el agente consulta GSC directo, sin descargas.
 - La exportación no trae historia hacia atrás: conviene activarla pronto.
 
-**Dónde se ve**: un **panel HTML privado**, como el dashboard de martech, con tres pestañas:
-- *Cola*: propuestas con antes y después, y botones para aprobar, editar o rechazar.
-- *Registro*: lo publicado.
-- *Resultados*: cada cambio a los 28 días frente al grupo de control.
 
-Para el piloto basta una Google Sheet con las mismas columnas.
 
 ## 7. Piloto (6-8 semanas)
 | Semana | Qué | Resultado observable |
@@ -142,16 +199,102 @@ Para el piloto basta una Google Sheet con las mismas columnas.
 | 1 | **Línea base** en GSC: consultas y páginas de 16 meses, páginas indexadas, las ~65 páginas basura. Segmento orgánico en GA4. Grupo de control | Tabla base por URL y por zona (§3) |
 | 1 | Ticket a TI: S1-S4 y S8, con lista de URLs y reversión | Ticket abierto o aplicado |
 | 2 | Lote 1 (solo contenido): patrón de títulos de fichas y categorías y metas propias (S5, S7) | ~40 cambios en el registro |
-| 3-4 | Lote 2: textos de 4-6 categorías por zona (inalámbricos, ANC, deporte, gamer, niños); 2 guías del blog de Skullcandy | Publicados y aprobados por Kevin |
-| 5-6 | Lote 3: lo que digan los datos (posición 5-20, CTR bajo) y temporada (regreso a clases) | Cambios en el registro |
-| 8 | **Lectura**: cambiados frente a control a 28 días; qué tipo de acción funcionó | Informe: seguir, ajustar o parar |
+| 2 | Panel publicado y tarea programada semanal activa | Primeros borradores en el panel |
+| 3-4 | Lote 2: textos de 4-6 categorías por zona (inalámbricos, ANC, deporte, gamer, niños); blog propio de Skullcandy a **2-3 por semana** (arranque gradual, §5) | Publicados y aprobados por Kevin |
+| 5-6 | Lote 3: lo que digan los datos (posición 5-20, CTR bajo) y temporada (regreso a clases); blog a **3-4 por semana** si la calidad lo permite | Cambios en el registro |
+| 8 | **Lectura**: indicadores de §9, cambiados frente a control a 28 días; qué tipo de acción funcionó | Informe: seguir, ajustar o parar |
 
-Para pasar a la fase 2 (opciones B y C), los cambios del piloto tienen que mejorar clics o posición frente al control, sin incidentes. Si no, se ajusta el método antes de automatizar.
+Para pasar a la fase 2 (lectura automática de datos con BigQuery y textos de fichas a escala), los cambios del piloto tienen que mejorar clics o posición frente al control, sin incidentes. Si no, se ajusta el método antes de automatizar.
 
 ## 8. Lo que falta para arrancar
 1. **Kevin**: validar el ritmo de §5 y ser el aprobador.
-2. **Línea base**: exportar desde GSC (Rendimiento, 16 meses: consultas y páginas) o darle al agente una vía de lectura (opción B o BigQuery).
+2. **Línea base**: exportes de GSC y GA4 (paso a paso en §8b). Se suben al chat de la sesión, **nunca al repo**.
 3. **Planificador de palabras clave**: está en Google Ads, en *Herramientas → Planificación → Planificador de palabras clave*. Da el volumen mensual de búsquedas en Perú y funciona desde cualquier cuenta con acceso. La cuenta de la captura (un MCC de HP, con campañas de impresoras de La Curacao) sirve para consultar volúmenes. Para ver qué búsquedas reales disparan los anuncios de **Skullcandy** hace falta su propia cuenta de Ads, en *Estadísticas e informes → Términos de búsqueda*. Pedírsela a Paid.
-4. **Elias**: ¿hay un proyecto de Google Cloud del grupo para exportar GSC a BigQuery? ¿Quién paga la API si se va a la opción C?
+4. **Elias**: ¿hay un proyecto de Google Cloud del grupo para exportar GSC a BigQuery? Con la recomendación de §6 no hace falta pagar la API de Claude aparte.
 5. **TI**: quién aplica S1-S4 y S8, y qué edición de Mageplaza Blog hay (si tiene API).
 6. **Marca**: ¿el contrato con Skullcandy global pone reglas de uso de marca, textos o imágenes? Si no se sabe, el piloto escribe textos propios y no copia los de la marca global.
+
+### 8b. Cómo hacer los exportes (una vez para la línea base; luego cada mes hasta automatizar)
+
+**A · Search Console: rendimiento** (lo más importante)
+1. Entrar a search.google.com/search-console y elegir la propiedad **skullcandy.com.pe** arriba a la izquierda.
+2. Menú izquierdo: **Rendimiento → Resultados de búsqueda**.
+3. Arriba, en los filtros:
+   - **Tipo de búsqueda: Web**.
+   - **Fecha → Personalizar → "Últimos 16 meses"** → Aplicar.
+4. Encender las cuatro tarjetas del gráfico (**Clics totales, Impresiones totales, CTR medio, Posición media**) para que salgan las cuatro columnas.
+5. Arriba a la derecha: **Exportar → Descargar Excel**. Sale un solo archivo con pestañas: Consultas, Páginas, Países, Dispositivos, Apariencia en búsqueda y Fechas. Cada pestaña trae hasta 1,000 filas, suficiente para Skullcandy.
+6. Repetir el paso 5 con **Fecha → "Últimos 28 días"**: es el "antes" fino del piloto.
+7. Opcional, para ver qué consultas trae cada página importante: en el filtro **+ Nuevo → Página → "La URL contiene"**, poner la URL (por ejemplo `/headphones.html`) y exportar. Hay que hacerlo página por página; por eso después conviene automatizar (BigQuery).
+
+**B · Search Console: indexación**
+1. Menú: **Indexación → Páginas**.
+2. Arriba a la derecha: **Exportar → Descargar Excel** (resumen con los motivos de "no indexada").
+3. Bajo **"Por qué las páginas no se indexan"**, entrar a cada motivo (por ejemplo *"Rastreada: actualmente sin indexar"*, *"Excluida por etiqueta noindex"*, *"Página alternativa con etiqueta canónica adecuada"*) y exportar su lista de ejemplos.
+4. Clic en **"Ver datos sobre las páginas indexadas"** (debajo del gráfico) → Exportar: la lista de URLs que Google sí tiene. Así sabemos cuántas de las ~65 páginas ajenas están dentro.
+5. Menú **Indexación → Sitemaps**: una captura de pantalla basta (estado y URLs descubiertas).
+
+**C · GA4** (para el lado de negocio)
+1. En analytics.google.com, propiedad de Skullcandy: **Informes → Interacción → Página de destino**.
+2. Fecha: **los mismos 16 meses** (o lo máximo disponible).
+3. **Agregar filtro → "Grupo de canales predeterminado de la sesión" = "Organic Search"**.
+4. Columnas: sesiones, usuarios, sesiones con interacción, tasa de interacción, eventos clave (compras), ingresos totales.
+5. Botón **Compartir este informe (↗) → Descargar archivo → CSV**.
+6. Repetir sin el filtro de canal, en **Adquisición → Adquisición de tráfico** (sesiones e ingresos por canal: orgánico vs pagado vs directo).
+
+**Dónde se suben**: se adjuntan en el chat de la sesión. Los exportes son datos crudos: no van al repo (regla del `CLAUDE.md`) y se guardan en Drive.
+
+## 9. Qué medir antes y después (además de venta y sesiones)
+
+Se toma la **foto "antes"** con los exportes de §8b (16 meses y últimos 28 días). Cada lote queda fechado en el registro y se compara a los 28 y a los 90 días, contra el grupo de control y, en temporadas como Cyber o Navidad, contra las mismas semanas del año anterior.
+
+**1 · Visibilidad en Google** (GSC): ¿estamos ocupando más terreno?
+| Indicador | Qué dice |
+|---|---|
+| **Impresiones** (total y sin marca) | Cuántas veces aparecemos. Es lo primero que se mueve, antes que los clics |
+| **N.º de consultas distintas con impresiones** | **Tamaño del terreno ocupado**: el indicador más directo de lo que buscas |
+| **Consultas en top 3 y top 10** | Cuántas búsquedas ganamos de verdad |
+| **Posición media** por zona (§3) y por tipo de página | Si subimos, y dónde |
+| **CTR** por posición | Si los títulos y metas nuevos convencen |
+| **Clics sin marca** (sin "skullcandy" en la consulta) | Tráfico que **no nos conocía**: lo que no traería la marca sola |
+
+**2 · Salud técnica** (GSC): ¿Google ve bien el sitio?
+| Indicador | Qué dice |
+|---|---|
+| Páginas indexadas vs enviadas en el sitemap | Cobertura |
+| **Páginas ajenas o de prueba indexadas** (hoy ~65 en el sitemap) | Tiene que bajar a 0 |
+| **Días hasta indexar un blog nuevo** | Velocidad: si tarda mucho, se ajusta antes de Cyber |
+| Errores y resultados enriquecidos válidos (Productos, FAQ) | Que los datos estructurados funcionen |
+
+**3 · Calidad del tráfico** (GA4, solo orgánico)
+| Indicador | Qué dice |
+|---|---|
+| **Tasa de interacción** y tiempo de interacción por blog | Si el contenido sirve o rebota |
+| **Clics de blog a ficha de producto** | Si el blog lleva a la venta (puente comercial) |
+| **Agregar al carrito y tasa de conversión orgánica** | Intención de compra |
+| **Ventas asistidas por blog** (rutas de conversión) | El blog rara vez cierra la venta en la misma visita; asiste |
+| Usuarios nuevos orgánicos | Alcance a gente que no conocía la marca |
+
+**4 · Negocio**: ¿deja plata?
+| Indicador | Qué dice |
+|---|---|
+| **% de la venta que viene de orgánico vs pagado** | Menos dependencia de pauta (hoy la pauta es 25% de la venta) |
+| **Valor equivalente en pauta del tráfico orgánico**: clics sin marca × CPC del Planificador | Cuánto costaría comprar ese tráfico; argumento ante gerencia (`ESTIMACIÓN`, no ingreso) |
+| Margen orgánico: venta orgánica × ~42% | Plata neta (`docs/03`) |
+
+**5 · Búsquedas con IA**: ¿nos citan?
+| Indicador | Cómo se mide |
+|---|---|
+| **Visitas desde asistentes de IA** | GA4 → Adquisición → fuente de la sesión: `chatgpt.com`, `perplexity.ai`, `gemini.google.com`, `copilot.microsoft.com` |
+| **Presencia en respuestas de IA** | Panel fijo de ~30 búsquedas clave, revisado una vez al mes a mano en el resumen de IA y el modo IA de Google, ChatGPT y Perplexity: ¿aparece Skullcandy Perú o se cita el sitio? Search Console no separa los resúmenes de IA |
+| Fragmentos destacados y "Más preguntas" ganados | Revisión mensual del mismo panel |
+
+**6 · Operación del agente**: ¿la IA trabaja bien?
+| Indicador | Qué dice |
+|---|---|
+| Blogs publicados por semana vs meta (3-4; 4-5 pre-Cyber) | Cumplimiento del ritmo |
+| **% aprobado sin cambios grandes** | Calidad de la IA (meta: 8 de cada 10) |
+| `PENDIENTE` por borrador y rechazos del verificador | Cuánto le falta de datos |
+| Tiempo de revisión de Kevin por blog | Costo humano real |
+
+Lectura honesta: en SEO los clics y la venta tardan; **las primeras señales (2-6 semanas) son indexación, impresiones y número de consultas**. La venta orgánica se lee a los 2-3 meses (`docs/09`).
