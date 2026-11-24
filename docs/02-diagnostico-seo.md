@@ -8,7 +8,7 @@
 
 | Hallazgo | Estado | Impacto | Fuente |
 |---|---|---|---|
-| `robots.txt` declara el sitemap como `Sitemap : https://...` (espacio antes de los dos puntos). Google suele tolerarlo, pero no está garantizado; en ambos sitios | COMPROBADO | Medio · verificar en GSC que el sitemap esté enviado a mano | W |
+| `robots.txt` declara el sitemap como `Sitemap : https://...` (espacio antes de los dos puntos). Google suele tolerarlo, pero no está garantizado; en ambos sitios. **24-nov: corregido en La Curacao** (`docs/10`) | COMPROBADO | Medio · verificar en GSC que el sitemap esté enviado a mano | W |
 | Sitemap: índice de 9 archivos, **~99 K URLs** por sitio (99.210 EFE, 99.554 LC; 68 y 21 repetidas) contra ~17 K SKU en el feed. HIPÓTESIS: incluye productos sin stock, descontinuados o variantes | COMPROBADO conteo | Medio · presupuesto de rastreo; no depurar antes de Cyber | S, feeds |
 | **Tiendas EFE sin `canonical`** en home, landings Cyber, categorías y fichas | COMPROBADO | Alto · Google puede elegir variantes con parámetros | S |
 | **La Curacao**: canonical de `/cyber-days` apunta a `/cyber-Days`, que redirige (301) de vuelta | COMPROBADO | Medio · arreglo de minutos en CMS | S |

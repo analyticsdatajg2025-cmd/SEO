@@ -12,8 +12,12 @@ Un solo repo con todo el conocimiento SEO del grupo, orientado a **más ganancia
 
 - 2026-10-16 (v3): corregidas las bases de la tabla de plata neta (solo web vs empresa completa; Motocorp por debajo de LC y EFE en total), Efectibank marcado como negocio que sí vende en digital (cuentas y créditos vía pauta), y nuevos pedidos B13 (venta de piso por marca) y B14 (pauta digital de Efectibank por objetivo).
 
+- 2026-11-24: auditoría de La Curacao en orgánico no-brand (`docs/10`): 10 hallazgos técnicos comprobados (39% de fichas con meta genérica, categorías sin texto, schema de producto pobre, 981 URLs `/catalog/` en sitemap y bloqueadas en robots, categoría rota `/tecnolog-a`, subcategorías duplicadas), GEO, 7+7+7 URLs a seguir y script `herramientas/oportunidades_top3.py` para el cálculo 5-10 → top 3. **Sin GSC, GA4 ni Yandex**: posiciones, CTR y venta por URL quedan SIN DATO.
+- 2026-11-24: bloqueo de IA comprobado en La Curacao y Tiendas EFE: el CDN (Fastly) devuelve 403 a GPTBot y ClaudeBot (entrenamiento); los bots de búsqueda de ChatGPT, Claude, Perplexity y Google pasan. Detalle en `docs/10 §2`. Decisión pendiente de Elias.
+
 ## Pendiente (orden)
 1. **Elias**: responder las preguntas de `docs/06`, dar los accesos A1-A8 y pedir a Efectibank los datos EF1-EF9 (`docs/08 §5`). Sin GSC y Ads por término no se confirma ni se mide nada.
+1a. **Elias/Kevin**: exportar GSC (consulta + página, 3 meses y PY), GA4 (página de destino orgánica con ingresos) y Yandex de La Curacao a `datos/` y correr `herramientas/oportunidades_top3.py` (`docs/10 §5`).
 1b. **Elias**: entregar las cifras verificadas de agosto 2026 vs PY y el registro de cambios SEO (B11) para la referencia histórica; decidir el presupuesto de herramientas (`docs/09 §2b`).
 2. **Evaluar con Elias** los pesos (`docs/03`) y el plan (`docs/04`): qué entra antes de Cyber Wow (congelar 72 h antes, ~30-oct) y qué después.
 3. Guardar en Drive (no en el repo) las fichas `.docx`, audios y `analisis-marcas-seo.html` de la sesión "SEO"; enlazarlos en `docs/01`.
