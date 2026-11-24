@@ -30,6 +30,8 @@ Equipo SEO: **Josh Kevin Seminario** (SEO Senior: estrategia multimarca, auditor
 | `docs/07-inventario-repos-y-sistemas.md` | Huella de los otros repos y sistemas (qué son, dónde viven, qué los rompe). |
 | `docs/08-efectibank-360.md` | Efectibank: cifras públicas, margen de mercado, auditoría de su web, palancas SEO en plata neta, datos que faltan por responsable, tiempos. |
 | `docs/09-capacidad-herramientas-y-riesgos.md` | Capacidad real del equipo (horas), herramientas disponibles y su impacto operativo, ventanas de riesgo Cyber, plazos de rastreo e indexación. |
+| `docs/10-auditoria-lacuracao-organico-no-brand.md` | Auditoría de La Curacao en orgánico no-brand (24-nov): hallazgos técnicos y GEO, 7 categorías/subcategorías/productos a seguir, receta 5-10 → top 3. |
+| `herramientas/oportunidades_top3.py` | Cruza exportes de GSC, GA4 y Yandex (en `datos/`, fuera del repo) y saca las URLs no-brand en posición 5-10 con su venta extra estimada. Requiere pandas. |
 | `grafo/ecosistema-seo.html` | Grafo visual del ecosistema: negocios, activos, datos, sistemas, acciones. Abrir en el navegador. |
 
 ## Reglas de negocio que no se tocan sin preguntar
@@ -39,7 +41,7 @@ Equipo SEO: **Josh Kevin Seminario** (SEO Senior: estrategia multimarca, auditor
 - Días Cyber: ~4x un día normal; pesan ~25% de la venta web del año.
 
 ## Comandos
-No hay build. El grafo es un HTML sin dependencias: `python3 -m http.server` en `grafo/` o abrir el archivo directo.
+No hay build. Oportunidades: `python3 herramientas/oportunidades_top3.py --gsc datos/gsc.csv --ga4 datos/ga4.csv` (ver `docs/10 §5`). El grafo es un HTML sin dependencias: `python3 -m http.server` en `grafo/` o abrir el archivo directo.
 
 ## Al terminar una tarea
 1. `ESTADO.md` actualizado (hecho / pendiente / decisiones).
