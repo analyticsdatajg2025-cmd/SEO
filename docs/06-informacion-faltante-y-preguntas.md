@@ -45,3 +45,13 @@
 10. ¿Qué entregable quiere gerencia a 90 días: tres números (ahorro de pauta, venta orgánica, créditos originados) o algo distinto?
 11. ¿Las apps de EFE/LC/Juntoz son webviews de la web (misma URL) o tienen contenido propio? ¿Quién las mantiene?
 12. ¿Cuál es la fuente oficial de la venta "neta" (tracker vs Magento vs SAP) y de la venta en tienda atribuible a la web (60% de recojo)?
+
+## D. Agente SEO con IA · Skullcandy (`docs/10`, 24-nov-2026)
+| # | Qué | Para qué | Quién |
+|---|---|---|---|
+| AG1 | Exporte de GSC de skullcandy.com.pe (Rendimiento, 16 meses: consultas y páginas; Indexación de páginas) | Línea base del piloto; saber cuántas de las ~65 páginas ajenas están indexadas | Elias / Kevin (acceso admin confirmado) |
+| AG2 | ¿Proyecto de Google Cloud del grupo para la exportación masiva de GSC a BigQuery? | Que el agente lea GSC directo, sin descargas | Elias / TI |
+| AG3 | Cuenta de Google Ads de Skullcandy: términos de búsqueda y Planificador | Volúmenes por zona y búsquedas reales; la cuenta visible hoy (MCC de HP) es de impresoras de LC | Paid |
+| AG4 | Quién aplica en Magento los tickets S1-S4 y S8 y qué edición de Mageplaza Blog hay (¿API?) | Limpieza técnica y, más adelante, borradores automáticos | TI |
+| AG5 | ¿El contrato con Skullcandy global restringe textos, imágenes o uso de marca? | Reglas del generador de contenido | Comercial / Legal |
+| AG6 | ¿Quién paga la API de Claude si se pasa a la opción C (agente en ciclo)? | Fase 2 | Elias |
