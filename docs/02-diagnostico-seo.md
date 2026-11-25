@@ -11,6 +11,7 @@
 | `robots.txt` declara el sitemap como `Sitemap : https://...` (espacio antes de los dos puntos). Google suele tolerarlo, pero no está garantizado; en ambos sitios | COMPROBADO | Medio · verificar en GSC que el sitemap esté enviado a mano | W |
 | Sitemap: índice de 9 archivos, **~99 K URLs** por sitio (99.210 EFE, 99.554 LC; 68 y 21 repetidas) contra ~17 K SKU en el feed. HIPÓTESIS: incluye productos sin stock, descontinuados o variantes | COMPROBADO conteo | Medio · presupuesto de rastreo; no depurar antes de Cyber | S, feeds |
 | **Tiendas EFE sin `canonical`** en home, landings Cyber, categorías y fichas | COMPROBADO | Alto · Google puede elegir variantes con parámetros | S |
+| **La Curacao · blog** (24-nov-2026, 105 artículos, Mageplaza Blog): **fuera del sitemap**; 95 con la meta genérica de la tienda; 104 sin `BlogPosting`/`FAQPage`; 33 con dos H1; sin canonical; título con sufijo "- Blog"; 24 sin enlaces a la tienda; 2 pares duplicados (termas, recetas airfryer). Contenido largo (mediana ~1,300 palabras) | COMPROBADO | Medio · el blog no suma lo que podría; arreglos de contenido y de config del módulo | W |
 | **La Curacao**: canonical de `/cyber-days` apunta a `/cyber-Days`, que redirige (301) de vuelta | COMPROBADO | Medio · arreglo de minutos en CMS | S |
 | Landings Cyber con metadatos sucios: título "Del 06 al 10 de Julio", H1 oculto, varias `<title>` por página (HTML completo pegado en el CMS) | COMPROBADO | Alto en Cyber | S |
 | Varias URLs por evento (`/cyber-days`, `/efe/cyberdays.html`, `/previa-cyber`, `/cyber-wow`), todas 200 y en sitemap | COMPROBADO · canibalización HIPÓTESIS | Medio | S |
@@ -78,7 +79,7 @@ Detalle completo página por página en `docs/08 §3`. Resumen:
 
 ## 5. Skullcandy (skullcandy.com.pe), Coldex (coldex.pe), Diners/BanBif
 
-- Skullcandy: página `/service-unavailable` con título "503 Service Unavailable" indexable y en sitemap; landings de EFE dentro del dominio; `<title>` de la home en inglés; 148 URLs. Negocio: < S/ 40 K/mes, margen ~42%, conversión 0.6% (COMPROBADO/F1).
+- Skullcandy (revisión 24-nov-2026, `herramientas/auditar_sitio.py`, detalle en `docs/10 §2`): sitemap de **143 URLs con ~65 ajenas o de prueba** (test, temp, páginas de Tiendas EFE, La Curacao, Motocorp y Financiera Efectiva, el `503`); una página con canonical a `tusitio.pe`; 2 productos de EFE en el catálogo; blog con 2 artículos, ninguno de Skullcandy; meta repetida en 94 páginas; 32 sin H1 y 52 con varios; títulos de producto inconsistentes; `www` → sin `www` con 302. A favor: schema `Product`/`Offer` en fichas. El título de la home ya está en español ("Audífonos y sonido \| Skullcandy"). COMPROBADO. Negocio: < S/ 40 K/mes, margen ~42%, conversión 0.6% (F1).
 - Coldex: WordPress B2B, "vende poco"; no revisado a fondo (A2).
 - Diners Club Mall / BanBif Mall: tráfico que llega por el banco, no por Google; Diners -27% y sesiones -24% en T3; cualquier cambio de canonical frente a Juntoz debe cuidar al socio (S, F2).
 
