@@ -1,0 +1,604 @@
+<title>Agente SEO Skullcandy</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Mesa de trabajo editorial: cabecera con estado del agente, pestañas, lista → editor a dos columnas (vista previa | control) */
+:root{
+  --bg:#f3f4f7; --surface:#ffffff; --sunk:#e9ebf1; --line:#d5d9e3; --fg:#161a24; --muted:#5b6275;
+  --accent:#3b3fd8; --accent-ink:#ffffff; --accent-soft:#e6e7fb;
+  --ok:#1f7a4d; --ok-soft:#dcf1e5; --warn:#9a5b00; --warn-soft:#fbecd2; --bad:#b4232c; --bad-soft:#fadcde;
+  --serp-title:#1a0dab; --serp-url:#1e6a39;
+  --f-display:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --r:6px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12141b; --surface:#1a1d27; --sunk:#232735; --line:#323748; --fg:#e8eaf2; --muted:#9aa1b5;
+  --accent:#8b8ef7; --accent-ink:#12141b; --accent-soft:#2a2c52;
+  --ok:#5fcf95; --ok-soft:#173527; --warn:#f0b35a; --warn-soft:#3a2b12; --bad:#f2838a; --bad-soft:#3d1c20;
+  --serp-title:#a8b4ff; --serp-url:#7fd39d; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12141b; --surface:#1a1d27; --sunk:#232735; --line:#323748; --fg:#e8eaf2; --muted:#9aa1b5;
+  --accent:#8b8ef7; --accent-ink:#12141b; --accent-soft:#2a2c52;
+  --ok:#5fcf95; --ok-soft:#173527; --warn:#f0b35a; --warn-soft:#3a2b12; --bad:#f2838a; --bad-soft:#3d1c20;
+  --serp-title:#a8b4ff; --serp-url:#7fd39d; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:15px;line-height:1.5}
+.wrap{max-width:1240px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 48px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0}
+button,input,textarea,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.muted{color:var(--muted)}
+.lbl{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+
+/* Cabecera */
+header.top{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:flex-end;justify-content:space-between;padding-bottom:16px;border-bottom:1px solid var(--line)}
+.brand h1{font-size:clamp(22px,3vw,30px);font-weight:800;letter-spacing:-.01em}
+.brand p{margin:2px 0 0;color:var(--muted);font-size:14px}
+.status{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:13px}
+.status div{display:flex;flex-direction:column;gap:1px}
+.status b{font-weight:600}
+
+/* Pestañas */
+nav.tabs{display:flex;gap:4px;margin:16px 0 20px;overflow-x:auto;scrollbar-width:none}
+nav.tabs a{padding:8px 14px;border-radius:var(--r);text-decoration:none;color:var(--muted);font-weight:500;white-space:nowrap;border:1px solid transparent}
+nav.tabs a[aria-current="page"]{background:var(--surface);color:var(--fg);border-color:var(--line)}
+nav.tabs a .n{font-family:var(--f-mono);font-size:12px;margin-left:6px;color:var(--muted)}
+
+/* Pills de estado */
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:2px 9px;border-radius:999px;background:var(--sunk);color:var(--muted);white-space:nowrap}
+.pill::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.pill.borrador{background:var(--sunk);color:var(--muted)}
+.pill.en_revision{background:var(--accent-soft);color:var(--accent)}
+.pill.cambios{background:var(--warn-soft);color:var(--warn)}
+.pill.aprobado{background:var(--ok-soft);color:var(--ok)}
+.pill.publicado{background:var(--ok);color:var(--surface)}
+.pill.rechazado{background:var(--bad-soft);color:var(--bad)}
+.tag{font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:1px 6px}
+
+/* Listas */
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:14px}
+.toolbar h2{font-size:20px;font-weight:700}
+select,input[type=text],input[type=url],textarea{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:7px 10px;width:100%}
+.toolbar select{width:auto}
+.list{display:flex;flex-direction:column;gap:8px}
+.item{display:grid;grid-template-columns:1fr auto;gap:6px 16px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;text-align:left;cursor:pointer;width:100%}
+.item:hover{border-color:var(--accent)}
+.item .t{font-weight:600;min-width:0;overflow-wrap:anywhere}
+.item .meta{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px;color:var(--muted)}
+.item .meta .warnc{color:var(--warn);font-weight:600}
+.empty{background:var(--surface);border:1px dashed var(--line);border-radius:var(--r);padding:28px 22px;max-width:720px}
+.empty h3{font-size:18px;margin-bottom:6px}
+.empty p{margin:6px 0;color:var(--muted)}
+.empty ol{margin:8px 0 0;padding-left:20px;color:var(--muted)}
+
+/* Editor */
+.back{background:none;border:none;color:var(--accent);cursor:pointer;padding:0;font-weight:600;margin-bottom:12px}
+.editor{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:900px){.editor{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px}
+.stack{display:flex;flex-direction:column;gap:14px}
+.field{display:flex;flex-direction:column;gap:5px}
+.field .row{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.count{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.count.over{color:var(--bad);font-weight:600}
+textarea{resize:vertical;min-height:70px}
+.serp{border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;background:var(--bg)}
+.serp .u{font-size:13px;color:var(--serp-url);overflow-wrap:anywhere}
+.serp .ti{font-size:19px;color:var(--serp-title);line-height:1.3;margin:2px 0;overflow-wrap:anywhere}
+.serp .d{font-size:14px;color:var(--muted)}
+.article{font-size:16px;line-height:1.65}
+.article .h1{font-family:var(--f-display);font-size:26px;font-weight:700;margin:4px 0 12px;line-height:1.2}
+.article [contenteditable]{outline:none;border-radius:4px;padding:2px}
+.article [contenteditable]:focus{box-shadow:0 0 0 2px var(--accent-soft)}
+.article h2{font-size:21px;margin:22px 0 8px}
+.article h3{font-size:17px;margin:16px 0 6px}
+.article p{margin:0 0 12px;max-width:68ch}
+.article table{border-collapse:collapse;font-size:14px;margin:10px 0 16px;min-width:420px}
+.article th,.article td{border:1px solid var(--line);padding:6px 9px;text-align:left;vertical-align:top}
+.article th{background:var(--sunk)}
+.article a{color:var(--accent)}
+.tablewrap{overflow-x:auto}
+.pend{background:var(--warn-soft);color:var(--warn);font-weight:600;padding:0 3px;border-radius:3px}
+.faq{border-top:1px solid var(--line);margin-top:18px;padding-top:12px}
+.faq-item{display:grid;gap:6px;margin-bottom:12px}
+.faq-item input{font-weight:600}
+.checks{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:14px}
+.checks li{display:grid;grid-template-columns:20px 1fr;gap:6px;align-items:start}
+.checks .ic{font-family:var(--f-mono);font-weight:600;text-align:center}
+.checks .ok .ic{color:var(--ok)} .checks .bad .ic{color:var(--bad)} .checks .wn .ic{color:var(--warn)}
+.why{font-size:14px;white-space:pre-line}
+.datos{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px}
+.datos div{background:var(--sunk);border-radius:var(--r);padding:8px 10px}
+.datos b{display:block;font-family:var(--f-mono);font-size:17px;font-variant-numeric:tabular-nums}
+.src{font-size:13px;display:flex;flex-direction:column;gap:6px;margin:0;padding:0;list-style:none}
+.src li{border-left:3px solid var(--line);padding-left:8px;overflow-wrap:anywhere}
+.actions{display:flex;flex-wrap:wrap;gap:8px}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:var(--r);padding:8px 13px;font-weight:600;cursor:pointer}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.good{background:var(--ok);color:var(--surface);border-color:var(--ok)}
+.btn.danger{color:var(--bad)}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+.inline{display:flex;flex-direction:column;gap:8px;border:1px solid var(--line);border-radius:var(--r);padding:10px;background:var(--bg)}
+.hist{font-size:13px;display:flex;flex-direction:column;gap:8px}
+.hist div{border-left:3px solid var(--accent-soft);padding-left:8px}
+.diff{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:600px){.diff{grid-template-columns:1fr}}
+.diff .col{background:var(--bg);border:1px solid var(--line);border-radius:var(--r);padding:10px;font-size:14px;overflow-wrap:anywhere}
+.urls{font-family:var(--f-mono);font-size:12.5px;max-height:240px;overflow:auto;background:var(--bg);border:1px solid var(--line);border-radius:var(--r);padding:8px 10px;margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
+
+/* Calendario */
+.weeks{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
+.week{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px;display:flex;flex-direction:column;gap:6px}
+.week.now{border-color:var(--accent)}
+.week .w{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.week .goal{font-family:var(--f-display);font-size:22px;font-weight:700}
+.bar{height:6px;background:var(--sunk);border-radius:3px;overflow:hidden}
+.bar span{display:block;height:100%;background:var(--accent)}
+.note{font-size:12.5px;padding:3px 7px;border-radius:4px;background:var(--warn-soft);color:var(--warn)}
+.note.cyber{background:var(--accent-soft);color:var(--accent)}
+
+/* Medición */
+.metgroup{margin-bottom:22px}
+.metgroup h3{font-size:16px;margin-bottom:8px}
+table.met{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);font-size:14px}
+table.met th,table.met td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+table.met th{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:600}
+table.met td.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+table.met .na{color:var(--muted);font-family:var(--f-body);font-size:13px}
+.up{color:var(--ok)} .down{color:var(--bad)}
+.sources{font-size:13px;color:var(--muted);margin-top:4px}
+
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--fg);color:var(--bg);padding:9px 16px;border-radius:var(--r);font-weight:600;font-size:14px;z-index:20}
+.banner{background:var(--warn-soft);color:var(--warn);border-radius:var(--r);padding:10px 14px;margin-bottom:14px;font-size:14px}
+@media (prefers-reduced-motion:no-preference){.item,.btn{transition:border-color .15s}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <h1>Agente SEO · Skullcandy</h1>
+      <p>skullcandy.com.pe · la IA propone, Kevin aprueba, el equipo publica en Magento</p>
+    </div>
+    <div class="status" id="status">
+      <div><span class="lbl">Último ciclo</span><b id="st-last">—</b></div>
+      <div><span class="lbl">Próximo ciclo</span><b id="st-next">—</b></div>
+      <div><span class="lbl">Ritmo</span><b id="st-pace">—</b></div>
+      <div><span class="lbl">Datos</span><b id="st-data">—</b></div>
+    </div>
+  </header>
+
+  <nav class="tabs" aria-label="Secciones">
+    <a href="#semana" data-tab="semana">Blogs nuevos<span class="n" id="n-semana"></span></a>
+    <a href="#ajustes" data-tab="ajustes">Ajustes y técnico<span class="n" id="n-ajustes"></span></a>
+    <a href="#calendario" data-tab="calendario">Calendario</a>
+    <a href="#medicion" data-tab="medicion">Medición</a>
+  </nav>
+
+  <div id="banner" class="banner" hidden></div>
+  <main id="view"></main>
+</div>
+<div id="toast" class="toast" hidden role="status"></div>
+
+<script>
+(() => {
+  // ---------- utilidades ----------
+  const $ = (s, r = document) => r.querySelector(s);
+  const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const fmtN = (n) => (n === null || n === undefined || n === "" || Number.isNaN(Number(n))) ? null : Number(n).toLocaleString("es-PE", { maximumFractionDigits: 2 });
+  const fmtFecha = (iso) => { if (!iso) return "—"; const d = new Date(iso); return Number.isNaN(d.getTime()) ? esc(iso) : d.toLocaleDateString("es-PE", { day: "numeric", month: "short", year: "numeric", timeZone: "America/Lima" }); };
+  const nowISO = () => new Date().toISOString();
+  function isoWeek(d) {
+    const t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+    const day = t.getUTCDay() || 7; t.setUTCDate(t.getUTCDate() + 4 - day);
+    const y0 = new Date(Date.UTC(t.getUTCFullYear(), 0, 1));
+    const w = Math.ceil(((t - y0) / 86400000 + 1) / 7);
+    return `${t.getUTCFullYear()}-W${String(w).padStart(2, "0")}`;
+  }
+  function mondayOf(d) { const x = new Date(d); const day = x.getDay() || 7; x.setDate(x.getDate() - day + 1); x.setHours(0, 0, 0, 0); return x; }
+  function toast(msg) { const t = $("#toast"); t.textContent = msg; t.hidden = false; clearTimeout(toast._t); toast._t = setTimeout(() => (t.hidden = true), 2400); }
+  const SITE = "https://skullcandy.com.pe";
+
+  // HTML del blog: lista blanca de etiquetas; todo lo demás se descarta.
+  const ALLOWED = new Set(["H2", "H3", "P", "UL", "OL", "LI", "STRONG", "B", "EM", "I", "A", "TABLE", "THEAD", "TBODY", "TR", "TH", "TD", "BR", "BLOCKQUOTE", "SPAN"]);
+  function sanitize(html) {
+    const doc = new DOMParser().parseFromString(`<div>${html || ""}</div>`, "text/html");
+    const out = document.createElement("div");
+    const walk = (src, dst) => {
+      for (const n of [...src.childNodes]) {
+        if (n.nodeType === 3) { dst.appendChild(document.createTextNode(n.textContent)); continue; }
+        if (n.nodeType !== 1) continue;
+        let tag = n.tagName === "H1" ? "H2" : n.tagName;
+        if (!ALLOWED.has(tag)) { if (!["SCRIPT", "STYLE", "IFRAME", "OBJECT", "EMBED"].includes(tag)) walk(n, dst); continue; }
+        const el = document.createElement(tag);
+        if (tag === "A") {
+          const href = n.getAttribute("href") || "";
+          if (/^https:\/\//i.test(href) || href.startsWith("/")) el.setAttribute("href", href.startsWith("/") ? SITE + href : href);
+          el.setAttribute("rel", "noopener"); el.setAttribute("target", "_blank");
+        }
+        if (tag === "SPAN" && n.classList.contains("pend")) el.className = "pend";
+        walk(n, el); dst.appendChild(el);
+      }
+    };
+    walk(doc.body.firstChild, out);
+    return out.innerHTML;
+  }
+
+  const ESTADOS = { borrador: "Borrador", en_revision: "En revisión", cambios: "Cambios pedidos", aprobado: "Aprobado", publicado: "Publicado", rechazado: "Rechazado" };
+  const ESTADOS_TEC = { borrador: "Por revisar", en_revision: "En revisión", cambios: "Cambios pedidos", aprobado: "Listo para ticket", publicado: "Aplicado por TI", rechazado: "Descartado" };
+  const TIPOS = { "blog-nuevo": "Blog nuevo", "ajuste-blog": "Ajuste de blog", categoria: "Categoría", ficha: "Ficha", tecnico: "Técnico" };
+  const pill = (e, tipo) => `<span class="pill ${esc(e)}">${esc((tipo === "tecnico" ? ESTADOS_TEC : ESTADOS)[e] || e)}</span>`;
+
+  // ---------- estado ----------
+  const S = { db: null, user: null, me: null, items: [], metricas: [], config: null, loaded: false, error: null, sel: null, tab: "semana", semana: "todas", filtroEstado: "activos", names: {} };
+
+  // ---------- datos ----------
+  async function boot() {
+    render();
+    const timer = setTimeout(() => { if (!S.loaded) { S.error = "La base de datos no respondió. Recarga la página en unos minutos."; render(); } }, 10000);
+    try {
+      S.db = await window.claude?.use?.("db");
+      S.user = await window.claude?.use?.("user");
+    } catch (e) { S.db = null; }
+    if (!S.db) { clearTimeout(timer); S.error = "Abre el panel con tu sesión de claude.ai para ver y editar los borradores."; render(); return; }
+    try { S.me = await S.user?.id?.(); } catch (e) { S.me = null; }
+    let pending = 3; const done = () => { if (--pending <= 0) { S.loaded = true; clearTimeout(timer); } render(); };
+    const fail = (e) => { S.error = "No se pudo leer la base: " + (e?.message || e?.code || "error"); clearTimeout(timer); render(); };
+    S.db.collection("borradores").onSnapshot((snap) => { S.items = snap.docs.map((d) => ({ id: d.id, ...d.data() })); resolveNames(); done(); }, fail);
+    S.db.collection("metricas").onSnapshot((snap) => { S.metricas = snap.docs.map((d) => ({ id: d.id, ...d.data() })); done(); }, fail);
+    S.db.doc("config/agente").onSnapshot((snap) => { S.config = snap.exists ? snap.data() : null; done(); }, fail);
+  }
+  async function resolveNames() {
+    if (!S.user?.profiles) return;
+    const ids = new Set();
+    for (const it of S.items) { if (it.aprobado_por) ids.add(it.aprobado_por); for (const c of it.comentarios || []) if (c.quien) ids.add(c.quien); }
+    if (!ids.size) return;
+    try { const ps = await S.user.profiles([...ids]); for (const id of ids) S.names[id] = ps?.[id]?.name || ""; render(true); } catch (e) {}
+  }
+  const who = (id) => (id && S.names[id]) || (id ? "Alguien del equipo" : "El agente");
+
+  async function save(id, patch, msg) {
+    if (!S.db) return;
+    try { await S.db.doc("borradores/" + id).update({ ...patch, actualizado: nowISO() }); if (msg) toast(msg); }
+    catch (e) { toast(e?.code === "not_granted" ? "No tienes permiso para editar este panel." : "No se guardó: " + (e?.message || "error")); }
+  }
+
+  // ---------- navegación ----------
+  function route() {
+    const h = (location.hash || "#semana").slice(1);
+    S.tab = ["semana", "ajustes", "calendario", "medicion"].includes(h) ? h : "semana";
+    S.sel = null; render();
+  }
+  window.addEventListener("hashchange", route);
+
+  // ---------- render ----------
+  let lastHTML = "";
+  function render(soft) {
+    for (const a of document.querySelectorAll("nav.tabs a")) { if (a.dataset.tab === S.tab && !S.sel) a.setAttribute("aria-current", "page"); else if (a.dataset.tab === S.tab) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); }
+    const blogs = S.items.filter((i) => i.tipo === "blog-nuevo"), otros = S.items.filter((i) => i.tipo !== "blog-nuevo");
+    const act = (arr) => arr.filter((i) => !["publicado", "rechazado"].includes(i.estado)).length;
+    $("#n-semana").textContent = S.loaded ? act(blogs) || "" : "";
+    $("#n-ajustes").textContent = S.loaded ? act(otros) || "" : "";
+    renderStatus();
+    const b = $("#banner"); b.hidden = !S.error; b.textContent = S.error || "";
+    if (soft && S.sel && document.activeElement && $("#view").contains(document.activeElement)) return; // no pisar lo que se está escribiendo
+    const v = $("#view");
+    if (S.sel) { const it = S.items.find((i) => i.id === S.sel); if (it) { renderEditor(v, it); return; } S.sel = null; }
+    if (S.tab === "semana") renderList(v, blogs, "blog");
+    else if (S.tab === "ajustes") renderList(v, otros, "otros");
+    else if (S.tab === "calendario") renderCal(v);
+    else renderMed(v);
+  }
+
+  function renderStatus() {
+    const c = S.config || {};
+    $("#st-last").textContent = c.ultimo_ciclo ? fmtFecha(c.ultimo_ciclo) : "Aún no corre";
+    $("#st-next").textContent = c.proximo_ciclo ? fmtFecha(c.proximo_ciclo) : (c.ciclo || "Lunes, cuando haya datos");
+    $("#st-pace").textContent = c.ritmo ? `${c.ritmo.normal} blogs/sem` : "3-4 blogs/sem";
+    $("#st-data").textContent = c.datos_estado || "Falta línea base de GSC";
+  }
+
+  function renderList(v, arr, kind) {
+    const semanas = [...new Set(arr.map((i) => i.semana).filter(Boolean))].sort().reverse();
+    let rows = arr.slice();
+    if (S.semana !== "todas") rows = rows.filter((i) => i.semana === S.semana);
+    if (S.filtroEstado === "activos") rows = rows.filter((i) => !["publicado", "rechazado"].includes(i.estado));
+    else if (S.filtroEstado !== "todos") rows = rows.filter((i) => i.estado === S.filtroEstado);
+    const orden = { cambios: 0, en_revision: 1, borrador: 2, aprobado: 3, publicado: 4, rechazado: 5 };
+    rows.sort((a, b) => (orden[a.estado] ?? 9) - (orden[b.estado] ?? 9) || String(a.prioridad || "z").localeCompare(String(b.prioridad || "z")) || String(b.creado || "").localeCompare(String(a.creado || "")));
+    const title = kind === "blog" ? "Blogs nuevos" : "Ajustes, categorías, fichas y técnico";
+    let h = `<div class="toolbar"><h2>${title}</h2><div style="display:flex;gap:8px;flex-wrap:wrap">
+      <select id="f-sem" aria-label="Semana"><option value="todas">Todas las semanas</option>${semanas.map((s) => `<option ${s === S.semana ? "selected" : ""}>${esc(s)}</option>`).join("")}</select>
+      <select id="f-est" aria-label="Estado"><option value="activos">Pendientes</option><option value="todos">Todos</option>${Object.keys(ESTADOS).map((e) => `<option value="${e}" ${e === S.filtroEstado ? "selected" : ""}>${ESTADOS[e]}</option>`).join("")}</select>
+    </div></div>`;
+    if (!S.loaded && !S.error) h += `<p class="muted">Cargando…</p>`;
+    else if (!arr.length) h += kind === "blog" ? emptyBlogs() : `<div class="empty"><h3>Sin ajustes todavía</h3><p>Aquí aparecen los cambios a blogs existentes, textos de categorías, fichas y tickets técnicos para TI.</p></div>`;
+    else if (!rows.length) h += `<p class="muted">Nada con este filtro.</p>`;
+    else h += `<div class="list">${rows.map(itemRow).join("")}</div>`;
+    v.innerHTML = h;
+    const fs = $("#f-sem"), fe = $("#f-est");
+    if (fe) fe.value = S.filtroEstado;
+    fs && fs.addEventListener("change", () => { S.semana = fs.value; render(); });
+    fe && fe.addEventListener("change", () => { S.filtroEstado = fe.value; render(); });
+    v.querySelectorAll("[data-open]").forEach((el) => el.addEventListener("click", () => { S.sel = el.dataset.open; window.scrollTo(0, 0); render(); }));
+  }
+  function emptyBlogs() {
+    return `<div class="empty"><h3>El agente todavía no ha escrito blogs</h3>
+      <p>Cada lunes deja aquí los borradores de la semana: la búsqueda que ataca, por qué la eligió con datos de Search Console, el texto listo para revisar y sus fuentes.</p>
+      <p>Para el primer ciclo falta:</p>
+      <ol><li>Los exportes de Search Console y GA4 de skullcandy.com.pe (paso a paso en <span class="mono">docs/10 §8b</span>).</li>
+      <li>Que Kevin confirme el ritmo de arranque: 2-3 blogs por semana el primer mes.</li></ol>
+      <p>Mientras tanto, en <a href="#ajustes">Ajustes y técnico</a> están los hallazgos de la auditoría listos para revisar.</p></div>`;
+  }
+  function itemRow(i) {
+    const pend = (i.pendientes || []).length;
+    const alertas = (i.verificacion?.alertas || []).length;
+    const d = i.datos || {};
+    const bits = [];
+    bits.push(`<span class="tag">${esc(TIPOS[i.tipo] || i.tipo)}</span>`);
+    if (i.busqueda_objetivo) bits.push(`<span>Búsqueda: <b>${esc(i.busqueda_objetivo)}</b></span>`);
+    if (fmtN(d.impresiones) !== null) bits.push(`<span class="mono">${fmtN(d.impresiones)} impr.</span>`);
+    if (fmtN(d.posicion) !== null) bits.push(`<span class="mono">pos. ${fmtN(d.posicion)}</span>`);
+    if (i.prioridad) bits.push(`<span>Prioridad ${esc(i.prioridad)}</span>`);
+    if (i.semana) bits.push(`<span class="mono">${esc(i.semana)}</span>`);
+    if (pend) bits.push(`<span class="warnc">${pend} pendiente${pend > 1 ? "s" : ""} de dato</span>`);
+    if (alertas) bits.push(`<span class="warnc">${alertas} alerta${alertas > 1 ? "s" : ""} del verificador</span>`);
+    return `<button class="item" data-open="${esc(i.id)}"><span class="t">${esc(i.titulo || "(sin título)")}</span>${pill(i.estado || "borrador", i.tipo)}<span class="meta">${bits.join("")}</span></button>`;
+  }
+
+  // ---------- chequeos automáticos ----------
+  function checks(i, body) {
+    const out = [];
+    const tit = (i.titulo || "").trim(), meta = (i.meta || "").trim(), q = (i.busqueda_objetivo || "").trim().toLowerCase();
+    const add = (st, txt) => out.push({ st, txt });
+    if (i.tipo === "tecnico") {
+      add((i.reversion || "").trim() ? "ok" : "bad", "Tiene plan de reversión");
+      add((i.urls || []).length || (i.descripcion || "").trim() ? "ok" : "wn", "Lista de URLs o descripción para TI");
+      return out;
+    }
+    add(tit && tit.length <= 60 ? "ok" : "bad", `Título de 60 caracteres o menos (${tit.length})`);
+    if (["blog-nuevo", "ajuste-blog", "categoria", "ficha"].includes(i.tipo)) add(meta.length >= 70 && meta.length <= 155 ? "ok" : "bad", `Meta entre 70 y 155 caracteres (${meta.length})`);
+    if (q) add(tit.toLowerCase().includes(q) ? "ok" : "wn", "La búsqueda objetivo aparece en el título");
+    if (i.tipo === "blog-nuevo" || i.tipo === "ajuste-blog") {
+      const tmp = document.createElement("div"); tmp.innerHTML = body || "";
+      const firstP = tmp.querySelector("p"); const w = firstP ? firstP.textContent.trim().split(/\s+/).filter(Boolean).length : 0;
+      add(w >= 25 && w <= 70 ? "ok" : "wn", `Respuesta directa en el primer párrafo, 25-70 palabras (${w})`);
+      const h2 = tmp.querySelectorAll("h2").length; add(h2 >= 3 ? "ok" : "wn", `Al menos 3 subtítulos H2 (${h2})`);
+      const links = [...tmp.querySelectorAll("a")].filter((a) => (a.getAttribute("href") || "").startsWith(SITE)).length;
+      add(links >= 2 ? "ok" : "wn", `Al menos 2 enlaces a fichas o categorías de skullcandy.com.pe (${links})`);
+      const faq = (i.faq || []).filter((f) => f.q && f.a).length; add(faq >= 3 ? "ok" : "wn", `FAQ con 3 o más preguntas (${faq})`);
+      add(tmp.querySelectorAll("table").length ? "ok" : "wn", "Tabla comparativa con datos del catálogo");
+    }
+    add((i.fuentes || []).length ? "ok" : "bad", `Fuentes declaradas (${(i.fuentes || []).length})`);
+    const pend = (i.pendientes || []).length; add(pend ? "bad" : "ok", pend ? `${pend} dato${pend > 1 ? "s" : ""} pendiente${pend > 1 ? "s" : ""}: no se publica hasta resolverlo` : "Sin datos pendientes");
+    for (const a of i.verificacion?.alertas || []) add("wn", "Verificador: " + a);
+    return out;
+  }
+
+  // ---------- editor ----------
+  function renderEditor(v, i) {
+    const tec = i.tipo === "tecnico", blog = i.tipo === "blog-nuevo" || i.tipo === "ajuste-blog";
+    const body = sanitize(i.cuerpo_html || "");
+    const d = i.datos || {};
+    const datos = [["Impresiones", d.impresiones], ["Clics", d.clics], ["Posición", d.posicion], ["CTR %", d.ctr], ["Volumen/mes", d.volumen]].filter(([, x]) => fmtN(x) !== null);
+    const slug = i.slug ? (i.slug.startsWith("http") ? i.slug : `${SITE}/${String(i.slug).replace(/^\//, "")}`) : (i.url || SITE + "/blog/post/…");
+    const leftTec = `<div class="card stack">
+        <div><span class="lbl">Ticket para TI</span><h2 style="font-size:22px;margin-top:4px">${esc(i.titulo)}</h2></div>
+        <div class="field"><label class="lbl" for="e-desc">Qué pasa y qué se pide</label><textarea id="e-desc" rows="6">${esc(i.descripcion || "")}</textarea></div>
+        ${(i.urls || []).length ? `<div class="field"><span class="lbl">URLs afectadas (${i.urls.length})</span><pre class="urls">${esc(i.urls.join("\n"))}</pre></div>` : ""}
+        <div class="field"><label class="lbl" for="e-rev">Plan de reversión</label><textarea id="e-rev" rows="3">${esc(i.reversion || "")}</textarea></div>
+        <div class="field"><label class="lbl" for="e-riesgo">Riesgo</label><input type="text" id="e-riesgo" value="${esc(i.riesgo || "")}"></div>
+      </div>`;
+    const antes = i.antes || null;
+    const leftContent = `<div class="stack">
+        <div class="card stack">
+          <span class="lbl">Así se vería en Google</span>
+          <div class="serp"><div class="u">${esc(slug)}</div><div class="ti" id="serp-t">${esc(i.titulo || "")}</div><div class="d" id="serp-d">${esc(i.meta || "")}</div></div>
+          <div class="field"><div class="row"><label class="lbl" for="e-tit">Título SEO</label><span class="count" id="c-tit"></span></div><input type="text" id="e-tit" value="${esc(i.titulo || "")}"></div>
+          <div class="field"><div class="row"><label class="lbl" for="e-meta">Meta descripción</label><span class="count" id="c-meta"></span></div><textarea id="e-meta" rows="2">${esc(i.meta || "")}</textarea></div>
+        </div>
+        ${antes ? `<div class="card stack"><span class="lbl">Antes y después</span><div class="diff">
+            <div class="col"><span class="lbl">Hoy en el sitio</span><p><b>${esc(antes.titulo || "—")}</b></p><p class="muted">${esc(antes.meta || "")}</p>${antes.texto ? `<p>${esc(antes.texto)}</p>` : ""}</div>
+            <div class="col"><span class="lbl">Propuesta</span><p><b>${esc(i.titulo || "—")}</b></p><p class="muted">${esc(i.meta || "")}</p></div></div></div>` : ""}
+        <div class="card article">
+          <span class="lbl">${blog ? "Artículo · se edita directo sobre el texto" : "Texto · se edita directo"}</span>
+          <div class="h1" contenteditable="true" id="e-h1" aria-label="H1">${esc(i.h1 || i.titulo || "")}</div>
+          <div class="tablewrap"><div contenteditable="true" id="e-body" aria-label="Cuerpo">${body || '<p class="muted">Sin texto todavía.</p>'}</div></div>
+          ${blog ? `<div class="faq"><span class="lbl">Preguntas frecuentes (van con FAQPage)</span><div id="faq">${(i.faq || []).map((f, k) => faqRow(f, k)).join("")}</div><button class="btn" id="faq-add" type="button">Agregar pregunta</button></div>` : ""}
+        </div>
+      </div>`;
+    const right = `<div class="stack">
+        <div class="card stack">
+          <div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:center"><span class="tag">${esc(TIPOS[i.tipo] || i.tipo)}</span>${pill(i.estado || "borrador", i.tipo)}</div>
+          ${i.busqueda_objetivo ? `<div><span class="lbl">Búsqueda objetivo</span><div style="font-weight:600;font-size:17px">${esc(i.busqueda_objetivo)}</div>${(i.busquedas_relacionadas || []).length ? `<div class="muted" style="font-size:13px">También: ${esc(i.busquedas_relacionadas.join(" · "))}</div>` : ""}</div>` : ""}
+          ${datos.length ? `<div class="datos">${datos.map(([k, x]) => `<div><span class="lbl">${k}</span><b>${fmtN(x)}</b></div>`).join("")}</div>${d.fuente ? `<div class="sources">Fuente: ${esc(d.fuente)}${d.periodo ? " · " + esc(d.periodo) : ""}</div>` : ""}` : ""}
+          ${i.por_que ? `<div><span class="lbl">Por qué lo propone</span><div class="why">${esc(i.por_que)}</div></div>` : ""}
+        </div>
+        <div class="card stack"><span class="lbl">Chequeo automático</span><ul class="checks" id="checks"></ul></div>
+        ${(i.pendientes || []).length ? `<div class="card stack"><span class="lbl">Datos pendientes</span><ul class="src">${i.pendientes.map((p) => `<li><span class="pend">PENDIENTE</span> ${esc(p)}</li>`).join("")}</ul></div>` : ""}
+        <div class="card stack"><span class="lbl">Fuentes de cada dato</span>${(i.fuentes || []).length ? `<ul class="src">${i.fuentes.map((f) => `<li><b>${esc(f.dato || "")}</b><br>${esc(f.fuente || "")}${f.url && /^https:\/\//.test(f.url) ? ` · <a href="${esc(f.url)}" target="_blank" rel="noopener">ver</a>` : ""}</li>`).join("")}</ul>` : `<p class="muted" style="margin:0">Sin fuentes declaradas.</p>`}</div>
+        <div class="card stack">
+          <span class="lbl">Decisión</span>
+          <div class="actions">
+            <button class="btn" id="a-save">Guardar cambios</button>
+            <button class="btn good" id="a-ok">${tec ? "Listo para ticket" : "Aprobar"}</button>
+            <button class="btn" id="a-chg">${tec ? "Pedir ajuste" : "Pedir cambios a la IA"}</button>
+            <button class="btn danger" id="a-no">${tec ? "Descartar" : "Rechazar"}</button>
+          </div>
+          <div class="actions">
+            ${tec ? "" : `<button class="btn primary" id="a-copy">Copiar HTML para Magento</button>`}
+            <button class="btn" id="a-pub">${tec ? "Marcar aplicado" : "Marcar publicado"}</button>
+          </div>
+          <div id="inline"></div>
+          ${i.publicado_url ? `<div class="sources">Publicado: <a href="${/^https:\/\//.test(i.publicado_url) ? esc(i.publicado_url) : "#"}" target="_blank" rel="noopener">${esc(i.publicado_url)}</a> · ${fmtFecha(i.publicado_en)}</div>` : ""}
+          ${i.aprobado_en ? `<div class="sources">Aprobado por ${esc(who(i.aprobado_por))} · ${fmtFecha(i.aprobado_en)}</div>` : ""}
+        </div>
+        ${(i.comentarios || []).length ? `<div class="card stack"><span class="lbl">Historial</span><div class="hist">${i.comentarios.map((c) => `<div><b>${esc(who(c.quien))}</b> · ${fmtFecha(c.cuando)}<br>${esc(c.texto)}</div>`).join("")}</div></div>` : ""}
+      </div>`;
+    v.innerHTML = `<button class="back" id="back">← Volver a la lista</button><div class="editor">${tec ? leftTec : leftContent}${right}</div>`;
+    $("#back").addEventListener("click", () => { S.sel = null; render(); });
+
+    const draft = () => {
+      const p = {};
+      if (tec) { p.descripcion = $("#e-desc").value; p.reversion = $("#e-rev").value; p.riesgo = $("#e-riesgo").value; return p; }
+      p.titulo = $("#e-tit").value.trim(); p.meta = $("#e-meta").value.trim();
+      p.h1 = $("#e-h1").textContent.trim(); p.cuerpo_html = sanitize($("#e-body").innerHTML);
+      if ($("#faq")) p.faq = [...document.querySelectorAll("#faq .faq-item")].map((r) => ({ q: r.querySelector("input").value.trim(), a: r.querySelector("textarea").value.trim() })).filter((f) => f.q || f.a);
+      return p;
+    };
+    const refresh = () => {
+      const cur = { ...i, ...draft() };
+      if (!tec) {
+        $("#serp-t").textContent = cur.titulo; $("#serp-d").textContent = cur.meta;
+        const ct = $("#c-tit"), cm = $("#c-meta");
+        ct.textContent = `${cur.titulo.length}/60`; ct.classList.toggle("over", cur.titulo.length > 60);
+        cm.textContent = `${cur.meta.length}/155`; cm.classList.toggle("over", cur.meta.length > 155);
+      }
+      const ic = { ok: "✓", bad: "✕", wn: "!" };
+      $("#checks").innerHTML = checks(cur, cur.cuerpo_html).map((c) => `<li class="${c.st}"><span class="ic">${ic[c.st]}</span><span>${esc(c.txt)}</span></li>`).join("");
+      return cur;
+    };
+    v.querySelectorAll("input,textarea,[contenteditable]").forEach((el) => el.addEventListener("input", refresh));
+    refresh();
+    $("#faq-add")?.addEventListener("click", () => { const box = $("#faq"); const k = box.children.length; box.insertAdjacentHTML("beforeend", faqRow({ q: "", a: "" }, k)); box.lastElementChild.querySelector("input").focus(); box.lastElementChild.querySelectorAll("input,textarea").forEach((el) => el.addEventListener("input", refresh)); });
+
+    const inline = (label, placeholder, okText, onOk, type = "text") => {
+      const box = $("#inline");
+      box.innerHTML = `<div class="inline"><label class="lbl" for="in-x">${esc(label)}</label>${type === "area" ? `<textarea id="in-x" rows="3" placeholder="${esc(placeholder)}"></textarea>` : `<input id="in-x" type="${type}" placeholder="${esc(placeholder)}">`}<div class="actions"><button class="btn primary" id="in-ok">${esc(okText)}</button><button class="btn" id="in-cancel">Cancelar</button></div></div>`;
+      $("#in-x").focus();
+      $("#in-cancel").addEventListener("click", () => (box.innerHTML = ""));
+      $("#in-ok").addEventListener("click", () => { const val = $("#in-x").value.trim(); if (!val) { $("#in-x").focus(); return; } onOk(val); box.innerHTML = ""; });
+    };
+    const comment = (texto) => [...(i.comentarios || []), { quien: S.me || null, cuando: nowISO(), texto }];
+
+    $("#a-save").addEventListener("click", () => save(i.id, { ...draft(), estado: i.estado === "borrador" ? "en_revision" : i.estado }, "Guardado"));
+    $("#a-ok").addEventListener("click", () => {
+      const cur = refresh();
+      if ((cur.pendientes || []).length && !tec) { toast("Resuelve los datos pendientes antes de aprobar."); return; }
+      save(i.id, { ...draft(), estado: "aprobado", aprobado_por: S.me || null, aprobado_en: nowISO() }, tec ? "Listo para ticket" : "Aprobado");
+    });
+    $("#a-chg").addEventListener("click", () => inline("Qué debe cambiar", "Ej.: el primer párrafo no responde la búsqueda; usa el Crusher ANC 2 en la tabla", "Enviar a la IA", (t) => save(i.id, { ...draft(), estado: "cambios", comentarios: comment("Pidió cambios: " + t) }, "Pedido enviado: el agente lo toma en el próximo ciclo"), "area"));
+    $("#a-no").addEventListener("click", () => inline("Por qué se descarta", "Ej.: tema repetido con otro blog", tec ? "Descartar" : "Rechazar", (t) => save(i.id, { estado: "rechazado", comentarios: comment("Rechazó: " + t) }, tec ? "Descartado" : "Rechazado"), "area"));
+    $("#a-pub").addEventListener("click", () => {
+      if (!tec && i.estado !== "aprobado" && i.estado !== "publicado") { toast("Primero tiene que estar aprobado."); return; }
+      inline(tec ? "Nota de TI (qué se aplicó)" : "URL publicada en skullcandy.com.pe", tec ? "Ej.: ticket #123 aplicado el 2-dic" : SITE + "/blog/post/…", tec ? "Marcar aplicado" : "Marcar publicado", (val) => {
+        if (!tec && !/^https:\/\//.test(val)) { toast("La URL debe empezar con https://"); return; }
+        save(i.id, tec ? { estado: "publicado", publicado_en: nowISO(), comentarios: comment("Aplicado: " + val) } : { estado: "publicado", publicado_url: val, publicado_en: nowISO() }, tec ? "Marcado como aplicado" : "Marcado como publicado");
+      }, tec ? "text" : "url");
+    });
+    $("#a-copy")?.addEventListener("click", async () => {
+      const cur = { ...i, ...draft() };
+      const html = magentoHTML(cur);
+      try { await navigator.clipboard.writeText(html); toast("HTML copiado: pégalo en el contenido del post"); }
+      catch (e) { inline("Copia este HTML (Ctrl+C)", "", "Listo", () => {}, "area"); const ta = $("#in-x"); ta.value = html; ta.rows = 10; ta.select(); }
+    });
+  }
+  function faqRow(f, k) {
+    return `<div class="faq-item"><input type="text" aria-label="Pregunta ${k + 1}" placeholder="Pregunta" value="${esc(f.q || "")}"><textarea rows="2" aria-label="Respuesta ${k + 1}" placeholder="Respuesta">${esc(f.a || "")}</textarea></div>`;
+  }
+  function magentoHTML(i) {
+    const faq = (i.faq || []).filter((f) => f.q && f.a);
+    const ldEsc = (o) => JSON.stringify(o, null, 2).replace(/</g, "\\u003c");
+    let out = sanitize(i.cuerpo_html || "");
+    if (faq.length) out += `\n<h2>Preguntas frecuentes</h2>\n` + faq.map((f) => `<h3>${esc(f.q)}</h3>\n<p>${esc(f.a)}</p>`).join("\n");
+    const post = { "@context": "https://schema.org", "@type": "BlogPosting", headline: i.h1 || i.titulo, description: i.meta, inLanguage: "es-PE", dateModified: (i.actualizado || nowISO()).slice(0, 10), author: { "@type": "Organization", name: "Skullcandy Perú" }, publisher: { "@type": "Organization", name: "Skullcandy Perú" } };
+    if (i.publicado_url) post.mainEntityOfPage = i.publicado_url;
+    out += `\n<script type="application/ld+json">\n${ldEsc(post)}\n<\/script>`;
+    if (faq.length) out += `\n<script type="application/ld+json">\n${ldEsc({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faq.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) })}\n<\/script>`;
+    return out;
+  }
+
+  // ---------- calendario ----------
+  function renderCal(v) {
+    const c = S.config || {};
+    const ritmo = c.ritmo || { arranque: "2-3", normal: "3-4", precyber: "4-5" };
+    const fechas = (c.fechas || []).filter((f) => f.fecha);
+    const inicio = c.inicio ? mondayOf(new Date(c.inicio + "T12:00:00")) : null;
+    const start = mondayOf(new Date());
+    const weeks = [];
+    for (let k = 0; k < 12; k++) {
+      const m = new Date(start); m.setDate(m.getDate() + 7 * k);
+      const end = new Date(m); end.setDate(end.getDate() + 6);
+      const wid = isoWeek(m);
+      const notas = fechas.filter((f) => { const d = new Date(f.fecha + "T12:00:00"); return d >= m && d <= new Date(end.getTime() + 86399000); });
+      const cyberHere = notas.some((f) => f.tipo === "cyber");
+      const cyberSoon = fechas.some((f) => { if (f.tipo !== "cyber") return false; const d = new Date(f.fecha + "T12:00:00"); const diff = (d - m) / 86400000; return diff >= 7 && diff <= 56; });
+      let goal, why;
+      if (!inicio || m < inicio) { goal = "—"; why = inicio ? "Antes del arranque" : "Arranca cuando lleguen los datos"; }
+      else if (cyberHere) { goal = "0"; why = "Semana de Cyber: solo actualizar lo publicado"; }
+      else if (cyberSoon) { goal = ritmo.precyber; why = "Previa de Cyber"; }
+      else if ((m - inicio) / 86400000 < 28) { goal = ritmo.arranque; why = "Arranque gradual"; }
+      else { goal = ritmo.normal; why = "Ritmo normal"; }
+      const items = S.items.filter((i) => i.tipo === "blog-nuevo" && i.semana === wid);
+      const pub = items.filter((i) => i.estado === "publicado").length;
+      const maxGoal = parseInt(String(goal).split("-").pop(), 10) || 0;
+      weeks.push(`<div class="week ${k === 0 ? "now" : ""}"><span class="w">${wid} · ${m.toLocaleDateString("es-PE", { day: "numeric", month: "short" })}–${end.toLocaleDateString("es-PE", { day: "numeric", month: "short" })}</span>
+        <span class="goal">${esc(goal)}<span class="muted" style="font-size:13px;font-family:var(--f-body);font-weight:500"> blogs nuevos</span></span>
+        <span class="muted" style="font-size:13px">${esc(why)}</span>
+        ${maxGoal ? `<div class="bar" aria-label="${pub} publicados de ${maxGoal}"><span style="width:${Math.min(100, (pub / maxGoal) * 100)}%"></span></div><span class="mono" style="font-size:12px">${items.length} propuestos · ${pub} publicados</span>` : ""}
+        ${notas.map((f) => `<span class="note ${f.tipo === "cyber" ? "cyber" : ""}">${esc(f.nota)}</span>`).join("")}</div>`);
+    }
+    const sinFecha = (c.fechas || []).filter((f) => !f.fecha);
+    v.innerHTML = `<div class="toolbar"><h2>Calendario de publicación</h2><span class="muted" style="font-size:14px">Ritmo: ${esc(ritmo.arranque)} el primer mes · ${esc(ritmo.normal)} normal · ${esc(ritmo.precyber)} en la previa de Cyber</span></div>
+      ${sinFecha.length ? `<div class="banner">${sinFecha.map((f) => esc(f.nota)).join(" · ")}</div>` : ""}
+      <div class="weeks">${weeks.join("")}</div>
+      <p class="sources">Lo de Cyber se publica 4-8 semanas antes porque un blog nuevo tarda semanas en posicionar. La semana del Cyber no se crean blogs: se actualizan los publicados.</p>`;
+  }
+
+  // ---------- medición ----------
+  const IND = [
+    ["Visibilidad en Google (Search Console)", [
+      ["impresiones", "Impresiones", 1], ["impresiones_sin_marca", "Impresiones sin la palabra «skullcandy»", 1], ["consultas_distintas", "Búsquedas distintas en las que aparecemos (terreno ocupado)", 1],
+      ["consultas_top3", "Búsquedas en top 3", 1], ["consultas_top10", "Búsquedas en top 10", 1], ["posicion_media", "Posición media", -1], ["ctr", "CTR %", 1], ["clics", "Clics", 1], ["clics_sin_marca", "Clics sin la palabra «skullcandy»", 1]]],
+    ["Salud técnica", [
+      ["urls_sitemap", "URLs en el sitemap", 0], ["paginas_ajenas_sitemap", "Páginas ajenas o de prueba en el sitemap", -1], ["paginas_indexadas", "Páginas indexadas", 0], ["ajenas_indexadas", "Páginas ajenas indexadas", -1],
+      ["dias_indexar_blog", "Días hasta indexar un blog nuevo", -1], ["meta_repetida", "Páginas con la meta descripción repetida", -1], ["sin_h1", "Páginas sin H1", -1]]],
+    ["Calidad del tráfico orgánico (GA4)", [
+      ["sesiones_org", "Sesiones orgánicas", 1], ["tasa_interaccion", "Tasa de interacción %", 1], ["clics_blog_a_ficha", "Clics de blog a ficha de producto", 1], ["add_to_cart_org", "Agregar al carrito (orgánico)", 1], ["conversion_org", "Conversión orgánica %", 1], ["ventas_asistidas_blog", "Ventas asistidas por blog", 1]]],
+    ["Negocio", [
+      ["venta_org", "Venta orgánica S/", 1], ["pct_venta_org", "% de la venta que viene de orgánico", 1], ["valor_equiv_pauta", "Valor equivalente en pauta S/ (estimación)", 1], ["margen_org", "Margen orgánico S/ (~42%)", 1]]],
+    ["Búsquedas con IA", [
+      ["visitas_ia", "Visitas desde ChatGPT, Perplexity, Gemini, Copilot", 1], ["citas_ia", "Búsquedas clave donde la IA nos cita (de 30)", 1], ["fragmentos", "Fragmentos destacados ganados", 1]]],
+  ];
+  function renderMed(v) {
+    const base = S.metricas.find((m) => m.id === "base");
+    const ult = S.metricas.filter((m) => m.id !== "base" && m.fecha).sort((a, b) => String(b.fecha).localeCompare(String(a.fecha)))[0];
+    const cell = (m, k) => { const x = fmtN(m?.valores?.[k]); return x === null ? `<td class="num"><span class="na">Pendiente</span></td>` : `<td class="num">${x}${m?.notas?.[k] ? ` <span class="muted" title="${esc(m.notas[k])}">*</span>` : ""}</td>`; };
+    const delta = (k, dir) => {
+      const a = Number(base?.valores?.[k]), b = Number(ult?.valores?.[k]);
+      if (!base || !ult || Number.isNaN(a) || Number.isNaN(b) || base?.valores?.[k] == null || ult?.valores?.[k] == null) return `<td class="num"><span class="na">—</span></td>`;
+      const d = b - a; const good = dir === 0 ? null : (d * dir > 0);
+      return `<td class="num ${good === null || d === 0 ? "" : good ? "up" : "down"}">${d > 0 ? "+" : ""}${fmtN(d)}</td>`;
+    };
+    // Operación del agente: se calcula en vivo desde los borradores
+    const blogs = S.items.filter((i) => i.tipo === "blog-nuevo");
+    const pub = blogs.filter((i) => i.estado === "publicado").length;
+    const aprob = S.items.filter((i) => i.tipo !== "tecnico" && (i.estado === "aprobado" || i.estado === "publicado"));
+    const sinCambios = aprob.filter((i) => !(i.comentarios || []).some((c) => String(c.texto).startsWith("Pidió cambios"))).length;
+    const pendProm = S.items.length ? (S.items.reduce((s, i) => s + (i.pendientes || []).length, 0) / S.items.length) : null;
+    let h = `<div class="toolbar"><h2>Medición antes y después</h2><span class="muted" style="font-size:14px">Antes: ${base ? esc(base.periodo || fmtFecha(base.fecha)) : "sin línea base"} · Último: ${ult ? esc(ult.periodo || fmtFecha(ult.fecha)) : "sin medición"}</span></div>`;
+    if (!base) h += `<div class="empty" style="margin-bottom:18px"><h3>Falta la foto «antes»</h3><p>Con los exportes de Search Console y GA4 se llena esta columna. Cada lote se compara a los 28 y 90 días contra páginas que no se tocaron.</p></div>`;
+    for (const [g, rows] of IND) {
+      h += `<div class="metgroup"><h3>${esc(g)}</h3><div class="tablewrap"><table class="met"><thead><tr><th>Indicador</th><th style="text-align:right">Antes</th><th style="text-align:right">Último</th><th style="text-align:right">Cambio</th></tr></thead><tbody>
+        ${rows.map(([k, label, dir]) => `<tr><td>${esc(label)}</td>${cell(base, k)}${cell(ult, k)}${delta(k, dir)}</tr>`).join("")}</tbody></table></div></div>`;
+    }
+    h += `<div class="metgroup"><h3>Operación del agente (en vivo)</h3><div class="tablewrap"><table class="met"><thead><tr><th>Indicador</th><th style="text-align:right">Valor</th></tr></thead><tbody>
+      <tr><td>Blogs publicados</td><td class="num">${fmtN(pub)}</td></tr>
+      <tr><td>% aprobado sin pedir cambios (meta 80%)</td><td class="num">${aprob.length ? fmtN((sinCambios / aprob.length) * 100) + "%" : '<span class="na">Sin aprobados aún</span>'}</td></tr>
+      <tr><td>Datos pendientes por borrador (promedio)</td><td class="num">${pendProm === null ? '<span class="na">—</span>' : fmtN(pendProm)}</td></tr>
+      </tbody></table></div></div>`;
+    const fuentes = [base, ult].filter(Boolean).map((m) => `${esc(m.id === "base" ? "Antes" : "Último")}: ${esc(m.fuente || "sin fuente")}`);
+    if (fuentes.length) h += `<p class="sources">${fuentes.join("<br>")}</p>`;
+    const notas = base?.notas ? Object.entries(base.notas) : [];
+    if (notas.length) h += `<p class="sources">* ${notas.map(([, n]) => esc(n)).join(" · ")}</p>`;
+    v.innerHTML = h;
+  }
+
+  route();
+  boot();
+})();
+</script>

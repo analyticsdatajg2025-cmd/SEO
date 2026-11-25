@@ -169,6 +169,8 @@ Cada blog sigue una plantilla pensada para dos lectores. El primero es Google cl
 | **Motor** | Una **tarea programada** de Claude que corre sola cada semana (lunes): lee los datos, detecta, genera 3-4 borradores, los verifica y los deja en el panel | Sin servidores ni clave de API aparte; se pausa o se cambia el día cuando se quiera |
 | **Datos** | Al inicio, exportes de GSC y GA4 que se suben al chat (ver §8). Después, exportación de GSC a BigQuery para que el motor lea solo | Se arranca ya; se automatiza cuando haya proyecto de Google Cloud |
 
+**Panel publicado** (25-nov-2026, privado; Elias lo comparte con Kevin desde *Compartir*): https://claude.ai/artifact/Aq9rmVL6sMC4iNPuRScyTw · fuente: `panel/agente-seo-skullcandy.html`. Guarda todo en su base de datos: colecciones `borradores` (blogs, ajustes, categorías, fichas y tickets técnicos), `metricas` (`base` y una foto por fecha) y `config/agente` (ritmo, inicio, fechas clave). El motor escribe ahí con la herramienta de datos del artifact; el panel solo muestra y edita. Ya tiene cargados los 9 tickets técnicos S1-S9 y la línea base parcial de la auditoría.
+
 **Pestañas del panel**:
 1. **Esta semana**: los borradores del lunes, cada uno con la búsqueda objetivo, por qué se eligió (datos de GSC) y su estado (borrador, en revisión, aprobado, publicado, rechazado).
 2. **Editor**: vista previa del blog tal como se verá en el sitio y edición directa del texto, el título, la meta y la FAQ. Al lado, las fuentes de cada dato y los `PENDIENTE`. Botones: *Aprobar*, *Pedir cambios a la IA* (con un comentario), *Rechazar*, *Copiar HTML para Magento*.

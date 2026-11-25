@@ -31,6 +31,7 @@ Equipo SEO: **Josh Kevin Seminario** (SEO Senior: estrategia multimarca, auditor
 | `docs/08-efectibank-360.md` | Efectibank: cifras públicas, margen de mercado, auditoría de su web, palancas SEO en plata neta, datos que faltan por responsable, tiempos. |
 | `docs/09-capacidad-herramientas-y-riesgos.md` | Capacidad real del equipo (horas), herramientas disponibles y su impacto operativo, ventanas de riesgo Cyber, plazos de rastreo e indexación. |
 | `docs/10-agente-seo-ia-skullcandy.md` | Propuesta de agente SEO con IA (piloto Skullcandy): auditoría, ciclo leer→proponer→aprobar→medir, límites, opciones de infraestructura. |
+| `panel/agente-seo-skullcandy.html` | Fuente del panel del agente (artifact privado, URL en `docs/10 §6`). Publicar siempre sobre el mismo artifact; capacidades `db` + `user` (perfil). |
 | `herramientas/auditar_sitio.py` | Auditoría SEO pública de un sitio Magento desde su sitemap (solo lectura). `python3 herramientas/auditar_sitio.py https://skullcandy.com.pe` |
 | `grafo/ecosistema-seo.html` | Grafo visual del ecosistema: negocios, activos, datos, sistemas, acciones. Abrir en el navegador. |
 
