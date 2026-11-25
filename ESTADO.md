@@ -22,8 +22,11 @@ Un solo repo con todo el conocimiento SEO del grupo, orientado a **más ganancia
 
 - 2026-11-25 (3): objetivo final del agente y decisiones de Elias (`docs/10 §11`): autonomía por niveles (automático para títulos/metas/FAQ/fechas de campaña; aprobación de Kevin para blogs, textos largos y técnico); investigación de demanda global; sin herramientas de pago pero solo data real; calendario comercial con ~1 mes de aviso. Panel: pestaña Radar y nivel por propuesta.
 
+- 2026-11-25 (4): comparación con el año pasado en radar, territorios y medición (importante, no determinante); **campo de batalla** en el Radar (mapa demanda × posición con cuadrantes Atacar/Defender/Explorar/Asegurado, 8 territorios iniciales sin cifras); pasos para que el agente lea GSC y GA4 solo vía BigQuery (`docs/10 §12`). Falta el ID del proyecto de Google Cloud.
+
 ## Pendiente (orden)
-0. **Piloto agente Skullcandy** (`docs/10 §7-8`): Elias sube los exportes de GSC y GA4 (paso a paso en `docs/10 §8b`); armar el panel y la tarea programada semanal (`docs/10 §6`); Kevin valida ritmo; ticket TI S1-S4/S8; lote 1 de títulos y metas. Preguntas AG1-AG6 en `docs/06 §D`.
+0. **Acceso directo a datos** (`docs/10 §12`): proyecto de Google Cloud + exportación de GSC y GA4 a BigQuery + permiso al conector; una sola vez, exportes históricos para el año pasado.
+0b. **Piloto agente Skullcandy** (`docs/10 §7-8`): Elias sube los exportes de GSC y GA4 (paso a paso en `docs/10 §8b`); armar el panel y la tarea programada semanal (`docs/10 §6`); Kevin valida ritmo; ticket TI S1-S4/S8; lote 1 de títulos y metas. Preguntas AG1-AG6 en `docs/06 §D`.
 1. **Elias**: responder las preguntas de `docs/06`, dar los accesos A1-A8 y pedir a Efectibank los datos EF1-EF9 (`docs/08 §5`). Sin GSC y Ads por término no se confirma ni se mide nada.
 1b. **Elias**: entregar las cifras verificadas de agosto 2026 vs PY y el registro de cambios SEO (B11) para la referencia histórica; decidir el presupuesto de herramientas (`docs/09 §2b`).
 2. **Evaluar con Elias** los pesos (`docs/03`) y el plan (`docs/04`): qué entra antes de Cyber Wow (congelar 72 h antes, ~30-oct) y qué después.

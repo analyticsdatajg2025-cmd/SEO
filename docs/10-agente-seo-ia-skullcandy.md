@@ -363,3 +363,29 @@ Lo que no se recomienda: darle al agente un usuario y contraseña del admin para
 Como el aviso llega con ~1 mes, los blogs de campaña llegan justos para posicionar. Por eso el calendario fijo (fechas que se repiten cada año) importa: permite preparar contenido "evergreen" de la temporada antes de que llegue el aviso.
 
 **Panel**: nueva pestaña **Radar** (lo que más se busca, lo que sube, lo que viene, lo que pregunta la gente), cada hallazgo con fuente, fecha y la acción que propone; colección `radar` en la base. Cada propuesta lleva su nivel (*Automático* o *Con aprobación*).
+
+## 12. Año pasado, campo de batalla y acceso directo a los datos (25-nov-2026)
+
+**Año pasado** (Elias: importante, no determinante): el radar, los territorios y la medición muestran cada cifra **contra el mismo periodo del año anterior** (búsquedas, clics, posición, venta orgánica y venta web total). Sirve para separar la estacionalidad del efecto del SEO. Ninguna decisión del agente se toma solo por el año pasado; se cruza con la demanda actual y la posición.
+
+**Campo de batalla** (pestaña Radar): cada **territorio** es un grupo de búsquedas reales (marca, genéricos como "audífonos", usos como gamer o deporte, modelos, temporada). Mapa con demanda mensual (eje Y) contra nuestra posición en Google (eje X):
+| Cuadrante | Significa | Movimiento típico |
+|---|---|---|
+| **Atacar** (mucha demanda, mala posición) | Terreno grande que no tenemos | Categorías con texto propio, guías, blogs |
+| **Defender** (mucha demanda, buena posición) | Lo ganado que vale | Mantener frescos títulos, metas, FAQ; cuidar CTR |
+| **Explorar** (poca demanda, mala posición) | Nichos | Blog si es barato y hay stock |
+| **Asegurado** (poca demanda, buena posición) | Ganado y chico | Mantener |
+Cada territorio muestra demanda, posición, clics, venta orgánica (cada uno contra el año pasado), "terreno ganado" ≈ clics / búsquedas (`ESTIMACIÓN`) y el próximo movimiento. Territorios iniciales: *Skullcandy (marca)* y *Audífonos* (Elias); los demás los propuso el agente y se validan con datos en el primer ciclo.
+
+**Por qué hoy hacen falta exportes**: el acceso de Elias es de su cuenta de Google; el agente no entra con ella. Para que el agente lea solo:
+
+| Paso | Quién | Dónde |
+|---|---|---|
+| 1. Proyecto de Google Cloud con facturación (uno del grupo o uno nuevo). Pasar su **ID de proyecto** | Elias / TI | console.cloud.google.com |
+| 2. En ese proyecto, *IAM*: dar a `search-console-data-export@system.gserviceaccount.com` los roles **BigQuery Job User** y **BigQuery Data Editor** | Elias / TI | IAM y administración |
+| 3. Search Console → *Configuración → Exportación masiva de datos*: ID de proyecto, dataset `searchconsole` | Elias (es admin) | search.google.com/search-console |
+| 4. GA4 → *Administrar → Vínculos de productos → Vínculos de BigQuery → Vincular*: mismo proyecto, exportación **diaria** | Elias | analytics.google.com |
+| 5. Dar a la cuenta de Google conectada al conector de BigQuery de Claude los roles **BigQuery Data Viewer** y **BigQuery Job User** en el proyecto | Elias / TI | IAM |
+| 6. **Una sola vez**, para el año pasado: subir el exporte de GSC de 16 meses y el de GA4 del año anterior (§8b). Las exportaciones a BigQuery no traen historia hacia atrás; el agente carga esos archivos en BigQuery y no se vuelven a pedir | Elias | Chat |
+
+Lo que sigue siendo manual (sin herramientas de pago): el **Planificador de palabras clave**, una vez al mes (la API de Google Ads exige un token de desarrollador aprobado). **Google Trends**: el agente intentará leerlo directo; si no puede, un exporte al mes. Todo lo demás (GSC, GA4, ventas orgánicas) se lee solo cada semana.
