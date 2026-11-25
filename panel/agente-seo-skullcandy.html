@@ -57,6 +57,7 @@ nav.tabs a .n{font-family:var(--f-mono);font-size:12px;margin-left:6px;color:var
 .pill.aprobado{background:var(--ok-soft);color:var(--ok)}
 .pill.publicado{background:var(--ok);color:var(--surface)}
 .pill.rechazado{background:var(--bad-soft);color:var(--bad)}
+.tag.auto{color:var(--ok);border-color:var(--ok)}
 .tag{font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:1px 6px}
 
 /* Listas */
@@ -173,6 +174,7 @@ table.met .na{color:var(--muted);font-family:var(--f-body);font-size:13px}
   </header>
 
   <nav class="tabs" aria-label="Secciones">
+    <a href="#radar" data-tab="radar">Radar<span class="n" id="n-radar"></span></a>
     <a href="#semana" data-tab="semana">Blogs nuevos<span class="n" id="n-semana"></span></a>
     <a href="#ajustes" data-tab="ajustes">Ajustes y técnico<span class="n" id="n-ajustes"></span></a>
     <a href="#calendario" data-tab="calendario">Calendario</a>
@@ -234,7 +236,7 @@ table.met .na{color:var(--muted);font-family:var(--f-body);font-size:13px}
   const pill = (e, tipo) => `<span class="pill ${esc(e)}">${esc((tipo === "tecnico" ? ESTADOS_TEC : ESTADOS)[e] || e)}</span>`;
 
   // ---------- estado ----------
-  const S = { db: null, user: null, me: null, items: [], metricas: [], config: null, loaded: false, error: null, sel: null, tab: "semana", semana: "todas", filtroEstado: "activos", names: {} };
+  const S = { db: null, user: null, me: null, items: [], metricas: [], radar: [], config: null, loaded: false, error: null, sel: null, tab: "radar", semana: "todas", filtroEstado: "activos", names: {} };
 
   // ---------- datos ----------
   async function boot() {
@@ -246,10 +248,11 @@ table.met .na{color:var(--muted);font-family:var(--f-body);font-size:13px}
     } catch (e) { S.db = null; }
     if (!S.db) { clearTimeout(timer); S.error = "Abre el panel con tu sesión de claude.ai para ver y editar los borradores."; render(); return; }
     try { S.me = await S.user?.id?.(); } catch (e) { S.me = null; }
-    let pending = 3; const done = () => { if (--pending <= 0) { S.loaded = true; clearTimeout(timer); } render(); };
+    let pending = 4; const done = () => { if (--pending <= 0) { S.loaded = true; clearTimeout(timer); } render(); };
     const fail = (e) => { S.error = "No se pudo leer la base: " + (e?.message || e?.code || "error"); clearTimeout(timer); render(); };
     S.db.collection("borradores").onSnapshot((snap) => { S.items = snap.docs.map((d) => ({ id: d.id, ...d.data() })); resolveNames(); done(); }, fail);
     S.db.collection("metricas").onSnapshot((snap) => { S.metricas = snap.docs.map((d) => ({ id: d.id, ...d.data() })); done(); }, fail);
+    S.db.collection("radar").onSnapshot((snap) => { S.radar = snap.docs.map((d) => ({ id: d.id, ...d.data() })); done(); }, fail);
     S.db.doc("config/agente").onSnapshot((snap) => { S.config = snap.exists ? snap.data() : null; done(); }, fail);
   }
   async function resolveNames() {
@@ -269,8 +272,8 @@ table.met .na{color:var(--muted);font-family:var(--f-body);font-size:13px}
 
   // ---------- navegación ----------
   function route() {
-    const h = (location.hash || "#semana").slice(1);
-    S.tab = ["semana", "ajustes", "calendario", "medicion"].includes(h) ? h : "semana";
+    const h = (location.hash || "#radar").slice(1);
+    S.tab = ["radar", "semana", "ajustes", "calendario", "medicion"].includes(h) ? h : "radar";
     S.sel = null; render();
   }
   window.addEventListener("hashchange", route);
@@ -283,6 +286,7 @@ table.met .na{color:var(--muted);font-family:var(--f-body);font-size:13px}
     const act = (arr) => arr.filter((i) => !["publicado", "rechazado"].includes(i.estado)).length;
     $("#n-semana").textContent = S.loaded ? act(blogs) || "" : "";
     $("#n-ajustes").textContent = S.loaded ? act(otros) || "" : "";
+    $("#n-radar").textContent = S.loaded ? S.radar.filter((r) => !r.archivado).length || "" : "";
     renderStatus();
     const b = $("#banner"); b.hidden = !S.error; b.textContent = S.error || "";
     if (soft && S.sel && document.activeElement && $("#view").contains(document.activeElement)) return; // no pisar lo que se está escribiendo
@@ -290,6 +294,7 @@ table.met .na{color:var(--muted);font-family:var(--f-body);font-size:13px}
     if (S.sel) { const it = S.items.find((i) => i.id === S.sel); if (it) { renderEditor(v, it); return; } S.sel = null; }
     if (S.tab === "semana") renderList(v, blogs, "blog");
     else if (S.tab === "ajustes") renderList(v, otros, "otros");
+    else if (S.tab === "radar") renderRadar(v);
     else if (S.tab === "calendario") renderCal(v);
     else renderMed(v);
   }
@@ -340,6 +345,7 @@ table.met .na{color:var(--muted);font-family:var(--f-body);font-size:13px}
     const d = i.datos || {};
     const bits = [];
     bits.push(`<span class="tag">${esc(TIPOS[i.tipo] || i.tipo)}</span>`);
+    bits.push(i.nivel === "auto" ? `<span class="tag auto">Automático</span>` : `<span class="tag">Con aprobación</span>`);
     if (i.busqueda_objetivo) bits.push(`<span>Búsqueda: <b>${esc(i.busqueda_objetivo)}</b></span>`);
     if (fmtN(d.impresiones) !== null) bits.push(`<span class="mono">${fmtN(d.impresiones)} impr.</span>`);
     if (fmtN(d.posicion) !== null) bits.push(`<span class="mono">pos. ${fmtN(d.posicion)}</span>`);
@@ -414,6 +420,7 @@ table.met .na{color:var(--muted);font-family:var(--f-body);font-size:13px}
     const right = `<div class="stack">
         <div class="card stack">
           <div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:center"><span class="tag">${esc(TIPOS[i.tipo] || i.tipo)}</span>${pill(i.estado || "borrador", i.tipo)}</div>
+          <div class="sources">${i.nivel === "auto" ? "Nivel automático: el agente lo aplica solo cuando tenga acceso a Magento, guarda el antes y se revierte con un clic. Puedes rechazarlo antes." : "Necesita aprobación de Kevin antes de subirse."}</div>
           ${i.busqueda_objetivo ? `<div><span class="lbl">Búsqueda objetivo</span><div style="font-weight:600;font-size:17px">${esc(i.busqueda_objetivo)}</div>${(i.busquedas_relacionadas || []).length ? `<div class="muted" style="font-size:13px">También: ${esc(i.busquedas_relacionadas.join(" · "))}</div>` : ""}</div>` : ""}
           ${datos.length ? `<div class="datos">${datos.map(([k, x]) => `<div><span class="lbl">${k}</span><b>${fmtN(x)}</b></div>`).join("")}</div>${d.fuente ? `<div class="sources">Fuente: ${esc(d.fuente)}${d.periodo ? " · " + esc(d.periodo) : ""}</div>` : ""}` : ""}
           ${i.por_que ? `<div><span class="lbl">Por qué lo propone</span><div class="why">${esc(i.por_que)}</div></div>` : ""}
@@ -510,6 +517,41 @@ table.met .na{color:var(--muted);font-family:var(--f-body);font-size:13px}
     out += `\n<script type="application/ld+json">\n${ldEsc(post)}\n<\/script>`;
     if (faq.length) out += `\n<script type="application/ld+json">\n${ldEsc({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faq.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) })}\n<\/script>`;
     return out;
+  }
+
+  // ---------- radar ----------
+  const HORIZ = [
+    ["ahora", "Lo que más se busca ahora", "Búsquedas con más volumen o impresiones hoy. Fuente: Search Console, Planificador de palabras clave."],
+    ["subiendo", "Lo que está subiendo", "Búsquedas que crecen frente a las semanas anteriores o al año pasado. Fuente: Google Trends, Search Console."],
+    ["viene", "Lo que viene", "Fechas del calendario comercial y lo que pasó el año pasado en esas mismas semanas."],
+    ["preguntas", "Lo que la gente pregunta", "Preguntas de Google («Más preguntas»), autocompletado y lo que aparece en las respuestas de IA."],
+  ];
+  function renderRadar(v) {
+    const rows = S.radar.filter((r) => !r.archivado);
+    let h = `<div class="toolbar"><h2>Radar de búsquedas</h2><span class="muted" style="font-size:14px">${S.config?.radar_actualizado ? "Actualizado " + fmtFecha(S.config.radar_actualizado) : "Se actualiza en cada ciclo del agente"}</span></div>`;
+    if (!S.loaded && !S.error) { v.innerHTML = h + `<p class="muted">Cargando…</p>`; return; }
+    if (!rows.length) {
+      v.innerHTML = h + `<div class="empty"><h3>El radar se llena en el primer ciclo</h3>
+        <p>Cada semana el agente investiga qué busca la gente y lo deja aquí, cada dato con su fuente y fecha. Debajo de cada hallazgo va la acción que propone: un blog, un título, una meta, una pregunta frecuente.</p>
+        <ol><li><b>Nuestra web</b>: Search Console (búsquedas, impresiones, posición) y GA4.</li>
+        <li><b>Volumen en Perú</b>: Planificador de palabras clave de Google Ads.</li>
+        <li><b>Lo que sube</b>: Google Trends, comparado con el año pasado.</li>
+        <li><b>Lo que viene</b>: el calendario comercial (Cyber, Navidad, regreso a clases) y cómo subieron las búsquedas esas mismas semanas el año pasado.</li>
+        <li><b>Lo que pregunta la gente</b>: preguntas y autocompletado de Google, respuestas de IA y lo que publican otros sitios.</li></ol>
+        <p>Sin datos reales no aparece nada: si una cifra no tiene fuente, no entra.</p></div>`;
+      return;
+    }
+    for (const [k, t, sub] of HORIZ) {
+      const g = rows.filter((r) => r.horizonte === k).sort((a, b) => (Number(b.valor) || 0) - (Number(a.valor) || 0));
+      if (!g.length) continue;
+      h += `<div class="metgroup"><h3>${esc(t)}</h3><p class="sources" style="margin:-4px 0 8px">${esc(sub)}</p><div class="list">${g.map((r) => {
+        const it = r.item_id ? S.items.find((i) => i.id === r.item_id) : null;
+        return `<div class="item" style="cursor:default"><span class="t">${esc(r.titulo)}</span>${r.valor != null && fmtN(r.valor) !== null ? `<span class="mono" style="font-weight:600">${fmtN(r.valor)}${r.unidad ? " " + esc(r.unidad) : ""}</span>` : "<span></span>"}
+          <span class="meta">${r.detalle ? `<span>${esc(r.detalle)}</span>` : ""}<span>Fuente: ${esc(r.fuente || "sin fuente")}${r.fecha ? " · " + fmtFecha(r.fecha) : ""}</span>${r.accion ? `<span>Acción: <b>${esc(r.accion)}</b></span>` : ""}${it ? `<a href="#" data-open="${esc(it.id)}">Ver propuesta</a>` : ""}</span></div>`;
+      }).join("")}</div></div>`;
+    }
+    v.innerHTML = h;
+    v.querySelectorAll("[data-open]").forEach((el) => el.addEventListener("click", (e) => { e.preventDefault(); S.sel = el.dataset.open; window.scrollTo(0, 0); render(); }));
   }
 
   // ---------- calendario ----------

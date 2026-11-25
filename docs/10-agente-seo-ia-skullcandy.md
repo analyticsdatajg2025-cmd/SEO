@@ -327,3 +327,39 @@ Lo que hace falta:
 Salvaguardas del agente: sube solo ítems en estado *Aprobado* y con "go"; los blogs nuevos se crean **desactivados**, se revisan en vivo y recién se activan; cada subida guarda el antes en el panel para revertir con un clic; nada fuera del catálogo de cambios permitido de §5.
 
 Lo que no se recomienda: darle al agente un usuario y contraseña del admin para que navegue con un navegador. Es frágil, tiene más permisos de los necesarios y no deja registro limpio.
+
+## 11. Objetivo final del agente y decisiones de Elias (25-nov-2026)
+
+**Objetivo, en palabras de Elias**: que la IA, sola y con data real, (1) investigue qué es lo que más se busca y lo que se va a buscar, (2) con ese análisis potencie la página con SEO orgánico, técnico y GEO (blogs, encabezados, metadatos, lo que haga falta) de forma automática, y (3) mida el antes y el después para saber qué funciona.
+
+**Decisiones**:
+| Tema | Decisión |
+|---|---|
+| Autonomía | **Por niveles.** *Automático* (sin aprobación, reversible con un clic): títulos y metas de páginas existentes, preguntas frecuentes, menciones y fechas de campaña. *Con aprobación de Kevin*: blogs nuevos, textos largos de categorías y fichas, todo lo técnico. Lo automático se activa cuando exista el token de Magento (§10b); hasta entonces todo pasa por el panel |
+| Investigación | **Demanda global**, no solo competidores: lo que la gente busca en Perú alrededor de audífonos, parlantes y accesorios. Los competidores (Falabella, Ripley, Oechsle, Mercado Libre, Hiraoka, Coolbox, skullcandy.com global, JBL, Sony) son una fuente más, por confirmar |
+| Herramientas de pago | **No hay presupuesto** (Semrush/Ahrefs). La data igual es real: Search Console, GA4, Planificador de palabras clave, Google Trends, preguntas y autocompletado de Google, respuestas de IA y páginas públicas. Lo que no se puede ver: el tráfico de los competidores |
+| Calendario comercial | Marketing avisa **~1 mes antes**. Se arma poco a poco |
+
+**Fuentes del radar y qué aporta cada una** (todas reales; si una cifra no tiene fuente, no entra):
+| Fuente | Qué da | Acceso |
+|---|---|---|
+| Search Console | Qué búsquedas ya nos muestran, impresiones, posición, CTR; 16 meses para ver cómo subió el Cyber pasado | Exporte o BigQuery (§10a) |
+| GA4 | Qué páginas venden desde orgánico; visitas desde asistentes de IA | Exporte o BigQuery |
+| Planificador de palabras clave | Volumen mensual en Perú y su estacionalidad | Cuenta de Google Ads (exporte manual al inicio) |
+| Google Trends | Lo que está subiendo y el patrón del año pasado | Consulta pública (`HIPÓTESIS`: verificar si el agente puede leerla directo o se exporta) |
+| Preguntas y autocompletado de Google, respuestas de IA | Cómo pregunta la gente y quién sale citado | Revisión del agente con búsqueda web |
+| Páginas públicas (competidores, marca global, medios) | Qué temas, títulos y preguntas cubren otros | Lectura pública, como la auditoría |
+| Calendario comercial | Fechas de Cyber, campañas, lanzamientos y stock a empujar | Marketing, ~1 mes antes |
+
+**Anticipación, con el aviso de ~1 mes**:
+| Cuándo | Qué hace el agente |
+|---|---|
+| Siempre | Mantiene un calendario de fechas que se repiten (Cyber Wow, Cyber Days, Navidad, regreso a clases, Día del Padre/Madre) con la curva del año pasado de GSC y Trends |
+| ~4 semanas antes (aviso de Marketing) | Blogs nuevos de la campaña (con aprobación); ritmo 4-5 por semana |
+| 1-2 semanas antes | Ajustes automáticos a páginas ya indexadas: títulos, metas, preguntas frecuentes con fechas y menciones de la campaña |
+| Semana del evento | Solo actualizar lo publicado (ofertas, stock, fechas) |
+| 1-2 semanas después | Quitar fechas vencidas y medir |
+
+Como el aviso llega con ~1 mes, los blogs de campaña llegan justos para posicionar. Por eso el calendario fijo (fechas que se repiten cada año) importa: permite preparar contenido "evergreen" de la temporada antes de que llegue el aviso.
+
+**Panel**: nueva pestaña **Radar** (lo que más se busca, lo que sube, lo que viene, lo que pregunta la gente), cada hallazgo con fuente, fecha y la acción que propone; colección `radar` en la base. Cada propuesta lleva su nivel (*Automático* o *Con aprobación*).

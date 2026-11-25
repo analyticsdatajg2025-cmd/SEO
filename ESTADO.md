@@ -20,6 +20,8 @@ Un solo repo con todo el conocimiento SEO del grupo, orientado a **más ganancia
 
 - 2026-11-25 (2): requisitos para que el agente lea GSC/GA4 sin descargas (BigQuery) y publique en Magento con un "go" (token de integración con permisos mínimos, solo store view Skullcandy, staging, caché): `docs/10 §10`, pregunta AG7. Hoy el agente no tiene acceso a GSC, GA4 ni Magento.
 
+- 2026-11-25 (3): objetivo final del agente y decisiones de Elias (`docs/10 §11`): autonomía por niveles (automático para títulos/metas/FAQ/fechas de campaña; aprobación de Kevin para blogs, textos largos y técnico); investigación de demanda global; sin herramientas de pago pero solo data real; calendario comercial con ~1 mes de aviso. Panel: pestaña Radar y nivel por propuesta.
+
 ## Pendiente (orden)
 0. **Piloto agente Skullcandy** (`docs/10 §7-8`): Elias sube los exportes de GSC y GA4 (paso a paso en `docs/10 §8b`); armar el panel y la tarea programada semanal (`docs/10 §6`); Kevin valida ritmo; ticket TI S1-S4/S8; lote 1 de títulos y metas. Preguntas AG1-AG6 en `docs/06 §D`.
 1. **Elias**: responder las preguntas de `docs/06`, dar los accesos A1-A8 y pedir a Efectibank los datos EF1-EF9 (`docs/08 §5`). Sin GSC y Ads por término no se confirma ni se mide nada.
