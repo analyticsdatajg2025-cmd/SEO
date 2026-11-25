@@ -55,3 +55,4 @@
 | AG4 | Quién aplica en Magento los tickets S1-S4 y S8 y qué edición de Mageplaza Blog hay (¿API?) | Limpieza técnica y, más adelante, borradores automáticos | TI |
 | AG5 | ¿El contrato con Skullcandy global restringe textos, imágenes o uso de marca? | Reglas del generador de contenido | Comercial / Legal |
 | AG6 | ¿Quién paga la API de Claude si se pasa a la opción C (agente en ciclo)? | Fase 2 | Elias |
+| AG7 | Token de integración de Magento con permisos mínimos (CMS, títulos/metas/descripciones de catálogo, blog), código del store view Skullcandy, si la API es accesible desde fuera (VPN/IPs), si hay staging y cómo se limpia la caché | Que el agente publique solo lo aprobado con un "go" (`docs/10 §10b`) | TI |

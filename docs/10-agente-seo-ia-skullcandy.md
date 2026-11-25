@@ -300,3 +300,30 @@ Se toma la **foto "antes"** con los exportes de §8b (16 meses y últimos 28 dí
 | Tiempo de revisión de Kevin por blog | Costo humano real |
 
 Lectura honesta: en SEO los clics y la venta tardan; **las primeras señales (2-6 semanas) son indexación, impresiones y número de consultas**. La venta orgánica se lee a los 2-3 meses (`docs/09`).
+
+## 10. Accesos para que el agente lea los datos y publique solo (estado al 25-nov-2026)
+
+**Lo que el agente tiene hoy**: lectura pública de skullcandy.com.pe (la auditoría) y el panel. **No tiene** acceso a Search Console, GA4 ni Magento. El acceso de Elias es de su cuenta de Google y del admin de Magento; no pasa al agente.
+
+### 10a. Leer Search Console y GA4 sin descargas
+| Opción | Qué hace Elias / TI | Resultado |
+|---|---|---|
+| **BigQuery (recomendada)** | Un proyecto de Google Cloud con facturación. En GSC: *Configuración → Exportación masiva de datos* hacia ese proyecto. En GA4: *Administrar → Vínculos de productos → BigQuery* (exportación diaria). Dar a la cuenta conectada a Claude permiso de lectura en ese dataset | El agente consulta todo directo cada semana, con consultas × página (lo que el export manual no da). Costo `ESTIMACIÓN`: bajo para este tamaño. Sin historia hacia atrás: activar pronto |
+| Apps Script | Script en una Google Sheet que baja GSC y GA4 con el permiso de Elias | Funciona, pero el agente igual necesita leer esa hoja |
+| Exportes manuales | Subirlos al chat cada mes (§8b) | Sirve para arrancar ya |
+
+### 10b. Publicar en Magento con un "go"
+Flujo propuesto: Kevin aprueba en el panel → Elias o Kevin aprieta **Subir a Magento** (o escribe "go") → el agente sube **solo lo aprobado**, guarda el antes para revertir, verifica la URL en vivo y marca *Publicado* en el panel.
+
+Lo que hace falta:
+1. **Token de integración de Magento** (*Sistema → Extensiones → Integraciones*), creado por TI, con **permisos mínimos**: Contenido (páginas y bloques CMS), Catálogo (productos y categorías: solo título SEO, meta y descripción) y el blog. Sin acceso a pedidos, clientes, precios, stock ni configuración.
+2. **Que la API del blog exista**: confirmar con TI la edición de Mageplaza Blog. Si no tiene API REST, los blogs se siguen pegando a mano y solo se automatizan metas, categorías y fichas. `HIPÓTESIS`.
+3. **Escribir solo en la tienda Skullcandy**: todas las llamadas van al store view de Skullcandy, nunca al global. El Magento es compartido con EFE, La Curacao y Motocorp; un cambio global los afecta. TI confirma el código de la tienda.
+4. **Red**: TI permite que el agente llegue a la API (si está detrás de VPN o lista de IPs) y se agrega el host al entorno del agente.
+5. **Dónde vive el token**: en el almacén de secretos del entorno (formulario seguro). Nunca en el chat, el repo ni el código.
+6. **Primero en staging**: 5-10 subidas de prueba en un ambiente de pruebas, si existe; si no, empezar por metas de 3 fichas y revisar.
+7. **Caché**: confirmar con TI si hay que limpiar la caché (Varnish/FPC) para que el cambio se vea, y si el agente puede hacerlo.
+
+Salvaguardas del agente: sube solo ítems en estado *Aprobado* y con "go"; los blogs nuevos se crean **desactivados**, se revisan en vivo y recién se activan; cada subida guarda el antes en el panel para revertir con un clic; nada fuera del catálogo de cambios permitido de §5.
+
+Lo que no se recomienda: darle al agente un usuario y contraseña del admin para que navegue con un navegador. Es frágil, tiene más permisos de los necesarios y no deja registro limpio.

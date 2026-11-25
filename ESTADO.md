@@ -18,6 +18,8 @@ Un solo repo con todo el conocimiento SEO del grupo, orientado a **más ganancia
 
 - 2026-11-25: **panel del agente publicado** (privado): https://claude.ai/artifact/Aq9rmVL6sMC4iNPuRScyTw (fuente `panel/agente-seo-skullcandy.html`). Pestañas: blogs nuevos, ajustes y técnico, calendario, medición; editor con vista previa en Google, chequeo automático, fuentes, aprobar/pedir cambios/rechazar y copiar HTML para Magento. Cargados los tickets S1-S9 (58 páginas ajenas claras + 8 dudosas) y la línea base parcial. Falta: compartirlo con Kevin, los exportes de GSC/GA4 y programar el ciclo semanal.
 
+- 2026-11-25 (2): requisitos para que el agente lea GSC/GA4 sin descargas (BigQuery) y publique en Magento con un "go" (token de integración con permisos mínimos, solo store view Skullcandy, staging, caché): `docs/10 §10`, pregunta AG7. Hoy el agente no tiene acceso a GSC, GA4 ni Magento.
+
 ## Pendiente (orden)
 0. **Piloto agente Skullcandy** (`docs/10 §7-8`): Elias sube los exportes de GSC y GA4 (paso a paso en `docs/10 §8b`); armar el panel y la tarea programada semanal (`docs/10 §6`); Kevin valida ritmo; ticket TI S1-S4/S8; lote 1 de títulos y metas. Preguntas AG1-AG6 en `docs/06 §D`.
 1. **Elias**: responder las preguntas de `docs/06`, dar los accesos A1-A8 y pedir a Efectibank los datos EF1-EF9 (`docs/08 §5`). Sin GSC y Ads por término no se confirma ni se mide nada.
