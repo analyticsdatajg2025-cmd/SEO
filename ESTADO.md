@@ -12,7 +12,10 @@ Un solo repo con todo el conocimiento SEO del grupo, orientado a **más ganancia
 
 - 2026-10-16 (v3): corregidas las bases de la tabla de plata neta (solo web vs empresa completa; Motocorp por debajo de LC y EFE en total), Efectibank marcado como negocio que sí vende en digital (cuentas y créditos vía pauta), y nuevos pedidos B13 (venta de piso por marca) y B14 (pauta digital de Efectibank por objetivo).
 
+- 2026-11-26: PLP Ventiladores de La Curacao (`/electrohogar/climatizacion/ventiladores.html`, categoría 276). A pedido de Elias se reemplazó el contenido del bloque CMS `seo_vertical_ventiladores_lacuracao` (ID 3470, store view La Curacao) por el texto SEO nuevo (6 H2, 5 enlaces a producto, 4 enlaces a filtro de marca). COMPROBADO antes de guardar: los 5 productos responden 200 y los 4 filtros `?brand=` filtran. El widget que lo pinta ya existía (ID 1016, contenedor `sidebar.main`); no se tocó. **Aún no se ve en la página en vivo** (ver Pendiente 0).
+
 ## Pendiente (orden)
+0. **Ventiladores LC**: el texto SEO bajo filtros no aparece en vivo (COMPROBADO 26-nov, también sin caché de CDN). HIPÓTESIS: falta refrescar la caché de layout de Magento tras crear el widget 1016; la cuenta usada no tiene acceso a Cache Management. Pedir el refresco a quien administra Magento. Si después sigue sin verse, mover el widget a `sidebar.additional`, que es el contenedor de los 14 widgets `sidebar_*_seo` que sí funcionan (ej. Climatización, widget 383).
 1. **Elias**: responder las preguntas de `docs/06`, dar los accesos A1-A8 y pedir a Efectibank los datos EF1-EF9 (`docs/08 §5`). Sin GSC y Ads por término no se confirma ni se mide nada.
 1b. **Elias**: entregar las cifras verificadas de agosto 2026 vs PY y el registro de cambios SEO (B11) para la referencia histórica; decidir el presupuesto de herramientas (`docs/09 §2b`).
 2. **Evaluar con Elias** los pesos (`docs/03`) y el plan (`docs/04`): qué entra antes de Cyber Wow (congelar 72 h antes, ~30-oct) y qué después.
@@ -26,6 +29,7 @@ Un solo repo con todo el conocimiento SEO del grupo, orientado a **más ganancia
 - Las cifras de `docs/01` son redondeadas y con fuente; las estimaciones de dinero en `docs/04` llevan su supuesto al lado. **No presentar estimaciones como proyecciones.**
 - No tocar pauta ni redirigir URLs durante Cyber Wow; cambios de configuración de Magento (canonical) solo con staging y plan de reversión.
 - `SEO-repo-efe` no es un repo de SEO: es el feed de catálogo de EFE para Meta/TikTok en producción. No tocarlo.
+- Admin de Magento: el contenido SEO de PLP en La Curacao va en bloque CMS + widget "CMS Static Block" (tema Grupoefe Lco, Anchor Categories, categoría específica). Bajo filtros = `sidebar.additional`; pie de PLP = `page.bottom.container`. Guardar un widget no basta: hay que refrescar caché.
 
 ## Archivos clave
 `CLAUDE.md` (reglas) · `docs/01` (cifras) · `docs/02` (diagnóstico) · `docs/03` (pesos) · `docs/04` (plan) · `docs/05` (El Niño) · `docs/06` (faltante y preguntas) · `docs/07` (inventario de repos) · `grafo/ecosistema-seo.html` (grafo).
